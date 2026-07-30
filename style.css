@@ -1,0 +1,442 @@
+/* Every style on the site. There is no other stylesheet. */
+
+/* ---------------------------------------------------------------- palette */
+/* The nine units are the resistor colour code. data-unit on <body> picks one. */
+
+:root {
+  --paper: #edf0f3;
+  --paper-2: #e2e7ec;
+  --grid: #d3dae1;
+  --ink: #12171c;
+  --ink-2: #444f59;
+  --ink-3: #7a868f;
+  --focus: #0b63ce;
+
+  --accent: #2b2b2b;
+
+  --sans: ui-sans-serif, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --serif: ui-serif, Georgia, "Times New Roman", serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+
+[data-unit="0"] { --accent: #2b2b2b; }  /* black   What Is This Thing?            */
+[data-unit="1"] { --accent: #6b4423; }  /* brown   Driving the Machine            */
+[data-unit="2"] { --accent: #b4232a; }  /* red     Making Things                  */
+[data-unit="3"] { --accent: #c2610c; }  /* orange  Everything Is Numbers          */
+[data-unit="4"] { --accent: #9a7b0a; }  /* yellow  Fast, Slow, and Forever        */
+[data-unit="5"] { --accent: #1f7a3d; }  /* green   The Command Line               */
+[data-unit="6"] { --accent: #1b5ea8; }  /* blue    The Internet                   */
+[data-unit="7"] { --accent: #6b3fa0; }  /* violet  Making the Machine Do Something*/
+[data-unit="8"] { --accent: #5b6670; }  /* grey    Capstone                       */
+
+* { box-sizing: border-box; }
+
+html {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
+
+body { margin: 0; }
+
+a { color: var(--focus); }
+
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+/* ------------------------------------------------------------------ deck */
+/* One slide per viewport, snapped to the top, so two kids on two Pis and a
+   parent on a laptop are all looking at the same thing. */
+
+.slide {
+  height: 100vh;
+  height: 100svh;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  display: grid;
+  place-items: center;
+  padding: 2vmin;
+}
+
+/* The 16:9 box. Everything inside is sized in cqw — percent of this width —
+   so a slide looks the same on a monitor, a laptop, and a phone in landscape. */
+.frame {
+  container-type: inline-size;
+  position: relative;
+  width: min(100%, calc((100vh - 4vmin) * 16 / 9));
+  width: min(100%, calc((100svh - 4vmin) * 16 / 9));
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--paper);
+  padding: 7cqw 7cqw 7cqw 11cqw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3cqw;
+}
+
+/* The unit stripe down the left edge. Colour says which unit, at a glance,
+   from across the room. */
+.frame::before {
+  content: "";
+  position: absolute;
+  left: 4cqw;
+  top: 7cqw;
+  bottom: 7cqw;
+  width: 0.4cqw;
+  background: var(--accent);
+}
+
+/* --------------------------------------------------------------- type */
+
+.frame h1,
+.frame h2 {
+  font-size: 7cqw;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  font-weight: 800;
+  margin: 0;
+  max-width: 20ch;
+  text-wrap: balance;
+}
+
+.frame h1 { font-size: 9cqw; max-width: 16ch; }
+
+.frame p {
+  font-size: 3.2cqw;
+  line-height: 1.35;
+  margin: 0;
+  max-width: 32ch;
+}
+
+/* The one supporting line under a headline. At most one per slide. */
+.frame .prompt {
+  color: var(--ink-2);
+}
+
+.frame .eyebrow {
+  font-family: var(--mono);
+  font-size: 1.7cqw;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  position: absolute;
+  left: 11cqw;
+  top: 4cqw;
+  max-width: none;
+}
+
+.frame ul,
+.frame ol {
+  font-size: 3cqw;
+  line-height: 1.4;
+  margin: 0;
+  padding-left: 4cqw;
+  max-width: 30ch;
+}
+
+.frame li + li { margin-top: 1.2cqw; }
+
+.frame strong { font-weight: 700; }
+
+.frame img {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* ------------------------------------------------------ slide variants */
+
+.frame.center {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding-left: 7cqw;
+}
+
+.frame.center::before { display: none; }
+.frame.center .eyebrow { left: 50%; transform: translateX(-50%); }
+.frame.center p { max-width: 36ch; }
+
+/* Graph paper. Only on slides where they are about to draw or move. */
+.frame.activity {
+  background-image:
+    linear-gradient(to right, var(--grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+  background-size: 3cqw 3cqw;
+}
+
+.frame.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 5cqw;
+}
+
+.frame.two-col > .eyebrow { grid-column: 1 / -1; }
+.frame.two-col h1,
+.frame.two-col h2 { font-size: 6cqw; }
+.frame.two-col figure { margin: 0; min-width: 0; }
+
+.frame.dark {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.frame.dark .prompt { color: var(--grid); }
+.frame.dark .eyebrow { color: var(--grid); }
+
+.frame.full-bleed {
+  padding: 0;
+  justify-content: flex-end;
+}
+
+.frame.full-bleed::before { display: none; }
+
+.frame.full-bleed img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  object-fit: cover;
+}
+
+.frame.full-bleed h1,
+.frame.full-bleed h2,
+.frame.full-bleed p {
+  position: relative;
+  color: #fff;
+  padding: 0 7cqw;
+}
+
+.frame.full-bleed h2 { padding-bottom: 5cqw; }
+
+.frame.full-bleed::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 55%;
+  background: linear-gradient(to top, rgb(0 0 0 / 85%), rgb(0 0 0 / 0%));
+}
+
+.frame.full-bleed > * { z-index: 1; }
+
+/* The thing being asked about, when it is the point of the slide. */
+.frame .big {
+  font-size: 5cqw;
+  line-height: 1.1;
+  color: var(--ink);
+  font-weight: 700;
+}
+
+/* ------------------------------------------------------------- applets */
+
+.applet {
+  font-size: 2.4cqw;
+  line-height: 1.3;
+  display: flex;
+  flex-direction: column;
+  gap: 2cqw;
+  align-items: flex-start;
+}
+
+.applet p { max-width: 40ch; }
+
+.applet button {
+  font: inherit;
+  font-family: var(--mono);
+  padding: 1cqw 1.6cqw;
+  background: var(--paper-2);
+  border: 1px solid var(--ink-3);
+  border-radius: 2px;
+  color: inherit;
+  cursor: pointer;
+}
+
+.applet button:hover { border-color: var(--accent); color: var(--accent); }
+
+/* --------------------------------------------------------------- notes */
+/* Hidden while teaching. Press N to stack the slides with the notes under
+   each one — that is how you read the lesson the night before. */
+
+.notes { display: none; }
+
+body.reading .notes {
+  display: block;
+  max-width: 34rem;
+  margin: 1.5rem auto 3rem;
+  padding-left: 1rem;
+  border-left: 3px solid var(--accent);
+  font-family: var(--serif);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--ink);
+}
+
+body.reading .notes p { margin: 0 0 0.8rem; }
+body.reading .notes p:last-child { margin-bottom: 0; }
+body.reading .notes ul { margin: 0 0 0.8rem; padding-left: 1.2rem; }
+
+/* In reading mode nothing snaps and nothing is a viewport tall. */
+html.reading { scroll-snap-type: none; }
+
+body.reading .slide {
+  height: auto;
+  scroll-snap-align: none;
+  padding: 1.5rem 1rem 0;
+}
+
+body.reading .frame {
+  width: min(100%, 46rem);
+  box-shadow: 0 0 0 1px var(--grid);
+}
+
+/* ------------------------------------------------------------------ bar */
+/* Two buttons and a slide count. Fades back until you go looking for it. */
+
+.bar {
+  position: fixed;
+  right: 0.75rem;
+  bottom: 0.75rem;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--ink-2);
+  opacity: 0.3;
+  transition: opacity 120ms;
+}
+
+.bar:hover, .bar:focus-within { opacity: 1; }
+
+.bar button, .bar a {
+  font: inherit;
+  padding: 0.4rem 0.6rem;
+  background: var(--paper);
+  border: 1px solid var(--grid);
+  border-radius: 2px;
+  color: var(--ink-2);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.bar button:hover, .bar a:hover { border-color: var(--accent); color: var(--accent); }
+
+.bar .count { padding: 0 0.3rem; }
+
+@media print {
+  .bar { display: none; }
+  .slide { height: auto; break-after: page; }
+  html { scroll-snap-type: none; }
+}
+
+/* ============================================================== index.html */
+
+.page {
+  max-width: 52rem;
+  margin: 0 auto;
+  padding: 3rem 1.25rem 6rem;
+}
+
+.page h1 {
+  font-size: clamp(2.5rem, 1.5rem + 4vw, 4rem);
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  margin: 0 0 1rem;
+}
+
+.thesis {
+  font-family: var(--serif);
+  font-size: clamp(1.05rem, 1rem + 0.5vw, 1.3rem);
+  line-height: 1.5;
+  margin: 0 0 1.5rem;
+  padding-left: 1rem;
+  border-left: 4px solid var(--accent);
+  max-width: 42ch;
+}
+
+.page .sub {
+  font-family: var(--serif);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--ink-2);
+  max-width: 60ch;
+  margin: 0 0 1rem;
+}
+
+.unit {
+  margin-top: 3rem;
+  padding-top: 0.75rem;
+  border-top: 6px solid var(--accent);
+}
+
+.unit h2 {
+  font-size: 1.35rem;
+  margin: 0 0 0.25rem;
+  letter-spacing: -0.01em;
+}
+
+.unit .arc {
+  font-family: var(--serif);
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--ink-2);
+  margin: 0 0 1rem;
+  max-width: 60ch;
+}
+
+.lessons { list-style: none; margin: 0; padding: 0; }
+
+.lessons li {
+  display: grid;
+  grid-template-columns: 2.5rem 1fr;
+  gap: 0.9rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--grid);
+}
+
+.lessons .n {
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  color: var(--ink-3);
+  padding-top: 0.15rem;
+}
+
+.lessons .title {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.lessons a.title:hover { color: var(--focus); text-decoration: underline; }
+
+.lessons .goal {
+  font-family: var(--serif);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--ink-2);
+  margin: 0.15rem 0 0;
+  max-width: 60ch;
+}
+
+/* A lesson that has not been written yet is listed, quietly, but not linked. */
+.lessons li.todo .title { color: var(--ink-3); font-weight: 400; }
+
+.foot {
+  margin-top: 4rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--grid);
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--ink-3);
+}

@@ -1,8 +1,0 @@
-# TODO(human): custom domain.
-#
-# Rename this file to `CNAME` (no extension) and put one bare hostname in it,
-# e.g. computers.example.com. Then point a CNAME record at
-# <user>.github.io and set the domain in the repository's Pages settings.
-#
-# If you do, `base` in astro.config.mjs becomes '/' — a custom domain serves
-# from the root, not from /<repo>/.

@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>N. Lesson title</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<!-- data-unit is the unit number, 0-8. It sets the colour. -->
+<body data-unit="0">
+
+<div class="deck">
+
+<!--
+  Slide variants, all just a class on .frame:
+    (none)      headline left, supporting line under it
+    center      centred, for the opener and the closer
+    activity    graph paper, for "now do this"
+    two-col     text left, picture right
+    dark        inverted
+    full-bleed  edge-to-edge image, headline over it
+
+  Rules:
+    One idea per slide. If the headline needs an "and", it is two slides.
+    Under 40 words visible. Everything else is a teacher note.
+    The headline is a claim or a question, never a label.
+    Ask before telling.
+    Nothing overflows the frame. If it does not fit, split the slide.
+-->
+
+<section class="slide">
+  <div class="frame center">
+    <p class="eyebrow">Unit 0 · What is this thing?</p>
+    <h1>The opening question</h1>
+  </div>
+</section>
+<div class="notes">
+  <p>What to say, what to watch for, what goes wrong. None of this is on the slide.</p>
+  <p><strong>Before they walk in:</strong> what to gather.</p>
+</div>
+
+<section class="slide">
+  <div class="frame">
+    <h2>A claim they could have guessed</h2>
+    <p class="prompt">The one supporting line, if it needs one.</p>
+  </div>
+</section>
+<div class="notes">
+  <p>Ask before telling.</p>
+</div>
+
+<section class="slide">
+  <div class="frame two-col">
+    <h2>Text on the left, picture on the right</h2>
+    <figure>
+      <img src="../media/lNN/picture.svg" alt="What the picture teaches, not what it shows.">
+    </figure>
+  </div>
+</section>
+<div class="notes">
+  <p>Notes.</p>
+</div>
+
+<section class="slide">
+  <div class="frame activity">
+    <h2>Now do this</h2>
+    <p class="prompt">Graph paper means they are about to be out of their chairs.</p>
+  </div>
+</section>
+<div class="notes">
+  <p>Notes.</p>
+</div>
+
+<section class="slide">
+  <div class="frame center dark">
+    <h1>The one sentence to remember</h1>
+  </div>
+</section>
+<div class="notes">
+  <p>Every lesson ends here.</p>
+</div>
+
+</div>
+
+<div class="bar">
+  <a href="../index.html">All lessons</a>
+  <button data-go="prev" aria-label="Previous slide">&larr;</button>
+  <button data-go="next" aria-label="Next slide">&rarr;</button>
+  <span class="count"></span>
+  <button data-go="notes" title="Stack the slides with the notes (N)">N</button>
+</div>
+
+<script src="../nav.js"></script>
+
+<!-- If this lesson wants a small demo, put it here as plain JavaScript, inside a
+     <div class="applet"> in the frame above. No libraries. Under ~100 lines.
+<script>
+</script>
+-->
+
+</body>
+</html>

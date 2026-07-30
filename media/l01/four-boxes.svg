@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 460" role="img" aria-label="The four boxes">
+  <g fill="#E2E7EC" stroke="#12171C" stroke-width="3">
+    <rect x="8" y="60" width="164" height="104" rx="2"/>
+    <rect x="238" y="60" width="164" height="104" rx="2"/>
+    <rect x="468" y="60" width="164" height="104" rx="2"/>
+    <rect x="238" y="316" width="164" height="104" rx="2"/>
+  </g>
+  <g font-family="ui-monospace, monospace" font-size="26" font-weight="600" fill="#12171C" text-anchor="middle" letter-spacing="1.5">
+    <text x="90" y="121">INPUT</text>
+    <text x="320" y="121">PROCESS</text>
+    <text x="550" y="121">OUTPUT</text>
+    <text x="320" y="377">STORAGE</text>
+  </g>
+  <g stroke="#444F59" stroke-width="3" fill="none">
+    <path d="M172 112 H228"/><path d="M402 112 H458"/><path d="M320 164 V310"/>
+  </g>
+  <g fill="#444F59">
+    <path d="M238 112 l-14 -7 v14 z"/><path d="M468 112 l-14 -7 v14 z"/>
+    <path d="M320 316 l-7 -14 h14 z"/><path d="M320 164 l-7 14 h14 z"/>
+  </g>
+</svg>
