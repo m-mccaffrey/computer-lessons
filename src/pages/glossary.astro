@@ -1,0 +1,205 @@
+---
+/**
+ * Every term from every lesson's `vocab`, generated. Spec §10.
+ *
+ * The definitions themselves belong to the human — writing pedagogy is not this
+ * repository's job. What this page guarantees is that no term a lesson claims to
+ * teach can go missing, and that an unwritten definition is visible rather than
+ * quietly absent.
+ */
+import PageLayout from '@layouts/PageLayout.astro'
+import { allTerms, allLessons } from '@lib/content'
+import { lessonHref, href } from '@lib/href'
+
+const terms = await allTerms()
+const lessons = await allLessons()
+
+// Which lessons use each term, so a word links back to every place it is taught.
+const usedIn = new Map<string, number[]>()
+for (const lesson of lessons) {
+  for (const v of lesson.data.vocab) {
+    const list = usedIn.get(v) ?? []
+    list.push(lesson.data.n)
+    usedIn.set(v, list)
+  }
+}
+
+const written = terms.filter((t) => t.data.written).length
+const unwritten = terms.length - written
+
+// Grouped by first letter, so 233 entries are navigable.
+const byLetter = new Map<string, typeof terms>()
+for (const t of terms) {
+  const letter = t.data.term[0]!.toUpperCase()
+  byLetter.set(letter, [...(byLetter.get(letter) ?? []), t])
+}
+const letters = [...byLetter.keys()].sort()
+---
+
+<PageLayout
+  title="Glossary · Computers"
+  description="Every word the course teaches, and where it is taught."
+  eyebrow="Generated from every lesson"
+  heading="Glossary"
+>
+  <p class="lede" slot="lede">
+    {terms.length} words, each linked to the lesson that introduces it. {written} have a
+    definition written; {unwritten} are waiting for one.
+  </p>
+
+  <nav class="alpha" aria-label="Jump to letter">
+    {letters.map((l) => <a href={`#letter-${l}`}>{l}</a>)}
+  </nav>
+
+  {
+    letters.map((letter) => (
+      <section class="gsection" aria-labelledby={`letter-${letter}`}>
+        <h2 class="gletter" id={`letter-${letter}`}>
+          {letter}
+        </h2>
+        <dl class="gterms">
+          {byLetter.get(letter)!.map((t) => {
+            const where = usedIn.get(t.data.term) ?? []
+            return (
+              <div class="gterm" id={encodeURIComponent(t.data.term)}>
+                <dt>{t.data.term}</dt>
+                <dd>
+                  {t.data.written ? (
+                    <p class="gdef">{t.data.definition}</p>
+                  ) : (
+                    <p class="gdef gdef--todo">
+                      Not written yet. It is taught in lesson{' '}
+                      {String(t.data.firstTaught).padStart(2, '0')}.
+                    </p>
+                  )}
+                  {t.data.forTheParent && <p class="gparent">{t.data.forTheParent}</p>}
+                  {where.length > 0 && (
+                    <p class="gwhere">
+                      {where.map((n, i) => (
+                        <>
+                          {i > 0 && ' '}
+                          <a href={lessonHref(n)}>{String(n).padStart(2, '0')}</a>
+                        </>
+                      ))}
+                    </p>
+                  )}
+                </dd>
+              </div>
+            )
+          })}
+        </dl>
+      </section>
+    ))
+  }
+
+  <p class="gfoot">
+    Definitions live in <code>src/content/glossary/terms.yaml</code>. Set{' '}
+    <code>written: true</code> on one and the scaffold will never touch it again.
+  </p>
+</PageLayout>
+
+<style>
+  .alpha {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-bottom: var(--space-7);
+    padding-bottom: var(--space-5);
+    border-bottom: var(--hairline) solid var(--grid);
+  }
+
+  .alpha a {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    padding: 4px 9px;
+    border: var(--hairline) solid var(--grid);
+    border-radius: var(--radius-card);
+    color: var(--ink-2);
+    text-decoration: none;
+  }
+
+  .alpha a:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .gsection + .gsection {
+    margin-top: var(--space-7);
+  }
+
+  .gletter {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    color: var(--accent);
+    margin: 0 0 var(--space-3);
+  }
+
+  .gterms {
+    margin: 0;
+  }
+
+  .gterm {
+    display: grid;
+    grid-template-columns: 13rem 1fr;
+    gap: var(--space-5);
+    padding: var(--space-4) 0;
+    border-top: var(--hairline) solid var(--grid);
+    scroll-margin-top: var(--space-6);
+  }
+
+  .gterm dt {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1rem;
+  }
+
+  .gterm dd {
+    margin: 0;
+  }
+
+  .gdef {
+    font-family: var(--font-prose);
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0;
+    max-width: var(--page-measure);
+  }
+
+  .gdef--todo {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--ink-3);
+  }
+
+  .gparent {
+    font-family: var(--font-prose);
+    font-size: 0.875rem;
+    color: var(--ink-2);
+    margin: var(--space-2) 0 0;
+    max-width: var(--page-measure);
+  }
+
+  .gwhere {
+    margin: var(--space-2) 0 0;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    color: var(--ink-3);
+  }
+
+  .gfoot {
+    margin-top: var(--space-8);
+    padding-top: var(--space-5);
+    border-top: var(--hairline) solid var(--grid);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--ink-3);
+  }
+
+  @media (max-width: 640px) {
+    .gterm {
+      grid-template-columns: 1fr;
+      gap: var(--space-2);
+    }
+  }
+</style>

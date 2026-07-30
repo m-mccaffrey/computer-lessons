@@ -1,0 +1,300 @@
+---
+n: 1
+title: What Is a Computer?
+unit: 0
+duration: 50
+goal: Point at any object and say whether it is a computer, naming its input, output, and storage.
+status: ready
+unplugged: true
+vocab: [input, process, output, storage, general-purpose, special-purpose]
+props:
+  - "8-12 household objects (see the guide for the list)"
+  - "a towel to cover them"
+  - "sticky notes and a marker"
+  - "4 sheets of paper labelled INPUT / PROCESS / OUTPUT / STORAGE, taped to the wall"
+  - "one paper notebook per child"
+prep:
+  - "Gather the objects and hide them under the towel before they walk in."
+  - "Tape the four wall sheets up in advance."
+  - "Hand out the notebooks at the start of this session - the habit is easier to begin than to retrofit."
+  - "Keep the Pi 400s closed and off, or on the floor. This lesson is unplugged and a keyboard within reach will lose them."
+callsBackTo: []
+setsUp: [2, 31, 32, 35]
+applets: [four-box-sorter, computer-or-not]
+timing:
+  - { from: "0:00", to: "0:08", part: "The question", slides: "1-3" }
+  - { from: "0:08", to: "0:20", part: "The four boxes", slides: "4-7" }
+  - { from: "0:20", to: "0:38", part: "The table under the towel", slides: "8-10" }
+  - { from: "0:38", to: "0:46", part: "The reveal", slides: "11-14" }
+  - { from: "0:46", to: "0:50", part: "Notebook and homework", slides: "15-17" }
+homework: >
+  Computer hunt. Find computers nobody named today. One point each, and the
+  object must survive a challenge - you have to defend its input, its output,
+  and where it keeps things. Bonus point for something that is arguably a
+  computer, argued well, either way.
+pitfalls:
+  - >
+    The temptation is to answer "what is a computer?" with everything you know -
+    stored programs, Turing completeness, microcontrollers. Don't. Four boxes and
+    a towel. Precision comes later; today's only job is to break the idea that
+    computers are the desk-shaped things.
+  - >
+    When a kid asks something you can't answer crisply, say "good question, I'm
+    not sure - maybe pile" and look it up together next time. Modelling that is
+    worth more than having an answer ready, and it is the same posture as Lesson 14.
+extraProblems:
+  - "Name a computer with no screen. Then one with no buttons."
+  - "A digital camera: name its input, output, and storage. What happens when the storage is full?"
+  - "An elevator - computer or not? Defend it."
+  - "What box is missing from a wind-up music box? (Process. It plays the same thing forever.)"
+  - "Your school has a computer that helps decide grades. What are its inputs? Who chose them?"
+---
+
+import { Slide, Notes, Beat } from '@components/deck'
+import FourBox from '@components/slides/FourBox.astro'
+import Applet from '@components/applets/Applet.astro'
+import { href } from '@lib/href'
+
+{/* ---------- Part 1: The Question (0:00-0:08) ---------- */}
+
+<Slide layout="title">
+  # What is a computer?
+  <Notes>
+    Ask it cold. Say nothing else. Let them answer before you teach anything.
+    Two minutes of silence here is not wasted time.
+  </Notes>
+</Slide>
+
+<Slide layout="activity" materials={["sticky notes", "marker"]}>
+  ## Your answers
+  <p class="prompt">Say what you think. I'll write it down.</p>
+  <Notes>
+    Write each answer verbatim on its own sticky note and put them on the wall.
+    Do not correct anything. You are coming back to this list on the last slide
+    and letting them grade themselves, so capture it accurately.
+
+    Expect: "it has a screen", "it has a keyboard", "it's for games", "it's smart".
+  </Notes>
+</Slide>
+
+<Slide layout="full-bleed" image={href('media/l01/eniac.jpg')}
+       alt="A room-sized 1940s computer with people walking between cabinets of wiring, showing that a computer need not have a screen, a keyboard, or a desk">
+  ## Is this a computer?
+  <Notes>
+    It is. No screen, no keyboard, no mouse - a room you walk inside.
+
+    So whatever a computer is, it is not "the thing that looks like the thing on
+    my desk." Plant this confusion deliberately. You resolve it in Part 2.
+  </Notes>
+</Slide>
+
+{/* ---------- Part 2: The Four Boxes (0:08-0:20) ---------- */}
+
+<Slide layout="two-col" split="40/60">
+  ## The four boxes
+  <FourBox />
+  <Notes>
+    Draw this live on paper rather than showing it finished. Three boxes left to
+    right with arrows, and STORAGE hanging below PROCESS with a two-way arrow.
+
+    In kid words:
+    - Input: how it finds things out
+    - Process: where it decides what to do
+    - Output: how it tells you, or changes something
+    - Storage: where it keeps things when it isn't thinking about them
+  </Notes>
+</Slide>
+
+<Slide layout="two-col" image={href('media/l01/vending.jpg')}
+       alt="A vending machine, the example used to name all four boxes at once">
+  ## A vending machine
+  <Beat>Coins. A button.</Beat>
+  <Beat>Did they pay enough? Is that slot empty?</Beat>
+  <Beat>The snack drops. The change comes back.</Beat>
+  <Beat>The snacks. The money it has counted.</Beat>
+  <Notes>
+    Do this one entirely yourself, out loud, so they hear the shape of a good answer.
+    One beat per box, in order.
+  </Notes>
+</Slide>
+
+<Slide layout="two-col" image={href('media/l01/traffic-light.jpg')}
+       alt="A traffic light, whose storage holds both its timing plan and the fact that somebody pressed the button">
+  ## Now a traffic light
+  <p class="prompt">You do this one.</p>
+  <Notes>
+    Ask, don't tell. They fill in the boxes.
+
+    INPUT - they will say the pedestrian button. Then push: how does it know a
+    car is waiting at 2am? A wire loop buried in the road senses the metal on top
+    of it. You can see the rectangular seams cut in the asphalt. Also: a clock,
+    sometimes a camera, sometimes a radio receiver so a fire truck can take over.
+
+    PROCESS - decides who goes, based on what it sensed. Ask what rule it must
+    never break. They will get "not both green," which is exactly right.
+
+    OUTPUT - the lamps, the walk sign, the countdown, the ticking sound, the arrows.
+
+    STORAGE - two very different things. (1) The timing plan, written down inside.
+    (2) THE FACT THAT YOU PRESSED THE BUTTON. You press once and walk away and ten
+    seconds later it still knows - and it shows you it knows, because the button
+    lights up. That is a computer visibly holding on to something that happened.
+
+    Closer: does it play games? Browse the web? No. One job, forever.
+  </Notes>
+</Slide>
+
+<Slide layout="compare">
+  ## A hammer is not a computer
+  <Notes>
+    Input: your arm. Output: a dent. No process - it cannot decide anything, and
+    it does not remember. Same for a chair, a bicycle.
+
+    Spend a beat on a book: pure storage. Real storage, holds information for
+    centuries, still not a computer.
+
+    Process is the box that decides. That is the load-bearing one.
+  </Notes>
+</Slide>
+
+{/* ---------- Part 3: The Table Under the Towel (0:20-0:38) ---------- */}
+
+<Slide layout="activity" materials={["the objects", "the towel"]} minutes={18}>
+  ## Is it a computer?
+  <p class="prompt">Call it. Then name one input and one output.</p>
+  <Notes>
+    Pull the towel off. One object at a time. Younger answers first on odd
+    objects, older on even, so the 9-year-old doesn't get every first crack.
+
+    EASY RUN: pocket calculator (yes - tiny one), book (no - storage only),
+    wind-up kitchen timer (no - measures but never decides), microwave (yes),
+    digital watch (yes - ask where its storage is: the time, and the alarm),
+    flashlight (no - switch to light, no decision in between), thermostat
+    (yes - and its input isn't a person, it's temperature), car (dozens of them).
+
+    ARGUMENT PILE, save for last: the abacus (YOU are the processor - it is just
+    storage) and the TV remote (its storage box is nearly empty and it is STILL a
+    computer). Let them fight. The remote is the better lesson: process is the box
+    that decides, the other three can be thin.
+
+    If a kid asks what the remote stores: the list of codes. Every button has its
+    own invisible blink pattern and that list has to be written down inside it.
+    Prove it - a phone camera in selfie mode sees the infrared LED flash.
+
+    If the 9-year-old objects that that isn't really remembering: they are right,
+    and tell them so. Two kinds of storing - the remote stores HOW TO DO ITS JOB,
+    the microwave also stores WHAT HAS HAPPENED. Proof: after a power cut the
+    microwave blinks 12:00. It forgot. The remote never forgets its codes.
+    (That's Lesson 31 arriving thirty lessons early. Bank it.)
+
+    Finish with the light switch. Cleanest non-example in the pile.
+  </Notes>
+</Slide>
+
+<Slide layout="applet">
+  ## Sort them
+  <Applet tag="four-box-sorter" />
+  <Notes>
+    Optional - use the applet if the room needs a change of pace, otherwise go
+    straight to sticky notes on the wall, which is better because they stand up.
+
+    The `computer-or-not` applet is the other one built for this lesson. It is not
+    on a slide on purpose: it is for the kids to come back to on their own
+    afterwards, from the applets page.
+  </Notes>
+</Slide>
+
+<Slide layout="activity" materials={["sticky notes", "the 4 wall sheets"]}>
+  ## Put them on the wall
+  <p class="prompt">Pick three objects. One input, one output, one storage each.</p>
+  <Notes>
+    Sticky notes under the four wall sheets. Physical, out of their chairs.
+    This is the assessment for the whole lesson disguised as a game - watch which
+    box they hesitate on. It is almost always storage.
+  </Notes>
+</Slide>
+
+{/* ---------- Part 4: The Reveal (0:38-0:46) ---------- */}
+
+<Slide layout="big-question">
+  # How many computers are in this house?
+  <p class="prompt">Write a number in your notebook. Commit to it out loud.</p>
+  <Notes>
+    Make them write it down before you say anything. A guess you have committed
+    to is a guess you care about being wrong.
+  </Notes>
+</Slide>
+
+<Slide layout="table">
+  ## Let's count
+
+  | Room | How many |
+  |---|---|
+  | Kitchen | Microwave, dishwasher, maybe the fridge |
+  | Living room | TV, remote, console, each controller |
+  | Everywhere | Router, doorbell, thermostat |
+  | Pockets | Every phone, every watch |
+  | Outside | Every car |
+
+  <Notes>
+    Count out loud, room by room, and let them add to it. Also the washer, the
+    dryer, and the two Pi 400s sitting on the floor.
+
+    Real houses land north of fifty. Whatever number they wrote down, it was low.
+  </Notes>
+</Slide>
+
+<Slide layout="statement">
+  ## Most computers don't look like computers
+  <Notes>
+    The desk-shaped one with a screen is the unusual case. It is the
+    GENERAL-PURPOSE one - the only one that will do whatever you tell it. Every
+    other computer in the house was built to do exactly one job forever. That is
+    SPECIAL-PURPOSE.
+
+    That distinction is where the rest of the course lives. Name it now.
+  </Notes>
+</Slide>
+
+<Slide layout="activity" materials={["their sticky notes", "marker"]}>
+  ## Back to your answers
+  <p class="prompt">Which ones survived?</p>
+  <Notes>
+    Bring their sticky notes back. "It has a screen" - dead, the router has none.
+    "It's smart" - dead, the abacus isn't a computer but the dumb little remote is.
+
+    Let them cross out their own answers with the marker. Most satisfying ninety
+    seconds of the lesson, and it teaches that a definition is something you TEST,
+    not something you are handed.
+  </Notes>
+</Slide>
+
+{/* ---------- Part 5: Notebook and Homework (0:46-0:50) ---------- */}
+
+<Slide layout="notebook">
+  ## Notebook, page 1
+  <p class="prompt">Draw the four boxes. Write what each one means, in your own words.</p>
+  <Notes>
+    Their own words, not yours. A copied sentence teaches nothing.
+
+    This diagram gets referenced in Lessons 2, 31 and 32, so it is worth the five
+    minutes of doing it by hand.
+  </Notes>
+</Slide>
+
+<Slide layout="statement">
+  ## Computer hunt
+  <p class="prompt">Find a computer nobody named today. Defend its input, its output, and where it keeps things.</p>
+  <Notes>
+    One point each. Bonus point for something arguably a computer, argued well,
+    either way. Reward the reasoning, not the verdict. Winner announced at the top
+    of Lesson 2.
+  </Notes>
+</Slide>
+
+<Slide layout="closer">
+  # Next time we open the general-purpose one
+  <Notes>
+    Point at the Pi 400 on the floor. End there.
+  </Notes>
+</Slide>

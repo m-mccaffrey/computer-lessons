@@ -1,0 +1,83 @@
+import { Slide, Notes, Beat } from '@components/deck'
+import Panel from '@components/slides/Panel.astro'
+import FourBox from '@components/slides/FourBox.astro'
+import { href } from '@lib/href'
+
+{/* The layout proof. Authored as MDX, exactly like a lesson, so that it tests
+    the real pipeline rather than a convenient imitation of it. */}
+
+<Slide layout="title">
+  # Every layout, once
+  <Notes>Not a lesson. This is the layout proof from build phase 3.</Notes>
+</Slide>
+
+<Slide layout="big-question">
+  # How many computers are in this house?
+  <p class="prompt">Write a number down. Commit to it out loud.</p>
+</Slide>
+
+<Slide layout="statement">
+  ## Most computers don't look like computers
+</Slide>
+
+<Slide layout="two-col" split="40/60">
+  ## The four boxes
+  <FourBox annotate />
+</Slide>
+
+<Slide layout="full-bleed" image={href('media/placeholder.svg')}
+       alt="A room-sized 1940s computer with people walking between cabinets of wiring, showing that a computer need not have a screen or a keyboard">
+  ## Is this a computer?
+</Slide>
+
+<Slide layout="compare">
+  ## Storage or memory
+  <Panel label="Memory">
+    <p>The desk. Fast, small, wiped every night.</p>
+  </Panel>
+  <Panel label="Storage">
+    <p>The filing cabinet. Slower, huge, still there tomorrow.</p>
+  </Panel>
+</Slide>
+
+<Slide layout="steps">
+  ## What happens when you press enter
+  <Beat>Your machine asks what the name means.</Beat>
+  <Beat>It gets back an address.</Beat>
+  <Beat>It asks that address for the page.</Beat>
+  <Beat>The page comes back in pieces.</Beat>
+</Slide>
+
+<Slide layout="table">
+  ## Is it a computer?
+
+  | Object | Computer? | The giveaway |
+  |---|---|---|
+  | Microwave | Yes | It decides when to stop |
+  | Book | No | Storage, and nothing else |
+  | TV remote | Yes | It knows every button's code |
+  | Hammer | No | Nothing in it decides |
+</Slide>
+
+<Slide layout="activity" materials={['sticky notes', 'marker']} minutes={8}>
+  ## Put them on the wall
+  <p class="prompt">Pick three objects. One input, one output, one storage each.</p>
+</Slide>
+
+<Slide layout="notebook">
+  ## Notebook, page 1
+  <p class="prompt">Draw the four boxes. Write what each means, in your own words.</p>
+</Slide>
+
+<Slide layout="applet">
+  ## Sort them
+  <four-box-sorter></four-box-sorter>
+</Slide>
+
+<Slide layout="callback" lesson={1} slide={1} label="Lesson 1, the four boxes">
+  ## The filing cabinet is storage
+</Slide>
+
+<Slide layout="closer">
+  # Next time we open the general-purpose one
+</Slide>

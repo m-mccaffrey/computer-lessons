@@ -1,0 +1,31 @@
+{
+  "name": "computer-lessons",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "npm run check && astro build && node scripts/build-sw.mjs",
+    "preview": "astro preview",
+    "astro": "astro",
+    "scaffold": "node scripts/scaffold-lessons.mjs",
+    "check": "node scripts/check-content.mjs && astro check --minimumSeverity error",
+    "build:only": "astro build && node scripts/build-sw.mjs",
+    "placeholders": "node scripts/make-placeholders.mjs"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^4.3.6",
+    "@astrojs/sitemap": "^3.6.0",
+    "astro": "^5.14.1",
+    "yaml": "^2.8.1"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "playwright": "^1.56.0",
+    "typescript": "^5.9.3"
+  }
+}

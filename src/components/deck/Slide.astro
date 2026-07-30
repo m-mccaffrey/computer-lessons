@@ -1,0 +1,104 @@
+---
+/**
+ * One slide. Dispatches to a layout component from spec §9 and wraps it in the
+ * chrome every slide carries: the unit rail, the eyebrow, the slide number.
+ *
+ * Nothing here knows its own position in the deck. Position is stamped on by
+ * Deck.astro, which is the only component that can count its children — see the
+ * note in Deck.astro about why that beats a module-level counter.
+ *
+ * The unit is not passed down either: it is constant for a whole deck, so it
+ * lives as data-unit on the deck root and reaches the rail and the eyebrow
+ * through CSS alone.
+ *
+ * In guide mode the same source renders as a readable block instead — heading,
+ * whatever the slide showed, then the notes — so the parent's document and the
+ * kids' document are genuinely one file.
+ */
+import { renderMode } from '@lib/mode'
+import Rail from '@components/slides/Rail.astro'
+
+import TitleSlide from '@components/slides/TitleSlide.astro'
+import BigQuestion from '@components/slides/BigQuestion.astro'
+import Statement from '@components/slides/Statement.astro'
+import TwoCol from '@components/slides/TwoCol.astro'
+import FullBleed from '@components/slides/FullBleed.astro'
+import Compare from '@components/slides/Compare.astro'
+import Steps from '@components/slides/Steps.astro'
+import TableSlide from '@components/slides/TableSlide.astro'
+import Activity from '@components/slides/Activity.astro'
+import Notebook from '@components/slides/Notebook.astro'
+import AppletSlide from '@components/slides/AppletSlide.astro'
+import Callback from '@components/slides/Callback.astro'
+import Closer from '@components/slides/Closer.astro'
+
+const LAYOUTS = {
+  title: TitleSlide,
+  'big-question': BigQuestion,
+  statement: Statement,
+  'two-col': TwoCol,
+  'full-bleed': FullBleed,
+  compare: Compare,
+  steps: Steps,
+  table: TableSlide,
+  activity: Activity,
+  notebook: Notebook,
+  applet: AppletSlide,
+  callback: Callback,
+  closer: Closer,
+} as const
+
+type SlideLayout = keyof typeof LAYOUTS
+
+/** Spec §9: the title slide carries no number. */
+const NO_NUMBER = new Set<string>(['title'])
+/** Spec §8.6: the graph-paper ground appears on these two layouts and nowhere else. */
+const GRAPH_PAPER = new Set<string>(['activity', 'notebook'])
+
+interface Props {
+  layout?: string
+  [key: string]: unknown
+}
+
+const { layout = 'statement', ...rest } = Astro.props
+const key = (layout in LAYOUTS ? layout : 'statement') as SlideLayout
+
+// Dispatch is dynamic on purpose — a lesson picks its layout with a string, not
+// by importing thirteen components — so the props cannot be checked here. They
+// are checked inside each layout, and check-content.mjs catches an unknown
+// layout name before the build. Hence the widening.
+const Layout = LAYOUTS[key] as unknown as (props: Record<string, unknown>) => unknown
+const mode = renderMode(Astro.url.pathname)
+---
+
+{
+  /* The guide and the presenter console both want a slide as readable text with
+     its notes attached, not as a canvas. The presenter console shows the canvas
+     too, but it gets that by embedding the real deck — see presenter.astro. */
+  mode === 'guide' || mode === 'presenter' ? (
+    <article class="guide-slide" data-slide data-layout={key}>
+      <p class="guide-slide__meta">
+        <span class="guide-slide__num" />
+        <span class="guide-slide__layout">{key}</span>
+      </p>
+      <div class="guide-slide__body">
+        <Layout {...rest}>
+          <slot />
+        </Layout>
+      </div>
+    </article>
+  ) : (
+    <section class="slide" data-slide data-layout={key} data-graph={GRAPH_PAPER.has(key) ? '' : undefined} aria-roledescription="slide">
+      <div class="slide__canvas">
+        <Rail />
+        <p class="eyebrow" aria-hidden="true" />
+        <div class="slide__content">
+          <Layout {...rest}>
+            <slot />
+          </Layout>
+        </div>
+        {!NO_NUMBER.has(key) && <p class="slide__num" aria-hidden="true" />}
+      </div>
+    </section>
+  )
+}

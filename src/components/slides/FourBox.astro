@@ -1,0 +1,122 @@
+---
+/**
+ * The four-box diagram: INPUT -> PROCESS -> OUTPUT, with STORAGE hanging below
+ * PROCESS on a two-way arrow.
+ *
+ * This is the most-reused figure in the course — lesson 1 draws it, and lessons
+ * 2, 31 and 32 point back at it — so it is drawn once, here, as inline SVG with
+ * no dependency and no image file to lose.
+ *
+ * The guide tells the parent to draw it live on paper rather than show it
+ * finished. This exists for the callbacks, and for the kids looking it up later.
+ */
+interface Props {
+  /** Add the handwritten note pointing at the box that does the deciding. */
+  annotate?: boolean
+}
+const { annotate = false } = Astro.props
+---
+
+<figure class="four-box" data-figure>
+  <svg viewBox="0 0 640 460" role="img" aria-labelledby="four-box-title four-box-desc">
+    <title id="four-box-title">The four boxes every computer has</title>
+    <desc id="four-box-desc">
+      Input feeds into Process, and Process feeds into Output, left to right.
+      Storage sits below Process, joined to it by an arrow that points both ways,
+      because Process both puts things into storage and takes them back out.
+    </desc>
+
+    <g class="four-box__boxes">
+      <rect x="8" y="60" width="164" height="104" />
+      <rect x="238" y="60" width="164" height="104" />
+      <rect x="468" y="60" width="164" height="104" />
+      <rect x="238" y="316" width="164" height="104" />
+    </g>
+
+    <g class="four-box__labels">
+      <text x="90" y="118">INPUT</text>
+      <text x="320" y="118">PROCESS</text>
+      <text x="550" y="118">OUTPUT</text>
+      <text x="320" y="374">STORAGE</text>
+    </g>
+
+    <g class="four-box__arrows">
+      <path d="M172 112 H228" />
+      <path d="M402 112 H458" />
+      <path d="M320 164 V310" />
+    </g>
+
+    <g class="four-box__heads">
+      {/* left-to-right */}
+      <path d="M238 112 l-14 -7 v14 z" />
+      <path d="M468 112 l-14 -7 v14 z" />
+      {/* down into storage, and back up out of it */}
+      <path d="M320 316 l-7 -14 h14 z" />
+      <path d="M320 164 l-7 14 h14 z" />
+    </g>
+
+    {
+      annotate && (
+        <g class="four-box__note">
+          <path d="M424 192 q-18 -8 -24 -30" />
+          <text x="434" y="206">
+            the one
+            <tspan x="434" dy="34">that decides</tspan>
+          </text>
+        </g>
+      )
+    }
+  </svg>
+</figure>
+
+<style>
+  .four-box {
+    margin: 0;
+    width: 100%;
+  }
+
+  .four-box svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .four-box__boxes rect {
+    fill: var(--paper-2);
+    stroke: var(--ink);
+    stroke-width: 3;
+    rx: 2; /* 2px on cards, and nowhere else */
+  }
+
+  .four-box__labels text {
+    font-family: var(--font-mono);
+    font-size: 26px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    fill: var(--ink);
+    text-anchor: middle;
+  }
+
+  .four-box__arrows path {
+    stroke: var(--ink-2);
+    stroke-width: 3;
+    fill: none;
+  }
+
+  .four-box__heads path {
+    fill: var(--ink-2);
+  }
+
+  .four-box__note text {
+    font-family: var(--font-hand);
+    font-size: 32px;
+    fill: var(--accent);
+  }
+
+  .four-box__note path {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+  }
+</style>

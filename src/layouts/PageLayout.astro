@@ -1,0 +1,75 @@
+---
+import BaseHead from './BaseHead.astro'
+import { href } from '@lib/href'
+import '@styles/prose.css'
+
+interface Props {
+  title: string
+  description?: string
+  /** Colours the page's accent. Omit on pages that belong to no single unit. */
+  unit?: number
+  /** Shown above the h1 in mono caps. */
+  eyebrow?: string
+  heading?: string
+}
+
+const { title, description, unit, eyebrow, heading } = Astro.props
+const path = Astro.url.pathname
+
+const NAV = [
+  ['Curriculum', 'curriculum'],
+  ['Materials', 'materials'],
+  ['Glossary', 'glossary'],
+  ['Applets', 'applets'],
+]
+
+const isCurrent = (slug: string) => path.includes(`/${slug}`)
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={title} description={description} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div class="page" data-unit={unit}>
+      <header class="site-nav">
+        <nav class="site-nav__inner" aria-label="Main">
+          <a class="site-nav__home" href={href('')}>Computers</a>
+          <ul>
+            {
+              NAV.map(([label, slug]) => (
+                <li>
+                  <a href={href(slug)} aria-current={isCurrent(slug) ? 'page' : undefined}>
+                    {label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </nav>
+      </header>
+
+      <main class="page__body" id="main">
+        {
+          (eyebrow || heading) && (
+            <div class="page-head">
+              {eyebrow && <p class="eyebrow-text">{eyebrow}</p>}
+              {heading && <h1>{heading}</h1>}
+              <slot name="lede" />
+            </div>
+          )
+        }
+        <slot />
+      </main>
+
+      <footer class="site-foot">
+        <p>
+          A course for two kids. No accounts, no analytics, nothing tracked.
+          <a href={href('dev/layouts')}>Layout proof</a>
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>

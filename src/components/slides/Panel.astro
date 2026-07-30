@@ -1,0 +1,9 @@
+---
+/** One side of a <Slide layout="compare">. */
+interface Props { label?: string }
+const { label } = Astro.props
+---
+<div class="panel" data-panel>
+  {label && <p class="panel__label">{label}</p>}
+  <div class="panel__body"><slot /></div>
+</div>

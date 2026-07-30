@@ -1,0 +1,44 @@
+---
+import { href, absolute } from '@lib/href'
+import '@styles/tokens.css'
+
+// Imported rather than written as a path: the fonts live in src/ so that Vite
+// rewrites their URLs against the GitHub Pages base path and fingerprints them.
+// A hand-written /fonts/... would be correct in dev and 404 in production.
+import atkinsonUrl from '../fonts/atkinson.woff2?url'
+import archivoUrl from '../fonts/archivo.woff2?url'
+
+interface Props {
+  title: string
+  description?: string
+}
+
+const { title, description } = Astro.props
+const canonical = absolute(Astro.url.pathname.replace(import.meta.env.BASE_URL, ''))
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{title}</title>
+{description && <meta name="description" content={description} />}
+<link rel="canonical" href={canonical} />
+
+{/* No analytics, no tracking, no third-party anything. Spec §1 non-goals. */}
+<meta name="referrer" content="no-referrer" />
+<meta name="color-scheme" content="light" />
+
+{/* The four faces that carry the design. Preloaded because a lesson starting
+    with a font swap looks broken on a projector. */}
+<link rel="preload" as="font" type="font/woff2" crossorigin href={atkinsonUrl} />
+<link rel="preload" as="font" type="font/woff2" crossorigin href={archivoUrl} />
+
+<script is:inline define:vars={{ swUrl: href('sw.js'), scope: import.meta.env.BASE_URL }}>
+  // Offline is a hard requirement: home internet failing must not cancel a
+  // lesson. Registration is deferred to load so it never competes with the
+  // first paint on a Pi 400.
+  if ('serviceWorker' in navigator) {
+    addEventListener('load', () => {
+      navigator.serviceWorker.register(swUrl, { scope }).catch(() => {})
+    })
+  }
+</script>

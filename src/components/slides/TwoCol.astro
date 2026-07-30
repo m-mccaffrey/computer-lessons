@@ -1,0 +1,22 @@
+---
+/**
+ * Text on the left, a diagram or photograph on the right.
+ *
+ * Children flow into the text column by default. Anything carrying [data-figure]
+ * — the `image` prop, <FourBox />, an applet wrapper — is placed in the figure
+ * column instead. That keeps the authoring shape flat, the way spec §18 writes it.
+ */
+interface Props {
+  /** "50/50" (default) or "60/40" or "40/60". */
+  split?: string
+  image?: string
+  alt?: string
+}
+const { split = '50/50', image, alt } = Astro.props
+const [a, b] = split.split('/').map((s) => Number(s.trim()))
+const cols = Number.isFinite(a) && Number.isFinite(b) ? `${a}fr ${b}fr` : '1fr 1fr'
+---
+<div class="l-two-col" style={`--cols:${cols}`}>
+  <slot />
+  {image && <img class="l-two-col__img" data-figure src={image} alt={alt ?? ''} />}
+</div>

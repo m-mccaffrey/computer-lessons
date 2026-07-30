@@ -1,0 +1,27 @@
+---
+/**
+ * The layout proof (spec §15, phases 2 and 3): one deck exercising every layout
+ * in §9, so the engine and the design system can be looked at rather than
+ * reasoned about.
+ *
+ * The slides live in _layout-proof.mdx and are authored exactly the way a lesson
+ * is, so this exercises the real pipeline. Kept in the site rather than thrown
+ * away because it is the thing to open when a layout starts misbehaving, and
+ * because ?unit=5 is the fastest way to see the rail in another colour.
+ */
+import DeckLayout from '@layouts/DeckLayout.astro'
+import Proof from './_layout-proof.mdx'
+
+const requested = Number(Astro.url.searchParams.get('unit') ?? 3)
+const unit = Number.isFinite(requested) ? Math.min(8, Math.max(0, requested)) : 3
+---
+
+<DeckLayout
+  n={0}
+  unit={unit}
+  unitTitle="Everything Is Numbers"
+  title="Layout proof"
+  goal="Every slide layout in spec §9, on one canvas, in one deck."
+>
+  <Proof />
+</DeckLayout>

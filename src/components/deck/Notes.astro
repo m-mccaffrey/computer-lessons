@@ -1,0 +1,72 @@
+---
+/**
+ * Teacher prose. Belongs to the guide and the presenter view, and to nowhere else.
+ *
+ * In deck mode this component renders *nothing at all* — the slot is never
+ * rendered, so the text is not in the shipped HTML, not in a <template>, and not
+ * hidden behind a CSS rule. See src/lib/mode.ts for why presenter view is a
+ * separate route rather than a query parameter.
+ */
+import { renderMode, showsNotes } from '@lib/mode'
+
+const mode = renderMode(Astro.url.pathname)
+---
+
+{
+  showsNotes(mode) && (
+    <div class="notes" data-notes>
+      <p class="notes__label">Notes</p>
+      <div class="notes__body">
+        <slot />
+      </div>
+    </div>
+  )
+}
+
+<style>
+  .notes {
+    font-family: var(--font-prose);
+    border-left: 2px solid var(--accent);
+    padding-left: var(--space-5);
+    margin: var(--space-5) 0 var(--space-6);
+    max-width: var(--page-measure);
+  }
+
+  .notes__label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin: 0 0 var(--space-2);
+  }
+
+  .notes__body {
+    color: var(--ink);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+  }
+
+  .notes__body :global(p) {
+    margin: 0 0 var(--space-4);
+  }
+
+  .notes__body :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .notes__body :global(ul),
+  .notes__body :global(ol) {
+    margin: 0 0 var(--space-4);
+    padding-left: var(--space-5);
+  }
+
+  .notes__body :global(li) {
+    margin-bottom: var(--space-2);
+  }
+
+  /* The guide uses ALL-CAPS inline for the four boxes; keep it from shouting. */
+  .notes__body :global(strong) {
+    font-weight: 700;
+  }
+</style>

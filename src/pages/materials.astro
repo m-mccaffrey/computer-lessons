@@ -1,0 +1,221 @@
+---
+/**
+ * Everything the course needs, generated from every lesson's `props` and `prep`.
+ *
+ * Spec §10: this must never be hand-maintained. If a lesson lists a prop it
+ * appears here, and that is the only way the list stays true across 56 lessons.
+ *
+ * Grouped by "have already / buy / scrounge" and sorted by lesson number, so
+ * lead time is obvious. The grouping is a heuristic over the wording — a dead
+ * tower and a punch card are not things you order on a Tuesday — and the guess
+ * is shown as a heading you can argue with, not hidden.
+ */
+import PageLayout from '@layouts/PageLayout.astro'
+import { allLessons } from '@lib/content'
+import { lessonHref, guideHref } from '@lib/href'
+import { classifyProp, GROUPS, type GroupKey } from '@lib/materials'
+
+const lessons = await allLessons()
+
+interface Item {
+  text: string
+  lessons: number[]
+  group: GroupKey
+}
+
+const items = new Map<string, Item>()
+
+for (const lesson of lessons) {
+  for (const prop of lesson.data.props) {
+    const key = prop.trim().toLowerCase()
+    if (!key) continue
+    if (!items.has(key)) items.set(key, { text: prop.trim(), lessons: [], group: classifyProp(prop) })
+    items.get(key)!.lessons.push(lesson.data.n)
+  }
+}
+
+const grouped = new Map<GroupKey, Item[]>()
+for (const item of items.values()) {
+  const list = grouped.get(item.group) ?? []
+  list.push(item)
+  grouped.set(item.group, list)
+}
+// Sorted by the first lesson that needs it: what you need soonest, first.
+for (const list of grouped.values()) list.sort((a, b) => a.lessons[0] - b.lessons[0])
+
+// Prep is a different kind of thing — jobs, not objects — so it gets its own
+// list, in lesson order, rather than being forced into the three buckets.
+const prep = lessons
+  .filter((l) => l.data.prep.length > 0)
+  .map((l) => ({ n: l.data.n, title: l.data.title, items: l.data.prep }))
+
+const total = items.size
+---
+
+<PageLayout
+  title="Materials · Computers"
+  description="Every physical object and every bit of preparation the course needs, generated from the lessons."
+  eyebrow="Generated from every lesson"
+  heading="Materials"
+>
+  <p class="lede" slot="lede">
+    {total} things to gather across {lessons.length} lessons, sorted by when you first need them.
+    Nothing on this page is typed by hand: add a prop to a lesson and it appears here.
+  </p>
+
+  <div class="mats">
+    {
+      GROUPS.map(([key, label, blurb]) => {
+        const list = grouped.get(key) ?? []
+        if (!list.length) return null
+        return (
+          <section class="mats__group" aria-labelledby={`g-${key}`}>
+            <h2 id={`g-${key}`}>{label}</h2>
+            <p class="mats__blurb">{blurb}</p>
+            <ul class="mats__list">
+              {list.map((item) => (
+                <li>
+                  <span class="mats__thing">{item.text}</span>
+                  <span class="mats__for">
+                    {item.lessons.map((n, i) => (
+                      <>
+                        {i > 0 && ', '}
+                        <a href={lessonHref(n)}>{String(n).padStart(2, '0')}</a>
+                      </>
+                    ))}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )
+      })
+    }
+  </div>
+
+  <section class="mats__group" aria-labelledby="g-prep">
+    <h2 id="g-prep">Things to do beforehand</h2>
+    <p class="mats__blurb">
+      In lesson order. The ones in Unit 4 want months of notice — start scrounging early.
+    </p>
+    <ol class="mats__prep">
+      {
+        prep.map((p) => (
+          <li>
+            <p class="mats__prep-head">
+              <a href={guideHref(p.n)}>
+                <span class="mats__n">{String(p.n).padStart(2, '0')}</span>
+                {p.title}
+              </a>
+            </p>
+            <ul>
+              {p.items.map((t) => (
+                <li>{t}</li>
+              ))}
+            </ul>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+</PageLayout>
+
+<style>
+  .mats {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  .mats__group h2 {
+    padding-bottom: var(--space-3);
+    border-bottom: 3px solid var(--accent);
+    margin-bottom: var(--space-3);
+  }
+
+  .mats__blurb {
+    font-family: var(--font-prose);
+    font-size: 0.9375rem;
+    color: var(--ink-2);
+    max-width: var(--page-measure);
+    margin: 0 0 var(--space-5);
+  }
+
+  .mats__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .mats__list li {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: var(--space-3) 0;
+    border-bottom: var(--hairline) solid var(--grid);
+  }
+
+  .mats__thing {
+    font-family: var(--font-prose);
+    font-size: 1rem;
+  }
+
+  .mats__for {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--ink-3);
+    white-space: nowrap;
+  }
+
+  .mats__group + .mats__group {
+    margin-top: var(--space-8);
+  }
+
+  .mats__prep {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  .mats__prep-head {
+    margin: 0 0 var(--space-2);
+  }
+
+  .mats__prep-head a {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.9375rem;
+    color: var(--ink);
+    text-decoration: none;
+    display: flex;
+    gap: var(--space-3);
+  }
+
+  .mats__prep-head a:hover {
+    color: var(--accent);
+  }
+
+  .mats__n {
+    font-family: var(--font-mono);
+    font-weight: 400;
+    color: var(--ink-3);
+  }
+
+  .mats__prep ul {
+    margin: 0;
+    padding-left: var(--space-6);
+    font-family: var(--font-prose);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--ink-2);
+    max-width: var(--page-measure);
+  }
+
+  .mats__prep ul li + li {
+    margin-top: var(--space-2);
+  }
+</style>

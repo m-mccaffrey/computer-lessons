@@ -1,0 +1,204 @@
+/* ============================================================================
+   presenter.css — the console on the parent's laptop.
+
+   Denser than anything else on the site, because it is read in glances while
+   talking. Nothing here is ever projected.
+   ========================================================================= */
+
+.body--presenter {
+  margin: 0;
+  background: var(--paper-2);
+}
+
+.presenter {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.presenter__bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-5);
+  padding: var(--space-3) var(--space-5);
+  background: var(--paper);
+  border-bottom: 2px solid var(--accent);
+}
+
+.presenter__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1rem;
+  display: flex;
+  gap: var(--space-3);
+  align-items: baseline;
+}
+
+.presenter__n {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  color: var(--accent);
+}
+
+.presenter__pos {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  color: var(--ink-2);
+}
+
+.presenter__clock {
+  margin: 0 0 0 auto;
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+}
+
+.presenter__clock output {
+  font-size: 1.5rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+.presenter__budget {
+  color: var(--ink-3);
+}
+
+.presenter__clock button {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  padding: 5px 10px;
+  border: var(--hairline) solid var(--grid);
+  background: var(--paper-2);
+  border-radius: var(--radius-card);
+  cursor: pointer;
+  color: var(--ink-2);
+}
+
+.presenter__clock button:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ---------------------------------------------------------------- layout --- */
+
+.presenter__grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  grid-template-rows: auto auto 1fr;
+  grid-template-areas:
+    'now  notes'
+    'next notes'
+    'plan notes';
+  gap: var(--space-4);
+  padding: var(--space-4);
+  align-items: start;
+}
+
+.presenter__now { grid-area: now; }
+.presenter__next { grid-area: next; }
+.presenter__plan { grid-area: plan; }
+.presenter__notes { grid-area: notes; }
+
+@media (max-width: 900px) {
+  .presenter__grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+    grid-template-areas: 'now' 'notes' 'next' 'plan';
+  }
+}
+
+/* A 16:9 box that the deck iframe fills at whatever size the column allows. */
+.presenter__frame {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: var(--hairline) solid var(--grid);
+  background: var(--paper);
+  border-radius: var(--radius-card);
+}
+
+.presenter__next .presenter__frame {
+  opacity: 0.72;
+}
+
+.presenter__label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin: 0 0 var(--space-2);
+}
+
+.presenter__notes {
+  background: var(--paper);
+  border: var(--hairline) solid var(--grid);
+  border-radius: var(--radius-card);
+  padding: var(--space-5);
+  align-self: stretch;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+}
+
+/* In the console the notes are the main text, so they get the room the guide
+   gives them rather than the sidebar treatment. */
+.presenter__notes .guide-slide {
+  border: 0;
+  padding: 0;
+}
+
+.presenter__notes .guide-slide__body :is(h1, h2, h3) {
+  font-size: 1.5rem;
+}
+
+.presenter__notes .notes {
+  font-size: 1.0625rem;
+  margin-top: var(--space-5);
+}
+
+.presenter__none {
+  font-family: var(--font-prose);
+  font-size: 0.9375rem;
+  color: var(--ink-3);
+  margin: 0;
+}
+
+.presenter__timing {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}
+
+.presenter__timing li {
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border-left: 2px solid transparent;
+  color: var(--ink-2);
+}
+
+.presenter__timing li[data-current] {
+  border-left-color: var(--accent);
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.presenter__time {
+  color: var(--ink-3);
+  white-space: nowrap;
+}
+
+.presenter__links {
+  margin: var(--space-4) 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}

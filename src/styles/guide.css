@@ -1,0 +1,319 @@
+/* ============================================================================
+   guide.css — the parent's document.
+
+   Read at arm's length, often on paper, usually the night before. So: Literata,
+   a real measure, generous vertical rhythm, and a print stylesheet that is not
+   an afterthought.
+   ========================================================================= */
+
+.guide__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+}
+
+.guide__section {
+  margin-top: var(--space-8);
+}
+
+.guide__section > h2 {
+  padding-bottom: var(--space-3);
+  border-bottom: var(--hairline) solid var(--grid);
+  margin-bottom: var(--space-5);
+}
+
+.guide__section h3 {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin: 0 0 var(--space-3);
+}
+
+.guide__cols {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-6);
+  align-items: start;
+}
+
+.guide__list {
+  font-family: var(--font-prose);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  margin: 0;
+  padding-left: var(--space-5);
+}
+
+.guide__list li + li {
+  margin-top: var(--space-3);
+}
+
+.guide__list--prose {
+  font-size: 1rem;
+  line-height: 1.65;
+  max-width: var(--page-measure);
+}
+
+.guide__none {
+  font-family: var(--font-prose);
+  font-size: 0.9375rem;
+  color: var(--ink-3);
+  margin: 0;
+}
+
+.guide__hint {
+  font-family: var(--font-prose);
+  font-size: 0.9375rem;
+  color: var(--ink-2);
+  margin: 0 0 var(--space-4);
+  max-width: var(--page-measure);
+}
+
+.guide__table {
+  border-collapse: collapse;
+  width: 100%;
+  font-family: var(--font-prose);
+  font-size: 0.9375rem;
+}
+
+.guide__table th {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: left;
+  color: var(--ink-3);
+  padding: 0 var(--space-5) var(--space-2) 0;
+  border-bottom: 2px solid var(--ink);
+}
+
+.guide__table td {
+  padding: var(--space-3) var(--space-5) var(--space-3) 0;
+  border-bottom: var(--hairline) solid var(--grid);
+  vertical-align: top;
+}
+
+.guide__time {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  white-space: nowrap;
+  color: var(--ink-2);
+}
+
+.guide__threads,
+.guide__vocab {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.guide__threads li + li {
+  margin-top: var(--space-2);
+}
+
+.guide__threads a {
+  display: flex;
+  gap: var(--space-3);
+  align-items: baseline;
+  font-family: var(--font-prose);
+  font-size: 0.9375rem;
+  color: var(--ink);
+  text-decoration: none;
+  padding: var(--space-2) var(--space-3);
+  border-left: 2px solid var(--accent);
+  background: var(--paper-2);
+}
+
+.guide__threads a:hover {
+  color: var(--focus);
+}
+
+.guide__threadn {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--ink-3);
+}
+
+.guide__vocab {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.guide__vocab a {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  padding: var(--space-2) var(--space-3);
+  border: var(--hairline) solid var(--grid);
+  border-radius: var(--radius-card);
+  background: var(--paper-2);
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.guide__vocab a:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.guide__footlinks {
+  margin-top: var(--space-8);
+  padding-top: var(--space-5);
+  border-top: var(--hairline) solid var(--grid);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--ink-3);
+}
+
+/* ------------------------------------------------- a slide, in the guide --- */
+
+.guide-slide {
+  padding: var(--space-5) 0 var(--space-6);
+  border-bottom: var(--hairline) solid var(--grid);
+}
+
+.guide-slide__meta {
+  display: flex;
+  gap: var(--space-3);
+  align-items: baseline;
+  margin: 0 0 var(--space-3);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.guide-slide__num::before {
+  content: var(--slide-num, '');
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.guide-slide__layout {
+  padding: 2px 6px;
+  border: var(--hairline) solid var(--grid);
+  border-radius: var(--radius-card);
+}
+
+/* What the kids see, rendered as plain flowing content rather than a canvas. */
+.guide-slide__body :is(h1, h2, h3) {
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  line-height: 1.2;
+  margin: 0 0 var(--space-3);
+  max-width: var(--page-measure);
+}
+
+.guide-slide__body :is(p, li) {
+  font-family: var(--font-prose);
+  font-size: 1rem;
+  line-height: 1.6;
+  max-width: var(--page-measure);
+  margin: 0 0 var(--space-3);
+}
+
+.guide-slide__body .prompt {
+  color: var(--ink-2);
+}
+
+/* Beats are all visible in the guide; hiding them would only make it harder
+   to read the thing you are about to say out loud. */
+.guide-slide__body .beat {
+  padding-left: var(--space-4);
+  border-left: 2px solid var(--grid);
+}
+
+.guide-slide__body table {
+  border-collapse: collapse;
+  font-family: var(--font-prose);
+  font-size: 0.9375rem;
+}
+
+.guide-slide__body th,
+.guide-slide__body td {
+  text-align: left;
+  padding: var(--space-2) var(--space-5) var(--space-2) 0;
+  border-bottom: var(--hairline) solid var(--grid);
+}
+
+.guide-slide__body figure {
+  max-width: 380px;
+  margin: var(--space-4) 0;
+}
+
+.guide-slide__body img {
+  max-width: 380px;
+  height: auto;
+  border: var(--hairline) solid var(--grid);
+}
+
+/* ---------------------------------------------------------------- print --- */
+
+@media print {
+  @page {
+    size: portrait;
+    margin: 16mm;
+  }
+
+  .site-nav,
+  .skip-link,
+  .guide__footlinks {
+    display: none !important;
+  }
+
+  .page__body {
+    max-width: none;
+    padding: 0;
+  }
+
+  .guide__section {
+    break-inside: avoid-page;
+    margin-top: var(--space-6);
+  }
+
+  .guide-slide {
+    break-inside: avoid;
+  }
+
+  /* A link's destination is useless on paper; the slide number is not. */
+  .guide__threads a {
+    background: none;
+    color: var(--ink);
+  }
+}
+
+/* The Activity layout's materials row. On a slide these are chips; in the guide
+   they were falling through to a bare bullet list, which read as part of the
+   teacher's notes rather than as "here is what to have in your hand". */
+.guide-slide__body .chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  list-style: none;
+  margin: var(--space-4) 0 0;
+  padding: 0;
+}
+
+.guide-slide__body .chips .chip {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.2;
+  margin: 0;
+  padding: 5px 9px;
+  background: var(--paper-2);
+  border: var(--hairline) solid var(--grid);
+  border-radius: var(--radius-card);
+  color: var(--ink-2);
+}
+
+.guide-slide__body .chips .chip--time {
+  border-color: var(--accent);
+  color: var(--accent);
+}

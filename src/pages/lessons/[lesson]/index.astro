@@ -1,0 +1,28 @@
+---
+import { render } from 'astro:content'
+import DeckLayout from '@layouts/DeckLayout.astro'
+import { lessonPaths, type Lesson, type Unit } from '@lib/content'
+
+export async function getStaticPaths() {
+  return lessonPaths()
+}
+
+interface Props {
+  lesson: Lesson
+  unit?: Unit
+}
+
+const { lesson, unit } = Astro.props
+const { Content } = await render(lesson)
+const d = lesson.data
+---
+
+<DeckLayout
+  n={d.n}
+  unit={d.unit}
+  unitTitle={unit?.data.title ?? `Unit ${d.unit}`}
+  title={d.title}
+  goal={d.goal}
+>
+  <Content />
+</DeckLayout>

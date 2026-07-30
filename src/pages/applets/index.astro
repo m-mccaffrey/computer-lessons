@@ -1,0 +1,224 @@
+---
+/**
+ * Every applet, playable outside its lesson.
+ *
+ * Spec §10: "The kids will come back to these on their own; that is the point."
+ * So each built applet is live on this page, not screenshotted — and each one
+ * states the misconception it exists to fix, because spec §11 says an applet
+ * that cannot answer that question is decoration.
+ */
+import PageLayout from '@layouts/PageLayout.astro'
+import Applet from '@components/applets/Applet.astro'
+import { APPLETS } from '@lib/applets'
+import { lessonHref, unitHref } from '@lib/href'
+
+const built = APPLETS.filter((a) => a.built)
+const planned = APPLETS.filter((a) => !a.built)
+---
+
+<PageLayout
+  title="Applets · Computers"
+  description="Every interactive piece of the course, playable on its own."
+  eyebrow="Playable on their own"
+  heading="Applets"
+>
+  <p class="lede" slot="lede">
+    The interactive half of the course. {built.length} of {APPLETS.length} are built; each one
+    exists to fix one specific wrong idea, and if it cannot name that idea it does not get built.
+  </p>
+
+  <div class="alist">
+    {
+      built.map((a) => (
+        <section class="acard" id={a.tag} aria-labelledby={`h-${a.tag}`}>
+          <div class="acard__head" data-unit={a.unit}>
+            <div>
+              <p class="acard__tag">
+                &lt;{a.tag}&gt;
+                {a.loadBearing && <span class="tag tag--accent">Load-bearing</span>}
+              </p>
+              <h2 id={`h-${a.tag}`}>{a.title}</h2>
+            </div>
+            <p class="acard__where">
+              <a href={unitHref(a.unit)}>Unit {a.unit}</a>
+              {a.lessons.map((n) => (
+                <a href={lessonHref(n)}>{String(n).padStart(2, '0')}</a>
+              ))}
+            </p>
+          </div>
+
+          <p class="acard__fixes">
+            <span class="acard__fixes-label">Fixes</span>
+            {a.misconception}
+          </p>
+
+          <div class="acard__stage" data-unit={a.unit}>
+            <Applet tag={a.tag} />
+          </div>
+        </section>
+      ))
+    }
+  </div>
+
+  <section class="aplanned" aria-labelledby="h-planned">
+    <h2 id="h-planned">Not built yet</h2>
+    <p class="acard__fixes">
+      From the catalog in the build spec. Each is built when the lesson that needs it is
+      written, not before.
+    </p>
+    <ul class="aplanned__list">
+      {
+        planned.map((a) => (
+          <li data-unit={a.unit}>
+            <span class="aplanned__swatch" aria-hidden="true" />
+            <span class="aplanned__tag">&lt;{a.tag}&gt;</span>
+            <span class="aplanned__title">
+              {a.title}
+              {a.loadBearing && <span class="tag tag--accent">Load-bearing</span>}
+            </span>
+            <span class="aplanned__lessons">
+              {a.lessons.map((n) => (
+                <a href={lessonHref(n)}>{String(n).padStart(2, '0')}</a>
+              ))}
+            </span>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</PageLayout>
+
+<style>
+  .alist {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-9);
+  }
+
+  .acard__head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-4);
+    padding-top: var(--space-3);
+    border-top: 6px solid var(--accent);
+    margin-bottom: var(--space-4);
+  }
+
+  .acard__head h2 {
+    margin: var(--space-1) 0 0;
+  }
+
+  .acard__tag {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--accent);
+    margin: 0;
+  }
+
+  .acard__where {
+    display: flex;
+    gap: var(--space-3);
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+  }
+
+  .acard__fixes {
+    font-family: var(--font-prose);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--ink-2);
+    max-width: var(--page-measure);
+    margin: 0 0 var(--space-5);
+  }
+
+  .acard__fixes-label {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-right: var(--space-3);
+  }
+
+  /* The applet gets a stage the size it would have on a slide, so what the kids
+     see here is what they saw in the lesson. */
+  .acard__stage {
+    background: var(--paper);
+    border: var(--hairline) solid var(--grid);
+    border-radius: var(--radius-card);
+    padding: var(--space-5);
+    min-height: 320px;
+  }
+
+  .aplanned {
+    margin-top: var(--space-9);
+    padding-top: var(--space-6);
+    border-top: var(--hairline) solid var(--grid);
+  }
+
+  .aplanned h2 {
+    margin-bottom: var(--space-4);
+  }
+
+  .aplanned__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .aplanned__list li {
+    display: grid;
+    grid-template-columns: 6px 13rem 1fr auto;
+    gap: var(--space-4);
+    align-items: baseline;
+    padding: var(--space-3) 0;
+    border-bottom: var(--hairline) solid var(--grid);
+  }
+
+  .aplanned__swatch {
+    align-self: stretch;
+    background: var(--accent);
+  }
+
+  .aplanned__tag {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--ink-2);
+  }
+
+  .aplanned__title {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-3);
+    font-family: var(--font-prose);
+    font-size: 0.9375rem;
+  }
+
+  .aplanned__lessons {
+    display: flex;
+    gap: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+  }
+
+  @media (max-width: 700px) {
+    .aplanned__list li {
+      grid-template-columns: 6px 1fr;
+    }
+
+    .aplanned__title,
+    .aplanned__lessons {
+      grid-column: 2;
+    }
+  }
+</style>
+
+<script>
+  import '@components/applets/loader.js'
+</script>

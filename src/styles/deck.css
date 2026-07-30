@@ -1,0 +1,1001 @@
+/* ============================================================================
+   deck.css — the slide canvas, the unit spine, and every layout from spec §9.
+
+   Two rules govern this file:
+
+   1. Inside a slide, every length is px against the 1280x720 design canvas.
+      No vw, no vh, no rem, no clamp(). The canvas is scaled as a whole by a
+      single transform, which is what makes this feel like slides rather than a
+      webpage, and what lets the parent know exactly what will fit.
+
+   2. Nothing here names a colour. Unit identity arrives as --accent, set from
+      data-unit on the deck root in tokens.css.
+   ========================================================================= */
+
+/* ------------------------------------------------------------- the shell --- */
+
+.deck {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--paper);
+}
+
+.deck__stage {
+  position: relative;
+}
+
+/* --------------------------------------------------------------- a slide --- */
+
+/* The wrapper is sized to the *scaled* canvas so that the slide occupies real
+   space in read mode. The canvas itself is always 1280x720 and is scaled from
+   its top-left corner, which keeps that box arithmetic honest. (Spec §7.1 says
+   center/center; with a wrapper sized to the result the two are visually
+   identical, and top-left is the one that flows correctly.) */
+.slide {
+  position: relative;
+  width: calc(var(--canvas-w) * 1px * var(--deck-scale));
+  height: calc(var(--canvas-h) * 1px * var(--deck-scale));
+  flex: none;
+}
+
+.slide__canvas {
+  position: absolute;
+  inset: 0;
+  width: calc(var(--canvas-w) * 1px);
+  height: calc(var(--canvas-h) * 1px);
+  transform: scale(var(--deck-scale));
+  transform-origin: top left;
+  background: var(--paper);
+  overflow: hidden;
+  font-family: var(--font-slide);
+  color: var(--ink);
+  container-type: size;
+}
+
+/* Graph-paper ground. Spec §8.6: activity and notebook layouts only. It is the
+   signal that they are about to be out of their chairs. */
+.slide[data-graph] .slide__canvas {
+  background-image:
+    linear-gradient(to right, var(--grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+  background-size: var(--graph-square) var(--graph-square);
+}
+
+.slide__content {
+  position: absolute;
+  inset: var(--slide-pad-y) var(--slide-pad-r) var(--slide-pad-y) var(--slide-pad-l);
+}
+
+/* ------------------------------------------------------- the unit spine --- */
+
+.rail {
+  position: absolute;
+  z-index: 2;
+  left: 48px;
+  top: var(--slide-pad-y);
+  bottom: var(--slide-pad-y);
+  width: var(--rail-w);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.rail__stripes {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: none;
+}
+
+.rail__stripe {
+  display: block;
+  height: 2px;
+  width: 100%;
+  opacity: 0.15;
+  background: currentColor;
+}
+
+/* Nine stripes, nine resistor bands. Written out rather than generated because
+   a component must never reach for a --uN directly (spec §8.3). */
+.rail__stripe[data-stripe-unit='0'] { color: var(--u0); }
+.rail__stripe[data-stripe-unit='1'] { color: var(--u1); }
+.rail__stripe[data-stripe-unit='2'] { color: var(--u2); }
+.rail__stripe[data-stripe-unit='3'] { color: var(--u3); }
+.rail__stripe[data-stripe-unit='4'] { color: var(--u4); }
+.rail__stripe[data-stripe-unit='5'] { color: var(--u5); }
+.rail__stripe[data-stripe-unit='6'] { color: var(--u6); }
+.rail__stripe[data-stripe-unit='7'] { color: var(--u7); }
+.rail__stripe[data-stripe-unit='8'] { color: var(--u8); }
+
+/* The lit stripe: full opacity, 4px, so it reads from across the room. */
+.deck[data-unit='0'] .rail__stripe[data-stripe-unit='0'],
+.deck[data-unit='1'] .rail__stripe[data-stripe-unit='1'],
+.deck[data-unit='2'] .rail__stripe[data-stripe-unit='2'],
+.deck[data-unit='3'] .rail__stripe[data-stripe-unit='3'],
+.deck[data-unit='4'] .rail__stripe[data-stripe-unit='4'],
+.deck[data-unit='5'] .rail__stripe[data-stripe-unit='5'],
+.deck[data-unit='6'] .rail__stripe[data-stripe-unit='6'],
+.deck[data-unit='7'] .rail__stripe[data-stripe-unit='7'],
+.deck[data-unit='8'] .rail__stripe[data-stripe-unit='8'] {
+  opacity: 1;
+  height: 4px;
+}
+
+/* Below the stripes: one hairline, filled to show progress through the lesson.
+   This is the only progress indicator on the site. Do not add another. */
+.rail__track {
+  flex: 1;
+  width: 1px;
+  margin-left: calc(var(--rail-w) / 2);
+  background: var(--grid);
+}
+
+.rail__fill {
+  width: 1px;
+  height: calc(var(--rail-progress, 0) * 100%);
+  background: var(--accent);
+  transition: height var(--t-slide) var(--ease);
+}
+
+/* ---------------------------------------------------- eyebrow and number --- */
+
+.eyebrow {
+  position: absolute;
+  z-index: 2;
+  left: var(--slide-pad-l);
+  top: 56px;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 20px;
+  line-height: 1.2;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+/* Set once on the deck root, so no slide has to be told which lesson it is in. */
+.eyebrow::before {
+  content: var(--eyebrow, '');
+}
+
+.slide__num {
+  position: absolute;
+  z-index: 2;
+  right: var(--slide-pad-r);
+  bottom: 56px;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 20px;
+  line-height: 1.2;
+  color: var(--ink-3);
+}
+
+/* Numbering comes from --slide-num / --slide-count, stamped per slide at build
+   time. A CSS counter would be wrong here: counters skip display:none elements,
+   and present mode hides every slide but the active one. */
+.slide__num::before {
+  content: var(--slide-num, '') ' / ' var(--slide-count, '');
+}
+
+/* --------------------------------------------------------- the type scale --- */
+/* Canvas px. Spec §8.4. Nothing in slide *content* goes below 24px; the 20px
+   `label` size is reserved for the eyebrow and the slide number, which are
+   chrome rather than something a child has to read. */
+
+.slide__content :where(h1, h2, h3) {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-stretch: 105%;
+  margin: 0;
+  text-wrap: balance;
+}
+
+.slide__content :where(p, li, td, th, dd, dt) {
+  font-family: var(--font-slide);
+  font-size: 38px; /* body-l */
+  line-height: 1.35;
+  margin: 0;
+}
+
+.slide__content :where(p + p) {
+  margin-top: 24px;
+}
+
+/* The supporting line. At most one of these per slide (spec §6). */
+.slide__content :where(.prompt) {
+  font-size: 38px;
+  line-height: 1.35;
+  color: var(--ink-2);
+  max-width: 20ch;
+}
+
+.slide__content :where(strong) {
+  font-weight: 700;
+}
+
+.slide__content :where(code, kbd) {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}
+
+/* Handwritten annotation. Only on diagrams, nowhere else (spec §8.4). */
+.slide__content :where(.annotate) {
+  font-family: var(--font-hand);
+  font-size: 40px;
+  line-height: 1.1;
+  color: var(--accent);
+}
+
+/* ------------------------------------------------------------- layouts --- */
+
+/* TitleSlide — centred display-xl, no number. */
+.l-title {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 32px;
+}
+
+.l-title :where(h1, h2) {
+  font-size: 112px;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  max-width: 16ch;
+}
+
+/* BigQuestion — upper third, and then a great deal of nothing. */
+.l-big-question {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.l-big-question :where(h1, h2) {
+  font-size: 80px;
+  line-height: 1;
+  letter-spacing: -0.015em;
+  max-width: 18ch;
+}
+
+/* Statement — one line, accent underline. */
+.l-statement {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 32px;
+  align-items: flex-start;
+}
+
+.l-statement :where(h1, h2) {
+  font-size: 56px;
+  line-height: 1.05;
+  max-width: 22ch;
+  padding-bottom: 20px;
+  border-bottom: 4px solid var(--accent);
+}
+
+/* Closer — the sentence to remember, flush against the accent. */
+.l-closer {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 28px;
+  border-left: 8px solid var(--accent);
+  padding-left: 40px;
+  margin-left: -40px;
+}
+
+.l-closer :where(h1, h2) {
+  font-size: 80px;
+  line-height: 1;
+  letter-spacing: -0.015em;
+  max-width: 18ch;
+}
+
+/* TwoCol — text left, figure right. Anything with [data-figure] jumps columns;
+   everything else stacks in column one. The empty implicit rows collapse. */
+.l-two-col {
+  height: 100%;
+  display: grid;
+  grid-template-columns: var(--cols, 1fr 1fr);
+  column-gap: 56px;
+  align-content: center;
+  /* row-gap must stay 0. The figure spans 30 rows so that it can sit beside an
+     arbitrary number of text children; the empty rows collapse to nothing, but
+     the *gaps* between them would not, and 29 gaps at 24px is 696px of invisible
+     slide. Vertical rhythm comes from margins below instead. */
+  row-gap: 0;
+}
+
+.l-two-col > * {
+  grid-column: 1;
+  min-width: 0;
+}
+
+.l-two-col > * + *:not([data-figure]) {
+  margin-top: 24px;
+}
+
+.l-two-col > [data-figure] {
+  grid-column: 2;
+  grid-row: 1 / span 30;
+  align-self: center;
+  justify-self: center;
+  margin-top: 0;
+  max-width: 100%;
+  max-height: 528px;
+}
+
+.l-two-col :where(h1, h2) {
+  font-size: 80px;
+  line-height: 1;
+  letter-spacing: -0.015em;
+}
+
+.l-two-col__img {
+  object-fit: contain;
+  border-radius: var(--radius-card);
+}
+
+/* FullBleed — the image is the slide; the headline sits on a scrim. */
+.slide[data-layout='full-bleed'] .slide__content {
+  inset: 0;
+}
+
+.l-full-bleed {
+  position: relative;
+  height: 100%;
+}
+
+.l-full-bleed__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.l-full-bleed__scrim {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 48px var(--slide-pad-r) 48px var(--slide-pad-l);
+  background: linear-gradient(to top, rgb(0 0 0 / 88%) 0%, rgb(0 0 0 / 72%) 62%, rgb(0 0 0 / 0%) 100%);
+  color: var(--paper);
+}
+
+.l-full-bleed__scrim :where(h1, h2) {
+  font-size: 56px;
+  line-height: 1.05;
+  color: var(--paper);
+  max-width: 24ch;
+}
+
+.l-full-bleed__scrim :where(p) {
+  color: var(--paper);
+}
+
+/* On a photograph the chrome inverts and gets its own scrim, so the unit is
+   still readable from across the room on a dark slide. */
+.slide[data-layout='full-bleed'] .slide__num,
+.slide[data-layout='full-bleed'] .eyebrow {
+  color: var(--paper);
+}
+
+.slide[data-layout='full-bleed'] .rail__track {
+  background: rgb(255 255 255 / 35%);
+}
+
+.l-full-bleed::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 200px;
+  background: linear-gradient(to bottom, rgb(0 0 0 / 55%), rgb(0 0 0 / 0%));
+  pointer-events: none;
+}
+
+/* Compare — two panels, one hairline, labels above. */
+.l-compare {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  align-content: center;
+  gap: 40px;
+}
+
+.l-compare :where(h1, h2) {
+  font-size: 56px;
+  line-height: 1.05;
+}
+
+.l-compare:has([data-panel]) {
+  grid-template-columns: 1fr 1fr;
+  column-gap: 0;
+}
+
+.l-compare:has([data-panel]) :where(h1, h2) {
+  grid-column: 1 / -1;
+}
+
+.panel {
+  padding: 0 48px;
+}
+
+.panel:first-of-type {
+  padding-left: 0;
+}
+
+.panel + .panel {
+  border-left: var(--hairline) solid var(--grid);
+}
+
+.panel__label {
+  font-family: var(--font-mono) !important;
+  font-size: 24px !important;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 20px !important;
+}
+
+.panel__body :where(p, li) {
+  font-size: 30px; /* body-m */
+  line-height: 1.4;
+}
+
+/* Steps — a numbered rail, one item per Beat. Sequences only. */
+.l-steps {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 28px;
+  counter-reset: step;
+}
+
+.l-steps :where(h1, h2) {
+  font-size: 56px;
+  line-height: 1.05;
+  margin-bottom: 16px;
+}
+
+.l-steps :where(.beat) {
+  counter-increment: step;
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  align-items: baseline;
+  gap: 28px;
+  font-size: 38px;
+  line-height: 1.35;
+}
+
+.l-steps :where(.beat)::before {
+  content: counter(step, decimal-leading-zero);
+  font-family: var(--font-mono);
+  font-size: 30px;
+  color: var(--accent);
+}
+
+/* TableSlide — mono headers, six rows before it must become two slides. */
+.l-table {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 32px;
+}
+
+.l-table :where(h1, h2) {
+  font-size: 56px;
+  line-height: 1.05;
+}
+
+.l-table :where(table) {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.l-table :where(th) {
+  font-family: var(--font-mono);
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: left;
+  color: var(--ink-2);
+  padding: 12px 20px 12px 0;
+  border-bottom: 2px solid var(--ink);
+}
+
+.l-table :where(td) {
+  font-size: 30px;
+  padding: 14px 20px 14px 0;
+  border-bottom: var(--hairline) solid var(--grid);
+}
+
+/* Activity — "now do this". */
+.l-activity {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 40px;
+}
+
+.l-activity :where(h1, h2) {
+  font-size: 56px;
+  line-height: 1.05;
+  max-width: 22ch;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.chip {
+  font-family: var(--font-mono) !important;
+  font-size: 24px !important;
+  line-height: 1.2;
+  padding: 10px 16px;
+  background: var(--paper-2);
+  border: var(--hairline) solid var(--grid);
+  border-radius: var(--radius-card);
+  color: var(--ink-2);
+}
+
+.chip--time {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Notebook — a drawn page beside the prompt. */
+.l-notebook {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 64px;
+  align-content: center;
+  align-items: center;
+}
+
+.l-notebook :where(h1, h2) {
+  font-size: 56px;
+  line-height: 1.05;
+}
+
+.l-notebook__prompt {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.l-notebook__page {
+  height: 420px;
+  background: var(--paper);
+  border: 2px solid var(--ink-2);
+  border-radius: var(--radius-card);
+  box-shadow: 12px 12px 0 var(--paper-2);
+}
+
+/* AppletSlide — headline, then the applet takes the rest of the canvas. */
+.l-applet {
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 24px;
+}
+
+.l-applet :where(h1, h2) {
+  font-size: 56px;
+  line-height: 1.05;
+}
+
+.l-applet > :not(h1, h2) {
+  min-height: 0;
+}
+
+/* Callback — the real earlier slide, ghosted behind the new claim. */
+.l-callback {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* The ghost is scaled to sit inside the content box rather than bleeding to the
+   slide edge, so it never collides with the eyebrow or the slide number, and
+   held low enough in contrast that the new claim wins. */
+.l-callback__ghost {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  opacity: 0.11;
+  filter: grayscale(1);
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.l-callback__frame {
+  width: calc(var(--canvas-w) * 1px);
+  height: calc(var(--canvas-h) * 1px);
+  border: 0;
+  flex: none;
+  /* min(1060/1280, 528/720) — the content box, not the canvas. */
+  transform: scale(0.733);
+}
+
+.l-callback__claim {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.l-callback__claim :where(h1, h2) {
+  font-size: 80px;
+  line-height: 1;
+  letter-spacing: -0.015em;
+  max-width: 18ch;
+}
+
+.l-callback__cite :where(a),
+.l-callback__cite {
+  font-family: var(--font-mono) !important;
+  font-size: 24px !important;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+/* ======================================================== deck modes ===== */
+
+/* No JS: the deck is a readable stack. Everything below is enhancement. */
+.deck__slides {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  padding: 32px 0;
+}
+
+/* ---- present: one slide filling the viewport, letterboxed ---- */
+.deck--js[data-mode='present'] .deck__stage {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.deck--js[data-mode='present'] .deck__slides {
+  display: block;
+  padding: 0;
+}
+
+.deck--js[data-mode='present'] .slide {
+  display: none;
+}
+
+.deck--js[data-mode='present'] .slide[data-active] {
+  display: block;
+}
+
+.deck--js[data-mode='present'] .slide[data-active] .slide__content,
+.deck--js[data-mode='present'] .slide[data-active] .l-full-bleed {
+  animation: slide-in var(--t-slide) var(--ease) both;
+}
+
+/* The rail never animates. It is the fixed thing in the room. */
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+/* ---- read: stacked cards, scrolling ---- */
+.deck--js[data-mode='read'] .deck__slides {
+  display: flex;
+}
+
+.deck--js[data-mode='read'] .slide {
+  outline: var(--hairline) solid var(--grid);
+}
+
+/* ---- overview: thumbnails, click to jump ---- */
+.deck--js[data-mode='overview'] .deck__slides {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 20px;
+  padding: 88px 24px 24px;
+  align-items: start;
+  justify-items: center;
+}
+
+.deck--js[data-mode='overview'] .slide {
+  cursor: pointer;
+  outline: var(--hairline) solid var(--grid);
+}
+
+.deck--js[data-mode='overview'] .slide[data-active] {
+  outline: 3px solid var(--accent);
+}
+
+.deck--js[data-mode='overview'] .slide:hover {
+  outline-color: var(--focus);
+}
+
+/* ======================================================== deck chrome ==== */
+
+.deck__bar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px;
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  border-bottom-left-radius: var(--radius-card);
+  opacity: 0.25;
+  transition: opacity 120ms var(--ease);
+}
+
+.deck__bar:hover,
+.deck__bar:focus-within {
+  opacity: 1;
+}
+
+.deck__bar button,
+.deck__bar-link {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1;
+  padding: 8px 10px;
+  color: var(--ink-2);
+  background: transparent;
+  border: var(--hairline) solid transparent;
+  border-radius: var(--radius-card);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.deck__bar button:hover,
+.deck__bar-link:hover {
+  border-color: var(--grid);
+  background: var(--paper-2);
+  color: var(--ink);
+}
+
+.deck__bar button[aria-pressed='true'] {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.deck__offline {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  padding-left: 8px;
+}
+
+/* Click zones. Only armed in present mode; the middle third does nothing so
+   that applets stay clickable. */
+.deck__zones {
+  display: none;
+}
+
+.deck--js[data-mode='present'] .deck__zones {
+  display: grid;
+  position: fixed;
+  inset: 0;
+  grid-template-columns: 1fr 1fr 1fr;
+  z-index: 5;
+}
+
+.deck__zone[data-zone='none'] {
+  pointer-events: none;
+}
+
+.deck__zone[data-zone='prev'],
+.deck__zone[data-zone='next'] {
+  cursor: pointer;
+}
+
+/* Anything interactive on the slide has to sit above the zones. */
+.deck--js[data-mode='present'] .slide[data-active] {
+  z-index: 10;
+}
+
+.deck--js[data-mode='present'] .slide[data-active] .slide__content {
+  pointer-events: none;
+}
+
+.deck--js[data-mode='present'] .slide[data-active] .slide__content :where(a, button, input, select, textarea, [tabindex], [data-applet], .l-applet > *) {
+  pointer-events: auto;
+}
+
+.deck__blackout {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: #000;
+}
+
+.deck__blackout[hidden] {
+  display: none;
+}
+
+.deck__applet-hint {
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 30;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  padding: 8px 14px;
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: var(--radius-card);
+}
+
+.deck__applet-hint[hidden] {
+  display: none;
+}
+
+.deck__applet-hint kbd {
+  font-family: inherit;
+  border: var(--hairline) solid var(--ink-3);
+  border-radius: 2px;
+  padding: 1px 5px;
+}
+
+.deck__help {
+  border: var(--hairline) solid var(--ink);
+  border-radius: var(--radius-card);
+  background: var(--paper);
+  color: var(--ink);
+  padding: var(--space-6);
+  max-width: 520px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+}
+
+.deck__help::backdrop {
+  background: rgb(0 0 0 / 45%);
+}
+
+.deck__help h2 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  margin: 0 0 var(--space-5);
+}
+
+.deck__help dl {
+  margin: 0 0 var(--space-5);
+  display: grid;
+  gap: var(--space-2);
+}
+
+.deck__help dl > div {
+  display: grid;
+  grid-template-columns: 190px 1fr;
+  gap: var(--space-4);
+}
+
+.deck__help dt,
+.deck__help dd {
+  margin: 0;
+}
+
+.deck__help dd {
+  color: var(--ink-2);
+}
+
+.deck__help kbd {
+  border: var(--hairline) solid var(--grid);
+  background: var(--paper-2);
+  border-radius: 2px;
+  padding: 2px 6px;
+}
+
+.deck__help button {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  padding: 8px 14px;
+  border: var(--hairline) solid var(--ink);
+  background: var(--paper);
+  border-radius: var(--radius-card);
+  cursor: pointer;
+}
+
+/* ---- thumbnail embed (used by Callback): inert scenery, no chrome ---- */
+.deck[data-thumb] .deck__chrome,
+.deck[data-thumb] .deck__zones,
+.deck[data-thumb] .deck__applet-hint,
+.deck[data-thumb] .deck__help {
+  display: none !important;
+}
+
+/* ============================================================ print ====== */
+/* One landscape page per slide, notes beneath (the guide prints the notes;
+   the deck prints the slides). */
+
+@page {
+  size: landscape;
+  margin: 10mm;
+}
+
+@media print {
+  .deck__chrome,
+  .deck__zones,
+  .deck__blackout,
+  .deck__applet-hint,
+  .deck__help,
+  .skip-link {
+    display: none !important;
+  }
+
+  .deck,
+  .deck__stage {
+    position: static !important;
+    min-height: 0;
+  }
+
+  .deck__slides {
+    display: block !important;
+    padding: 0 !important;
+  }
+
+  .slide {
+    display: block !important;
+    break-after: page;
+    break-inside: avoid;
+    outline: none !important;
+  }
+
+  .slide:last-child {
+    break-after: auto;
+  }
+
+  .slide__canvas {
+    outline: var(--hairline) solid var(--grid);
+  }
+}
+
+/* ====================================================== dev diagnostics == */
+/* Spec §7.1: outline any slide whose content exceeds the canvas, in --warn.
+   Armed by deck.js in dev only. This will save hours. */
+
+.slide[data-overflow] .slide__canvas {
+  outline: 4px solid var(--warn);
+  outline-offset: -4px;
+}
+
+.slide[data-overflow]::after {
+  content: 'overflows the canvas';
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 40;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  padding: 4px 8px;
+  background: var(--warn);
+  color: #fff;
+}

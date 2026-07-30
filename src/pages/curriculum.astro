@@ -1,0 +1,121 @@
+---
+/**
+ * All 56 lessons, grouped by unit. The spine rendered large.
+ */
+import PageLayout from '@layouts/PageLayout.astro'
+import UnitSpine from '@components/UnitSpine.astro'
+import { allUnits, lessonsByUnit, STATUS_LABEL } from '@lib/content'
+import { lessonHref, guideHref, unitHref } from '@lib/href'
+import '@styles/curriculum.css'
+
+const units = await allUnits()
+const byUnit = await lessonsByUnit()
+const total = [...byUnit.values()].reduce((n, l) => n + l.length, 0)
+
+const statuses = ['stub', 'draft', 'ready', 'taught'] as const
+const counts = Object.fromEntries(statuses.map((s) => [s, 0])) as Record<string, number>
+for (const list of byUnit.values()) for (const l of list) counts[l.data.status] += 1
+---
+
+<PageLayout
+  title="Curriculum · Computers"
+  description={`All ${total} lessons, grouped by unit.`}
+  eyebrow="The whole course"
+  heading="Curriculum"
+>
+  <p class="lede" slot="lede">
+    {total} lessons across nine units, taught one or two a week. Each lesson's line is its
+    goal — what the child can do afterwards, which is also how you know it worked.
+  </p>
+
+  <UnitSpine units={units} counts={byUnit} />
+
+  {/* Filtering is client-side and progressive: with JS off, every lesson shows,
+      which is the honest default. */}
+  <div class="filters" data-filters>
+    <p class="filters__label">Show</p>
+    <button type="button" data-filter="all" aria-pressed="true">All {total}</button>
+    {
+      statuses.map((s) => (
+        <button type="button" data-filter={s} aria-pressed="false" disabled={counts[s] === 0}>
+          {STATUS_LABEL[s]} {counts[s]}
+        </button>
+      ))
+    }
+  </div>
+
+  <div class="units">
+    {
+      units.map((unit) => {
+        const lessons = byUnit.get(unit.data.n) ?? []
+        return (
+          <section class="unit" data-unit={unit.data.n} aria-labelledby={`u${unit.data.n}`}>
+            <div class="unit__head">
+              <p class="unit__n">{String(unit.data.n).padStart(2, '0')}</p>
+              <div>
+                <h2 id={`u${unit.data.n}`}>
+                  <a href={unitHref(unit.data.n)}>{unit.data.title}</a>
+                </h2>
+                <p class="unit__arc">{unit.data.arc}</p>
+              </div>
+            </div>
+
+            <ol class="lessons">
+              {lessons.map((lesson) => (
+                <li class="lesson" data-status={lesson.data.status}>
+                  <a class="lesson__n" href={lessonHref(lesson.data.n)}>
+                    {String(lesson.data.n).padStart(2, '0')}
+                  </a>
+                  <div class="lesson__body">
+                    <h3 class="lesson__title">
+                      <a href={lessonHref(lesson.data.n)}>{lesson.data.title}</a>
+                    </h3>
+                    <p class="lesson__goal">{lesson.data.goal}</p>
+                    <p class="lesson__meta">
+                      {lesson.data.unplugged && <span class="tag">Unplugged</span>}
+                      {lesson.data.applets.map((a) => (
+                        <span class="tag">{a}</span>
+                      ))}
+                      <a class="lesson__guide" href={guideHref(lesson.data.n)}>
+                        Guide
+                      </a>
+                    </p>
+                  </div>
+                  <span class="tag lesson__status" data-status={lesson.data.status}>
+                    {STATUS_LABEL[lesson.data.status]}
+                  </span>
+                </li>
+              ))}
+            </ol>
+          </section>
+        )
+      })
+    }
+  </div>
+</PageLayout>
+
+<script>
+  // Filter by status. Hides list items rather than rebuilding anything.
+  const bar = document.querySelector('[data-filters]')
+  const items = [...document.querySelectorAll<HTMLElement>('.lesson')]
+  const sections = [...document.querySelectorAll<HTMLElement>('.unit')]
+
+  bar?.addEventListener('click', (e) => {
+    const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-filter]')
+    if (!btn) return
+    const want = btn.dataset.filter
+
+    for (const b of bar.querySelectorAll('[data-filter]')) {
+      b.setAttribute('aria-pressed', String(b === btn))
+    }
+    for (const li of items) {
+      li.toggleAttribute('hidden', want !== 'all' && li.dataset.status !== want)
+    }
+    // A unit with nothing left to show goes away too, rather than leaving a
+    // heading over an empty list.
+    for (const s of sections) {
+      const any = [...s.querySelectorAll('.lesson')].some((li) => !li.hasAttribute('hidden'))
+      s.toggleAttribute('hidden', !any)
+    }
+  })
+</script>

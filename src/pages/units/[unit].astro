@@ -1,0 +1,197 @@
+---
+import { render } from 'astro:content'
+import PageLayout from '@layouts/PageLayout.astro'
+import { allUnits, lessonsByUnit, allTerms, STATUS_LABEL, type Unit, type Lesson } from '@lib/content'
+import { lessonHref, guideHref, href } from '@lib/href'
+import '@styles/curriculum.css'
+
+export async function getStaticPaths() {
+  const [units, byUnit] = await Promise.all([allUnits(), lessonsByUnit()])
+  return units.map((unit) => ({
+    params: { unit: String(unit.data.n) },
+    props: { unit, lessons: byUnit.get(unit.data.n) ?? [] },
+  }))
+}
+
+interface Props {
+  unit: Unit
+  lessons: Lesson[]
+}
+
+const { unit, lessons } = Astro.props
+const { Content } = await render(unit)
+const terms = await allTerms()
+
+const vocab = [...new Set(lessons.flatMap((l) => l.data.vocab))].sort((a, b) => a.localeCompare(b))
+const applets = [...new Set(lessons.flatMap((l) => l.data.applets))].sort()
+const written = new Set(terms.filter((t) => t.data.written).map((t) => t.data.term))
+
+const first = lessons.at(0)
+const last = lessons.at(-1)
+---
+
+<PageLayout
+  title={`Unit ${unit.data.n}: ${unit.data.title} · Computers`}
+  description={unit.data.arc}
+  unit={unit.data.n}
+  eyebrow={`Unit ${unit.data.n} · ${unit.data.color}`}
+  heading={unit.data.title}
+>
+  <p class="lede" slot="lede">{unit.data.arc}</p>
+
+  {
+    first && last && first.data.n !== last.data.n && (
+      <p class="arc">
+        <span class="arc__end">
+          <span class="arc__n">{String(first.data.n).padStart(2, '0')}</span>
+          {first.data.title}
+        </span>
+        <span class="arc__line" aria-hidden="true" />
+        <span class="arc__end">
+          <span class="arc__n">{String(last.data.n).padStart(2, '0')}</span>
+          {last.data.title}
+        </span>
+      </p>
+    )
+  }
+
+  <div class="prose unit-intro">
+    <Content />
+  </div>
+
+  <section aria-labelledby="h-lessons" class="unit-block">
+    <h2 id="h-lessons">The lessons</h2>
+    <ol class="lessons">
+      {
+        lessons.map((lesson) => (
+          <li class="lesson" data-status={lesson.data.status}>
+            <a class="lesson__n" href={lessonHref(lesson.data.n)}>
+              {String(lesson.data.n).padStart(2, '0')}
+            </a>
+            <div class="lesson__body">
+              <h3 class="lesson__title">
+                <a href={lessonHref(lesson.data.n)}>{lesson.data.title}</a>
+              </h3>
+              <p class="lesson__goal">{lesson.data.goal}</p>
+              <p class="lesson__meta">
+                {lesson.data.unplugged && <span class="tag">Unplugged</span>}
+                <a class="lesson__guide" href={guideHref(lesson.data.n)}>
+                  Guide
+                </a>
+              </p>
+            </div>
+            <span class="tag lesson__status" data-status={lesson.data.status}>
+              {STATUS_LABEL[lesson.data.status]}
+            </span>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  {
+    vocab.length > 0 && (
+      <section aria-labelledby="h-vocab" class="unit-block">
+        <h2 id="h-vocab">The words</h2>
+        <ul class="chipset">
+          {vocab.map((v) => (
+            <li>
+              <a href={href(`glossary/#${encodeURIComponent(v)}`)} data-written={written.has(v) ? '' : undefined}>
+                {v}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+
+  {
+    applets.length > 0 && (
+      <section aria-labelledby="h-applets" class="unit-block">
+        <h2 id="h-applets">The applets</h2>
+        <ul class="chipset">
+          {applets.map((a) => (
+            <li>
+              <a href={href(`applets/#${a}`)}>{a}</a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+</PageLayout>
+
+<style>
+  .arc {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    margin: 0 0 var(--space-7);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--ink-2);
+  }
+
+  .arc__end {
+    display: flex;
+    gap: var(--space-2);
+    align-items: baseline;
+  }
+
+  .arc__n {
+    color: var(--accent);
+  }
+
+  .arc__line {
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(to right, var(--grid), var(--accent));
+    min-width: 40px;
+  }
+
+  .unit-intro {
+    margin-bottom: var(--space-8);
+  }
+
+  .unit-block {
+    margin-top: var(--space-8);
+  }
+
+  .unit-block h2 {
+    padding-bottom: var(--space-3);
+    border-bottom: 3px solid var(--accent);
+    margin-bottom: var(--space-5);
+  }
+
+  .chipset {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .chipset a {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    padding: 6px 10px;
+    border: var(--hairline) solid var(--grid);
+    border-radius: var(--radius-card);
+    background: var(--paper-2);
+    color: var(--ink-2);
+    text-decoration: none;
+  }
+
+  /* A word with a definition written reads as solid; one still waiting is quiet. */
+  .chipset a[data-written] {
+    color: var(--ink);
+    border-color: var(--accent);
+  }
+
+  .chipset a:hover {
+    color: var(--accent);
+  }
+</style>
