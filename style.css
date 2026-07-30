@@ -262,6 +262,12 @@ a { color: var(--focus); }
 
 .applet button:hover { border-color: var(--accent); color: var(--accent); }
 
+.applet button[aria-pressed="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--paper);
+}
+
 /* --------------------------------------------------------------- notes */
 /* Hidden while teaching. Press N to stack the slides with the notes under
    each one — that is how you read the lesson the night before. */

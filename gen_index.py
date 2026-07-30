@@ -12,7 +12,7 @@ import html
 from pathlib import Path
 
 # Lessons that have an HTML file. Everything else is listed, greyed, unlinked.
-BUILT = {1}
+BUILT = {1, 2}
 
 UNITS = [
     (0, "What Is This Thing?",

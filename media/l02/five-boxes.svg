@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 470" role="img" aria-label="The five boxes">
+  <g fill="#E2E7EC" stroke="#12171C" stroke-width="3">
+    <rect x="20"  y="40"  width="150" height="95" rx="2"/>
+    <rect x="270" y="40"  width="150" height="95" rx="2"/>
+    <rect x="520" y="40"  width="150" height="95" rx="2"/>
+    <rect x="270" y="195" width="150" height="95" rx="2"/>
+    <rect x="270" y="350" width="150" height="95" rx="2"/>
+  </g>
+  <g font-family="ui-monospace, monospace" font-size="25" font-weight="600" fill="#12171C" text-anchor="middle" letter-spacing="1.5">
+    <text x="95"  y="97">INPUT</text>
+    <text x="345" y="97">CPU</text>
+    <text x="595" y="97">OUTPUT</text>
+    <text x="345" y="252">RAM</text>
+    <text x="345" y="407">STORAGE</text>
+  </g>
+  <g stroke="#444F59" stroke-width="3" fill="none">
+    <path d="M170 87 H264"/>
+    <path d="M420 87 H514"/>
+    <path d="M345 135 V189"/>
+    <path d="M345 290 V344"/>
+  </g>
+  <g fill="#444F59">
+    <path d="M270 87 l-14 -7 v14 z"/>
+    <path d="M520 87 l-14 -7 v14 z"/>
+    <path d="M345 195 l-7 -14 h14 z"/><path d="M345 135 l-7 14 h14 z"/>
+    <path d="M345 350 l-7 -14 h14 z"/><path d="M345 290 l-7 14 h14 z"/>
+  </g>
+</svg>

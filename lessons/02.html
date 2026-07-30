@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2. The Five Boxes</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<!-- data-unit sets the colour. 0 = What Is This Thing? -->
+<body data-unit="0">
+
+<div class="deck">
+
+<!-- ============================ Part 1: The split · 0:00-0:14 ============ -->
+
+<section class="slide">
+  <div class="frame center">
+    <p class="eyebrow">Unit 0 · What is this thing?</p>
+    <h1>Who found a computer nobody named?</h1>
+  </div>
+</section>
+<div class="notes">
+  <p>Lesson 1 ended by promising the hunt winner would be announced now. Do that first,
+  before anything else. One point per computer nobody named, and it has to survive a
+  challenge &mdash; input, output, and where it keeps things.</p>
+  <p>Bonus point for something arguably a computer, argued well, either way. Reward the
+  reasoning, not the verdict.</p>
+  <p><strong>Before they walk in:</strong> two Pi 400s still in their boxes; a monitor or
+  TV each with a free HDMI socket; a mouse each; the microSD cards; the power supplies;
+  the micro-HDMI cables. One spare SD card loose so they can hold it. Notebooks.</p>
+  <p><strong>Do this yourself first, once, in private.</strong> Boot each Pi and get past
+  the first-run setup &mdash; language, wifi, password. That wizard is fifteen minutes of
+  nothing, and it is not what today teaches. Then shut down and unplug everything so the
+  boxes are as they came.</p>
+</div>
+
+<section class="slide">
+  <div class="frame center">
+    <h1>What is it thinking about right now?</h1>
+  </div>
+</section>
+<div class="notes">
+  <p>Ask before telling. Point at any computer in the room and ask where the thing it is
+  working on <em>this second</em> is kept.</p>
+  <p>They will say &ldquo;in storage&rdquo; or &ldquo;on the disk,&rdquo; because that is
+  the box they learned. Let that stand for a moment. You are about to split it.</p>
+</div>
+
+<section class="slide">
+  <div class="frame two-col">
+    <h2>You know four boxes</h2>
+    <figure>
+      <img src="../media/l01/four-boxes.svg"
+           alt="Input feeds Process, Process feeds Output. Storage sits below Process,
+                joined by an arrow pointing both ways.">
+    </figure>
+  </div>
+</section>
+<div class="notes">
+  <p>Straight back to their own notebooks from last time. Have them read out what they
+  wrote for each box, in their own words.</p>
+  <p>Then put the weight on PROCESS: that is the one we said decides. Today it opens up.</p>
+</div>
+
+<section class="slide">
+  <div class="frame">
+    <h2>Process is really two things</h2>
+    <p class="prompt">Something that decides. Somewhere to work.</p>
+  </div>
+</section>
+<div class="notes">
+  <p>Do not say CPU or RAM yet. Get the shape first.</p>
+  <p>A person doing homework: your head decides what to write. The desk is where the open
+  book and the half-finished page sit while you do it. Two different jobs. You would not
+  say your head and your desk were the same thing.</p>
+</div>
+
+<section class="slide">
+  <div class="frame">
+    <h2>The thing that decides is the CPU</h2>
+    <p class="prompt">One job: read the next instruction, do it, repeat. Billions of times a second.</p>
+  </div>
+</section>
+<div class="notes">
+  <p>Name it now that they have the shape. CPU &mdash; central processing unit. It is small,
+  it gets hot, and it does one tiny stupid step at a time, incredibly fast.</p>
+  <p>If they ask how fast: a few billion steps a second. Don't chase the number, that is
+  lesson 5.</p>
+</div>
+
+<section class="slide">
+  <div class="frame">
+    <h2>The desk is RAM</h2>
+    <p class="prompt">Fast, close to hand, and cleared every night.</p>
+  </div>
+</section>
+<div class="notes">
+  <p>RAM is where whatever the machine is working on right now is spread out. Fast to reach,
+  and there is not much of it.</p>
+  <p>Then the hook, and do not resolve it: what happens to the things on your desk when the
+  power goes out? Let them guess. Tell them they will find out for certain in lesson 31,
+  and that it is worth waiting for.</p>
+  <p>Do not do the plug-pull demo today. It is lesson 31's, it needs a whole hour around it,
+  and spending it now wastes the best moment in Unit 4.</p>
+</div>
+
+<section class="slide">
+  <div class="frame two-col">
+    <h2>Five boxes</h2>
+    <figure>
+      <img src="../media/l02/five-boxes.svg"
+           alt="Input feeds the CPU, the CPU feeds Output. Below the CPU, RAM, and below
+                RAM, Storage - each joined by arrows pointing both ways.">
+    </figure>
+  </div>
+</section>
+<div class="notes">
+  <p>Draw it live, on top of yesterday's four. Same three across the top &mdash; INPUT, CPU,
+  OUTPUT &mdash; then RAM hanging under the CPU, and STORAGE hanging under RAM.</p>
+  <p>The vertical stack is the point, and it is worth saying out loud: as you go down, it
+  gets bigger and slower. The CPU holds almost nothing. RAM holds today's work. Storage
+  holds everything, forever, and is the slowest to reach.</p>
+  <p>That column comes back as the whole of lesson 32. Draw it in that order every time.</p>
+</div>
+
+<section class="slide">
+  <div class="frame">
+    <h2>What happens without it?</h2>
+    <div class="applet" id="boxes">
+      <p id="box-buttons"></p>
+      <p class="big" id="box-does">&nbsp;</p>
+      <p class="prompt" id="box-without">&nbsp;</p>
+    </div>
+  </div>
+</section>
+<div class="notes">
+  <p>Optional, and quick. Let each of them pick a box and guess what a computer without it
+  would be like <em>before</em> you press the button.</p>
+  <p>The no-CPU answer is the one worth landing: a machine with input, output, memory and
+  storage but nothing that decides is a filing cabinet with a letterbox. That is the lesson
+  1 hammer argument arriving again in new clothes.</p>
+</div>
+
+<!-- ============================ Part 2: Build it · 0:14-0:32 ============= -->
+
+<section class="slide">
+  <div class="frame center dark">
+    <h1>Now build one</h1>
+  </div>
+</section>
+<div class="notes">
+  <p>Boxes off the shelf, one each. From here to the end of Part 2 they do every step
+  themselves and you sit on your hands.</p>
+  <p>Rule for the whole build, said once, up front: <strong>power goes in last and comes
+  out first.</strong> Everything else can be plugged and unplugged all day.</p>
+</div>
+
+<section class="slide">
+  <div class="frame two-col">
+    <h2>The whole computer is the keyboard</h2>
+    <figure>
+      <img src="../media/l02/pi400.svg" alt="A Pi 400 on the table, lid up">
+    </figure>
+  </div>
+</section>
+<div class="notes">
+  <p>Let them find this out rather than telling them. Ask what is missing from the box.
+  They will look for a tower.</p>
+  <p>There isn't one. The CPU and the RAM are both under these keys, a few centimetres
+  under their fingers. This is the same joke as lesson 1: a computer does not have to
+  look like the thing on the desk. It can look like a keyboard.</p>
+  <p>Weigh it in their hands. Feel the vent slots along the back edge.</p>
+</div>
+
+<section class="slide">
+  <div class="frame two-col">
+    <h2>This card is the storage box</h2>
+    <figure>
+      <img src="../media/l02/sdcard.svg" alt="A microSD card held between two fingers">
+    </figure>
+    <p class="prompt">Everything it knows is on here.</p>
+  </div>
+</section>
+<div class="notes">
+  <p>Pass the spare card round before anyone puts one in a slot. It is the size of a
+  fingernail and it holds every program and every file the machine has.</p>
+  <p>Ask: if I snapped this in half, what would the Pi still know? Nothing. Not how to
+  start, not what a window is. That is what the storage box means.</p>
+  <p>Then they slide their own card into the slot on the back. It clicks. Contacts face up
+  on a Pi 400 &mdash; check both before anyone pushes.</p>
+</div>
+
+<section class="slide">
+  <div class="frame two-col">
+    <h2>Which cable is which box?</h2>
+    <figure>
+      <img src="../media/l02/pi400-ports.svg"
+           alt="The back edge of the Pi 400, showing the SD slot, USB-C power, two micro
+                HDMI sockets, USB ports and ethernet">
+    </figure>
+  </div>
+</section>
+<div class="notes">
+  <p>Everything on this edge is a <strong>port</strong>. Anything you plug into one is a
+  <strong>peripheral</strong> &mdash; a thing on the edge, outside the five boxes, that
+  feeds one of them.</p>
+  <p>Hold up each cable and make them call the box before they plug it in:</p>
+  <ul>
+    <li>Micro HDMI to the monitor &mdash; <strong>output</strong>. Left-hand socket, the one
+    marked HDMI0. The right-hand one only works once the first is used.</li>
+    <li>Mouse into a USB port &mdash; <strong>input</strong>.</li>
+    <li>The keyboard is already input, and it is also the computer. Enjoy that.</li>
+  </ul>
+  <p>The ports are all different shapes on purpose, so you cannot put the wrong thing in
+  the wrong hole. That is lesson 3's whole subject; do not start it here.</p>
+</div>
+
+<section class="slide">
+  <div class="frame activity">
+    <h2>Power goes in last</h2>
+    <p class="prompt">Plug it in. Watch the corner of the screen.</p>
+  </div>
+</section>
+<div class="notes">
+  <p>USB-C at the far left. There is no power button &mdash; plugging it in <em>is</em>
+  switching it on, which surprises people. Say so before they start hunting for one.</p>
+  <p>Monitor on and set to the right input first, or they will decide it is broken in the
+  first four seconds.</p>
+  <p>Watch it boot together. Raspberries in the corner, a wall of text, then a desktop.
+  Let them read the text scrolling past &mdash; nobody understands it yet and that is fine.
+  It is the machine finding its own five boxes and counting what it has.</p>
+  <p>If nothing appears: check the HDMI is in HDMI0, check the monitor's input source,
+  check the SD card is fully clicked in. That is the whole troubleshooting tree today.
+  The real procedure is lesson 14.</p>
+</div>
+
+<!-- ============================ Part 3: Find them · 0:32-0:44 =========== -->
+
+<section class="slide">
+  <div class="frame activity">
+    <h2>Point at all five</h2>
+    <p class="prompt">On the real machine, out loud, one at a time.</p>
+  </div>
+</section>
+<div class="notes">
+  <p>Round the table, one box each, pointing at actual objects:</p>
+  <ul>
+    <li><strong>Input</strong> &mdash; these keys, that mouse.</li>
+    <li><strong>Output</strong> &mdash; that monitor, on the end of that cable.</li>
+    <li><strong>Storage</strong> &mdash; the card in the slot at the back.</li>
+    <li><strong>CPU</strong> and <strong>RAM</strong> &mdash; both under the keys, and
+    neither can be pointed at. Say that plainly: you have to take the machine apart to see
+    them, and you will, in lesson 4.</li>
+  </ul>
+  <p>This is the assessment for the lesson. Watch who hesitates and on which box.</p>
+</div>
+
+<section class="slide">
+  <div class="frame">
+    <h2>Ask it how big its boxes are</h2>
+    <p class="prompt">free -h, then df -h</p>
+  </div>
+</section>
+<div class="notes">
+  <p>A terminal, one command each, typed by them. This is the first time they have ever
+  told a computer something in words, and it is worth a moment.</p>
+  <p><code>free -h</code> &mdash; the RAM box. Read the total out loud. Around 4G on a
+  Pi 400: that is the size of the desk.</p>
+  <p><code>df -h</code> &mdash; the storage box. Look at the line for <code>/</code>. That
+  is the card they were holding, and the number is far bigger than the desk.</p>
+  <p>Get them to say which is bigger and which is faster before you say it. Bigger and
+  slower as you go down the column &mdash; the same shape they just drew.</p>
+  <p>Do not explain the terminal. They asked the machine a question and it answered.
+  That is all today needs. Unit 5 is where it becomes a subject.</p>
+</div>
+
+<section class="slide">
+  <div class="frame">
+    <h2>The board is what joins them</h2>
+    <p class="prompt">Every box, wired to the ones it has to reach.</p>
+  </div>
+</section>
+<div class="notes">
+  <p>Last word: <strong>motherboard</strong>. The green board under the keys that everything
+  else is attached to or plugged into. Not a sixth box &mdash; the thing the five boxes
+  live on and talk across.</p>
+  <p>They will see a real one, out of a real machine, in lesson 4. Promise it and move on.
+  One sentence per part is the rule; do not get pulled into a lecture on part numbers.</p>
+</div>
+
+<!-- ============================ Part 4: Notebook · 0:44-0:50 ============ -->
+
+<section class="slide">
+  <div class="frame activity">
+    <h2>Notebook, page 2</h2>
+    <p class="prompt">Draw the five boxes. Then label them with what is on your table.</p>
+  </div>
+</section>
+<div class="notes">
+  <p>Two labels per box: the box name, and the actual object in front of them. OUTPUT /
+  the monitor. STORAGE / the little card.</p>
+  <p>CPU and RAM get the box name and the words &ldquo;under the keys.&rdquo; Leaving them
+  unpointed-at on purpose is the setup for lesson 4.</p>
+  <p>This page gets used again in lessons 4, 5, 31 and 32. Worth doing by hand and worth
+  doing properly.</p>
+</div>
+
+<section class="slide">
+  <div class="frame activity">
+    <h2>Shut it down properly</h2>
+    <p class="prompt">Menu first. Wait for the screen to go black. Then the plug.</p>
+  </div>
+</section>
+<div class="notes">
+  <p>Menu, Shutdown, wait, then pull the power. Never the other way round.</p>
+  <p>Why, in one sentence they can hold: it is still putting things away, and pulling the
+  plug mid-tidy is how you lose work. They get the full version in lesson 31 and the
+  operating system's side of it in lesson 7.</p>
+  <p>Make this the ritual from today. Every single session, they shut down properly. Habits
+  set now are free; retrofitting them is not.</p>
+</div>
+
+<section class="slide">
+  <div class="frame center dark">
+    <h1>Next time we open one up</h1>
+  </div>
+</section>
+<div class="notes">
+  <p>Point at the two boxes they cannot point at &mdash; CPU and RAM, under their own
+  fingers. Lesson 4 is a dead tower on the table with a screwdriver, and they will hold
+  both.</p>
+  <p>No homework tonight. Typing practice starts in lesson 8 and never stops after that;
+  let them have this one.</p>
+</div>
+
+</div>
+
+<div class="bar">
+  <a href="../index.html">All lessons</a>
+  <button data-go="prev" aria-label="Previous slide">&larr;</button>
+  <button data-go="next" aria-label="Next slide">&rarr;</button>
+  <span class="count"></span>
+  <button data-go="notes" title="Stack the slides with the notes (N)">N</button>
+</div>
+
+<script src="../nav.js"></script>
+
+<script>
+// The five boxes: pick one, see what it does and what a computer without it
+// would be. Fixes: that the parts of a machine are a list to memorise, rather
+// than five jobs that each need the others.
+// If lesson 31 or 32 wants this too, move it to applets/block-diagram.js.
+(function () {
+  // Kept terse on purpose: this is slide text, and a slide holds under 40 words.
+  // The longer version of each answer is in the notes, where you say it out loud.
+  const BOXES = [
+    ['INPUT',   'How it finds things out.',
+                'Without it: nothing could ever tell it anything.'],
+    ['CPU',     'The part that decides.',
+                'Without it: a filing cabinet with a letterbox.'],
+    ['RAM',     'The desk. Today\'s work, close to hand.',
+                'Without it: nowhere to put the job while doing it.'],
+    ['STORAGE', 'Where it keeps things when it stops.',
+                'Without it: it forgets everything, including how to start.'],
+    ['OUTPUT',  'How it tells you, or changes something.',
+                'Without it: brilliant work you could never see.']
+  ];
+
+  const buttons = document.getElementById('box-buttons');
+  const does = document.getElementById('box-does');
+  const without = document.getElementById('box-without');
+
+  buttons.innerHTML = BOXES
+    .map((b, i) => `<button data-i="${i}" aria-pressed="false">${b[0]}</button>`)
+    .join(' ');
+
+  buttons.addEventListener('click', (e) => {
+    const i = e.target.dataset.i;
+    if (i === undefined) return;
+    // The pressed button is the label; no need to print the name again.
+    for (const b of buttons.children) b.setAttribute('aria-pressed', b === e.target);
+    does.textContent = BOXES[i][1];
+    without.textContent = BOXES[i][2];
+  });
+})();
+</script>
+
+</body>
+</html>
