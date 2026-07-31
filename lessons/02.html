@@ -6,6 +6,15 @@
 <title>2. Build the Four Boxes</title>
 <link rel="stylesheet" href="../style.css">
 </head>
+<!--
+  Three images in this lesson (the Pi 400, its rear ports, and the SD card)
+  are hotlinked to external sites rather than stored in media/l02/. That was
+  a deliberate call, not an oversight - see the notes attached to each of
+  those slides. It means this lesson needs a working internet connection to
+  show them, which is otherwise not true of anything else on this site.
+  Swap them for local files whenever convenient: point the <img src> at
+  ../media/l02/whatever.jpg and drop the file next to this one.
+-->
 <!-- data-unit sets the colour. 0 = What Is This Thing? -->
 <body data-unit="0">
 
@@ -74,6 +83,24 @@
 </div>
 
 <section class="slide">
+  <div class="frame two-col">
+    <h2>Don't lose this one</h2>
+    <figure>
+      <img src="https://helios-i.mashable.com/imagery/reviews/007pA3RsiiOCJzTuzKBZJNz/hero-image.fill.size_1248x702.v1623385898.jpg"
+           alt="A microSD card held between two fingers, for scale">
+    </figure>
+    <p class="prompt">Smaller than a fingernail. Everything it knows is on here.</p>
+  </div>
+</section>
+<div class="notes">
+  <p>Pass the real one round before it goes anywhere near a slot. Small enough to vanish
+  into a carpet, and it holds every program and every file the machine has.</p>
+  <p>Ask: if I snapped this in half, what would the Pi still know? Nothing. Not how to
+  start, not what a window is. That is what the storage box means, before you even say
+  the word.</p>
+</div>
+
+<section class="slide">
   <div class="frame activity">
     <h2>Which box does each one go in?</h2>
     <p class="prompt">One thing at a time. Say the box out loud.</p>
@@ -112,7 +139,8 @@
   <div class="frame two-col">
     <h2>It's under the keys</h2>
     <figure>
-      <img src="../media/l02/pi400.svg" alt="A Pi 400 on the table, lid up">
+      <img src="https://www.sparkfun.com/media/catalog/product/cache/f3020b7489dcfc4d1d147cf4dad07b7f/R/P/RPI_400_TOP_DOWN_REAR_WHITE.jpg"
+           alt="A Pi 400 on the table, lid up">
     </figure>
   </div>
 </section>
@@ -187,14 +215,19 @@
   <div class="frame two-col">
     <h2>Every plug fits one hole</h2>
     <figure>
-      <img src="../media/l02/pi400-ports.svg"
-           alt="The back edge of the Pi 400, showing the card slot, the power socket, two
-                small video sockets, the USB sockets and the network socket">
+      <img src="https://www.yodeck.com/wp-content/uploads/2023/06/Raspberry-pi-400-technical-specs.jpg"
+           alt="A labelled technical diagram of the Pi 400's rear edge, showing the card
+                slot, the power socket, two small video sockets, the USB sockets and the
+                network socket">
     </figure>
     <p class="prompt">Look at the shapes. Don't push anything.</p>
   </div>
 </section>
 <div class="notes">
+  <p>This reference image has every port labelled, which gives away more than today's
+  lesson wants &mdash; the point is judging by shape, not reading a name. Cover the
+  bottom label row with a hand, or just talk over it, and let the real machine on the
+  table do the actual looking.</p>
   <p>Turn the Pi round and look along the back edge together. Every socket is a different
   shape and a different size, and that is not an accident &mdash; it is so you cannot put
   the wrong thing in the wrong hole.</p>
