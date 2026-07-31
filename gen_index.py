@@ -46,7 +46,7 @@ UNITS = [
 # (number, unit, title, goal) — the goal is what the child can do afterwards.
 LESSONS = [
     (1, 0, "What Is a Computer?", "Point at any object and say whether it is a computer, naming its input, output, and storage."),
-    (2, 0, "The Five Boxes", "Draw the block diagram of any computer and point to each part on a real Pi 400."),
+    (2, 0, "Build the Four Boxes", "Draw the block diagram of any computer and point to each part on a real Pi 400."),
     (3, 0, "The Peripheral Zoo", "Name every common port and cable and match them by sight."),
     (4, 0, "Inside the Tower", "Identify PSU, motherboard, CPU, RAM, drive, and GPU in a real machine."),
     (5, 0, "Reading a Spec Sheet", "Read a real computer listing and say which numbers matter for a stated job."),
