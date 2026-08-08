@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>9. Where Your Stuff Lives</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<!--
+  This lesson absorbs four of the original curriculum's lessons - mouse
+  actions, the file system, copy/move/delete, and naming/organizing. It runs
+  long: budget 70-90 minutes, not 50. There is a natural break after the mouse
+  drills (slide 8) and before real hands-on file work starts, if splitting
+  across two sittings suits your week better.
+
+  Also: lesson 2 promised "next time we open the process box." That promise
+  still stands - it is lessons 3 to 6, which this lesson skips past on
+  purpose, to get them driving the machine while it is fresh from being
+  built. Nothing here depends on 3-6 having happened; loop back whenever.
+
+  data-unit sets the colour. 1 = Driving the Machine.
+-->
+<body data-unit="1">
+
+<div class="deck">
+
+<!-- ============================ Part 1: Five moves · 0:00-0:25 ========== -->
+
+<section class="slide">
+  <div class="frame center">
+    <p class="eyebrow">Unit 1 · Driving the Machine</p>
+    <h1>Where does your stuff live?</h1>
+    <p class="prompt">You found the storage box. Let's open it.</p>
+  </div>
+</section>
+<div class="notes">
+  <p><strong>Before they walk in:</strong> both Pi 400s awake and sitting at the desktop -
+  not shut down, this lesson is almost entirely hands-on-machine. A mouse each that moves
+  smoothly on this specific desk surface; swap it now if it skips or drags, not mid-lesson.
+  Open the file manager once yourself first and confirm where New Folder, Copy, Paste,
+  Rename, and Delete actually sit in its right-click menu on this build - the wording below
+  assumes fairly standard behaviour but every desktop is a little different.</p>
+  <p><strong>Also open, mentally:</strong> a plan for where "Practice" and "School" will
+  live (Home is fine for both). Nothing in this lesson touches a real file, so a mistake
+  costs nothing - say that out loud near the start if either of them seems nervous about
+  breaking something.</p>
+  <p>Callback to lesson 1 and 2: they already know the storage box holds everything the
+  machine knows. Today they open it, deliberately, for the first time, and start deciding
+  what goes where instead of letting it happen by accident.</p>
+</div>
+
+<section class="slide">
+  <div class="frame">
+    <h2>Five ways to talk to it with your hand</h2>
+    <p class="prompt">Each one means something different. It should.</p>
+  </div>
+</section>
+<div class="notes">
+  <p>Set up the drills without teaching them yet - that happens one at a time on the next
+  five slides. The point of naming it now: click and double-click are not the same
+  instruction, and most of the confusion adults still have with computers traces back to
+  never having that distinction made explicit.</p>
+</div>
+
+<section class="slide">
+  <div class="frame">
+    <h2>One click chooses it</h2>
+    <p class="prompt">Select report.txt. Don't open it.</p>
+    <div class="applet">
+      <div class="mouse-stage">
+        <button type="button" id="select-target">report.txt</button>
+      </div>
+      <p class="mouse-status" id="select-status">&nbsp;</p>
+    </div>
+  </div>
+</section>
+<div class="notes">
+  <p>A single click should only ever select something - highlight it, mark it as the one
+  you mean - and do nothing else. If they click twice quickly out of habit, the widget
+  shows what actually happened: it opened, because two fast clicks is a different
+  instruction, not a harder version of the same one.</p>
+  <p>Let them fail this once. Watching "opened" appear when they only meant to point at
+  something is a better teacher than being told the rule first.</p>
+</div>
+
+<section class="slide">
+  <div class="frame">
+    <h2>Two clicks open it</h2>
+    <p class="prompt">Open Homework.</p>
+    <div class="applet">
+      <div class="mouse-stage">
+        <button type="button" id="open-target">Homework</button>
+      </div>
+      <p class="mouse-status" id="open-status">&nbsp;</p>
+    </div>
+  </div>
+</section>
+<div class="notes">
+  <p>Same idea, other direction: a single click here only selects, and the widget says so.
+  Two clicks, close together, opens it. That closeness in time is the whole trick - ask
+  them to try one slow click, wait a beat, then another slow click, and notice it does not
+  open. Speed is the instruction, not the count.</p>
+</div>
+
+<section class="slide">
+  <div class="frame">
+    <h2>The other button asks first</h2>
+    <p class="prompt">Right-click it. Choose Rename.</p>
+    <div class="applet">
+      <div class="mouse-stage">
+        <button type="button" id="menu-target">notes.txt</button>
+        <ul class="mouse-menu" id="menu-list" hidden>
+          <li><button type="button" data-choice="rename">Rename</button></li>
+          <li><button type="button" data-choice="copy">Copy</button></li>
+          <li><button type="button" data-choice="delete">Delete</button></li>
+        </ul>
+      </div>
+      <p class="mouse-status" id="menu-status">&nbsp;</p>
+    </div>
+  </div>
+</section>
+<div class="notes">
+  <p>Most kids this age have never right-clicked anything on purpose. Show your own hand
+  first if it helps - two fingers on a trackpad, or the right button on a real mouse.</p>
+  <p>The right-click menu is the single most useful thing in this whole lesson: it is how
+  you rename, copy, and delete without dragging anything anywhere. Everything in Part 2
+  uses this menu. If they only remember one thing from the drills, make it this one.</p>
+</div>
+
+<section class="slide">
+  <div class="frame">
+    <h2>Pick it up. Put it down.</h2>
+    <p class="prompt">Drag the file into the folder.</p>
+    <div class="applet">
+      <div class="mouse-stage">
+        <button type="button" class="mouse-drag" id="drag-item">photo.jpg</button>
+        <div class="mouse-dropzone" id="drag-zone">Pictures</div>
+      </div>
+      <p class="mouse-status" id="drag-status">&nbsp;</p>
+      <button type="button" id="drag-reset">Reset</button>
+    </div>
+  </div>
+</section>
+<div class="notes">
+  <p>Press and hold, move, let go over the target. This is the physically hardest of the
+  five for a seven-year-old - small hands and a mouse that is not sized for them make the
+  hold-while-moving part genuinely tricky. Let them retry with Reset as many times as it
+  takes without comment.</p>
+  <p>Say what dragging actually does before they try it on the real machine in Part 2:
+  moves the thing, does not copy it. That surprises people who assume drag is safe because
+  it feels gentle.</p>
+</div>
+
+<section class="slide">
+  <div class="frame">
+    <h2>There's always more below</h2>
+    <p class="prompt">Scroll down. Click homework.txt.</p>
+    <div class="applet">
+      <div class="mouse-scrollbox" id="scroll-list">
+        <ul>
+          <li><button type="button">art-project.jpg</button></li>
+          <li><button type="button">spelling-list.pdf</button></li>
+          <li><button type="button">reading-log.docx</button></li>
+          <li><button type="button">recipe.txt</button></li>
+          <li><button type="button">vacation-photo.jpg</button></li>
+          <li><button type="button">science-fair.pdf</button></li>
+          <li><button type="button">song-lyrics.txt</button></li>
+          <li><button type="button">drawing.png</button></li>
+          <li><button type="button">book-report.docx</button></li>
+          <li><button type="button">map.jpg</button></li>
+          <li><button type="button">homework.txt</button></li>
+          <li><button type="button">notes-old.txt</button></li>
+          <li><button type="button">backup.zip</button></li>
+        </ul>
+      </div>
+      <p class="mouse-status" id="scroll-status">&nbsp;</p>
+    </div>
+  </div>
+</section>
+<div class="notes">
+  <p>A folder with more in it than fits on screen is the normal case, not the exception,
+  and a surprising number of adults never fully realise that what they can see is not
+  always everything that is there.</p>
+  <p>If they click a wrong item, the widget says so gently and they keep going - there is
+  no penalty for guessing, only for not looking.</p>
+</div>
+
+<section class="slide">
+  <div class="frame center">
+    <h1>That's the whole mouse</h1>
+    <p class="prompt">Five moves. Everything else is combinations.</p>
+  </div>
+</section>
+<div class="notes">
+  <p>Natural break point. If today is running long or attention is going, stop here and
+  pick up Part 2 another day - nothing below depends on finishing in one sitting.</p>
+  <p>If you're continuing: stand up, stretch, then sit back down at the real machine. Part
+  2 is entirely on the actual Pi, not the slides.</p>
+</div>
+
+<!-- ============================ Part 2: The real thing · 0:25-0:45 ======= -->
+
+<section class="slide">
+  <div class="frame activity">
+    <h2>Find the file manager</h2>
+    <p class="prompt">One click. It's on the taskbar.</p>
+  </div>
+</section>
+<div class="notes">
+  <p>Point at it once if they can't find it, then never again - they will need to find
+  this icon unprompted for the rest of the course. On stock Raspberry Pi OS it looks like
+  a filing cabinet or a drawer.</p>
+  <p>It should open showing the Home folder. If it opens somewhere else, click Home in the
+  sidebar before continuing.</p>
+</div>
+
+<section class="slide">
+  <div class="frame activity">
+    <h2>Where are you right now?</h2>
+    <p class="prompt">Read it before I tell you.</p>
+  </div>
+</section>
+<div class="notes">
+  <p>Point at the address bar or breadcrumb without saying what it means, and ask them to
+  read it out loud. "Home" is the answer at the start - the top of their own personal
+  storage, same idea as the desk in lesson 2's storage box, just for files instead of the
+  whole machine.</p>
+</div>
+
+<section class="slide">
+  <div class="frame activity">
+    <h2>Go two folders deep</h2>
+    <p class="prompt">Then find your way back.</p>
+  </div>
+</section>
+<div class="notes">
+  <p>Open any existing folder (Desktop, Documents, Pictures all usually exist already),
+  then one of its subfolders if it has one - if not, that's fine, one level deep still
+  makes the point. Watch the breadcrumb grow a step each time.</p>
+  <p>Then back to Home using the Home button or the breadcrumb, not the back arrow - the
+  back arrow retraces clicks, the breadcrumb jumps straight there, and the difference
+  between those two is worth them noticing.</p>
+</div>
+
+<section class="slide">
+  <div class="frame activity">
+    <h2>Make one</h2>
+    <p class="prompt">Right-click empty space. New Folder.</p>
+  </div>
+</section>
+<div class="notes">
+  <p>Empty space inside the Home window, not on an existing icon. The option might read
+  "New Folder" directly or live under a "Create New" submenu - look before the lesson so
+  you're not hunting live.</p>
+  <p>Name it <strong>Practice</strong>. Everything for the rest of Part 2 happens to this
+  one folder, so nothing that matters is at risk.</p>
+</div>
+
+<section class="slide">
+  <div class="frame activity">
+    <h2>Copy leaves two</h2>
+    <p class="prompt">Copy Practice. Paste it. Count the folders.</p>
+  </div>
+</section>
+<div class="notes">
+  <p>Right-click Practice &rarr; Copy, then right-click empty space &rarr; Paste. A second
+  folder appears, probably named "Practice (copy)" or similar. Two folders now exist where
+  there was one a moment ago - say that plainly, it is the whole definition of copy.</p>
+</div>
+
+<section class="slide">
+  <div class="frame activity">
+    <h2>Move leaves one</h2>
+    <p class="prompt">Drag the copy into the original.</p>
+  </div>
+</section>
+<div class="notes">
+  <p>Drag "Practice (copy)" onto the Practice folder icon and let go. It disappears from
+  the top level - not deleted, just relocated, now living inside Practice. Open Practice
+  together and find it in there to prove it.</p>
+  <p>While it's selected, right-click &rarr; Rename it to <strong>Trash Me</strong> - this
+  reuses the rename skill from the drills, and sets up the next slide cleanly.</p>
+  <p>Contrast worth saying out loud: copy made two. Move never changes the count, it only
+  changes where the one thing is.</p>
+</div>
+
+<section class="slide">
+  <div class="frame activity">
+    <h2>Delete it, safely</h2>
+    <p class="prompt">Right-click Trash Me. Delete.</p>
+  </div>
+</section>
+<div class="notes">
+  <p>It should vanish from view and land in the Trash or Wastebasket, not disappear
+  forever. Open the Trash together and find it sitting there, still recoverable.</p>
+  <p>Say clearly: deleting is not permanent until the trash itself is emptied, which is a
+  separate, deliberate action they are not doing today. That is the whole reason deleting
+  something you're not sure about is safe to try.</p>
+</div>
+
+<!-- ============================ Part 3: Build it for real · 0:45-1:10 ==== -->
+
+<section class="slide">
+  <div class="frame">
+    <h2>A good name explains itself</h2>
+    <p class="prompt">Not "New Folder (2)."</p>
+  </div>
+</section>
+<div class="notes">
+  <p>Quick, not a lecture. A name should say what's inside without opening it - "Math
+  Homework" beats "stuff" and beats an unrenamed "New Folder (2)" left over from not
+  finishing the job. Ask them what's wrong with naming everything "New Folder" - they will
+  get it immediately once asked.</p>
+</div>
+
+<section class="slide">
+  <div class="frame activity">
+    <h2>Build School</h2>
+    <p class="prompt">One folder per real subject. Then go deeper.</p>
+  </div>
+</section>
+<div class="notes">
+  <p>The main event. In Home, make a folder called <strong>School</strong>. Inside it, one
+  folder per actual subject they take - Math, Science, Reading, whatever their real
+  classes are, not a list you hand them. Inside each subject, 2-3 folders for the kinds of
+  thing that pile up: Homework, Notes, Tests is a good default if they're stuck for ideas.</p>
+  <p>That's three levels under Home: School &rarr; Math &rarr; Homework. Every skill from
+  today is in this one task - New Folder, Rename if they mistype, and organizing on
+  purpose instead of by accident.</p>
+  <p>Let the two of them build genuinely different structures if their real subjects
+  differ. This is not a test with one right answer; it is their filing system, for their
+  actual schoolwork, starting today.</p>
+</div>
+
+<section class="slide">
+  <div class="frame activity">
+    <h2>Go one level deeper</h2>
+    <p class="prompt">If there's time. This month's homework gets its own folder.</p>
+  </div>
+</section>
+<div class="notes">
+  <p>Optional stretch, mainly for the older one if the younger one is done and happy.
+  Inside Math &rarr; Homework, a folder for the current month reaches a fourth level:
+  School &rarr; Math &rarr; Homework &rarr; October. Not required - three levels is a
+  complete answer to today's goal.</p>
+</div>
+
+<section class="slide">
+  <div class="frame activity">
+    <h2>Walk your own tree</h2>
+    <p class="prompt">Get to one folder. No help, no hints.</p>
+  </div>
+</section>
+<div class="notes">
+  <p>Name a specific destination inside their own new structure - "get to where Science
+  homework goes" - and watch them navigate there with no help. This is the real assessment
+  for the whole lesson: can they find their way through something they built, using only
+  what they learned today.</p>
+  <p>If they get lost, that's useful information, not a failure - ask what they expected
+  to see at each click, and it usually reveals exactly which folder needs a better name.</p>
+</div>
+
+<section class="slide">
+  <div class="frame center dark">
+    <h1>Not losing your files starts with a folder that makes sense</h1>
+  </div>
+</section>
+<div class="notes">
+  <p>That line is the course's own thesis, almost word for word - this lesson is where it
+  stops being an idea and starts being something they actually did.</p>
+  <p>Homework, genuinely: keep using School for real classwork as it comes in. Not a
+  worksheet, just the habit continuing past today.</p>
+  <p>Still ahead, whenever you loop back: lessons 3-6 finish the rest of what a computer is
+  physically made of, and lesson 10 sorts out what a file's icon actually tells you versus
+  what it doesn't.</p>
+</div>
+
+</div>
+
+<div class="bar">
+  <a href="../index.html">All lessons</a>
+  <button data-go="prev" aria-label="Previous slide">&larr;</button>
+  <button data-go="next" aria-label="Next slide">&rarr;</button>
+  <span class="count"></span>
+  <button data-go="notes" title="Stack the slides with the notes (N)">N</button>
+</div>
+
+<script src="../nav.js"></script>
+
+<script>
+// Five small drills that teach deliberate mouse use: select, open,
+// right-click, drag, scroll. Each wires itself up only if its markup is on
+// the page. No score, no timer - a task with a clear "yes, that's it".
+// Fixes: kids treat click and double-click as interchangeable, don't expect
+// the other mouse button to do anything, and don't expect a list to hide
+// content below the fold.
+
+(function selectDemo() {
+  const el = document.getElementById('select-target');
+  const status = document.getElementById('select-status');
+  if (!el) return;
+  let timer = null;
+  el.addEventListener('click', () => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      el.dataset.selected = 'true';
+      el.dataset.open = 'false';
+      status.textContent = "Selected. A single click only ever does that.";
+    }, 260);
+  });
+  el.addEventListener('dblclick', () => {
+    clearTimeout(timer);
+    el.dataset.open = 'true';
+    status.textContent = "That opened it - two fast clicks always will. Try once.";
+    setTimeout(() => { el.dataset.open = 'false'; }, 900);
+  });
+})();
+
+(function openDemo() {
+  const el = document.getElementById('open-target');
+  const status = document.getElementById('open-status');
+  if (!el) return;
+  let timer = null;
+  el.addEventListener('click', () => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      status.textContent = "Just selected. Click again, fast, to open it.";
+    }, 260);
+  });
+  el.addEventListener('dblclick', () => {
+    clearTimeout(timer);
+    el.dataset.open = 'true';
+    status.textContent = "Opened!";
+  });
+})();
+
+(function menuDemo() {
+  const el = document.getElementById('menu-target');
+  const menu = document.getElementById('menu-list');
+  const status = document.getElementById('menu-status');
+  if (!el) return;
+  el.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+    menu.hidden = false;
+  });
+  document.addEventListener('click', (e) => {
+    if (e.target === el) return; // contextmenu already opened it this turn
+    if (!menu.contains(e.target)) menu.hidden = true;
+  });
+  menu.addEventListener('click', (e) => {
+    const choice = e.target.dataset.choice;
+    if (!choice) return;
+    menu.hidden = true;
+    status.textContent = choice === 'rename'
+      ? "That's it - the right-click menu is how you rename, copy, and delete."
+      : `You picked ${choice}. Try Rename - that's today's task.`;
+  });
+})();
+
+(function dragDemo() {
+  const drag = document.getElementById('drag-item');
+  const zone = document.getElementById('drag-zone');
+  const status = document.getElementById('drag-status');
+  const resetBtn = document.getElementById('drag-reset');
+  if (!drag) return;
+  let start = null;
+
+  function overlaps() {
+    const a = drag.getBoundingClientRect();
+    const b = zone.getBoundingClientRect();
+    return !(a.right < b.left || a.left > b.right || a.bottom < b.top || a.top > b.bottom);
+  }
+
+  drag.addEventListener('pointerdown', (e) => {
+    drag.setPointerCapture(e.pointerId);
+    drag.dataset.dragging = 'true';
+    start = { x: e.clientX, y: e.clientY };
+  });
+  drag.addEventListener('pointermove', (e) => {
+    if (!start) return;
+    drag.style.transform = `translate(${e.clientX - start.x}px, ${e.clientY - start.y}px)`;
+    zone.dataset.over = String(overlaps());
+  });
+  drag.addEventListener('pointerup', () => {
+    if (!start) return;
+    start = null;
+    drag.dataset.dragging = 'false';
+    if (overlaps()) {
+      zone.dataset.has = 'true';
+      drag.hidden = true;
+      status.textContent = "Moved. The file is inside the folder now.";
+    } else {
+      drag.style.transform = '';
+      zone.dataset.over = 'false';
+    }
+  });
+  resetBtn.addEventListener('click', () => {
+    drag.hidden = false;
+    drag.style.transform = '';
+    zone.dataset.has = 'false';
+    zone.dataset.over = 'false';
+    status.textContent = ' ';
+  });
+})();
+
+(function scrollDemo() {
+  const box = document.getElementById('scroll-list');
+  const status = document.getElementById('scroll-status');
+  if (!box) return;
+  box.addEventListener('click', (e) => {
+    const btn = e.target.closest('button');
+    if (!btn) return;
+    status.textContent = btn.textContent === 'homework.txt'
+      ? "Found it. That is exactly what scrolling is for."
+      : "Not that one - keep going.";
+  });
+})();
+</script>
+
+</body>
+</html>

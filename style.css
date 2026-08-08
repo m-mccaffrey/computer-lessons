@@ -268,6 +268,116 @@ a { color: var(--focus); }
   color: var(--paper);
 }
 
+/* -------------------------------------------------------- mouse widgets */
+/* Five small drills that teach deliberate mouse use: select, open,
+   right-click, drag, scroll. Built on .applet button above - these rules
+   only add the states a plain button doesn't have. Flat throughout, no
+   blur shadows, to match the rest of the site. */
+
+.mouse-stage {
+  display: flex;
+  align-items: flex-start;
+  gap: 3cqw;
+  min-height: 10cqw;
+  position: relative;
+}
+
+.mouse-stage button[data-selected="true"] {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.mouse-stage button[data-open="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--paper);
+}
+
+.mouse-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin: 0.5cqw 0 0;
+  padding: 0.3cqw 0;
+  list-style: none;
+  background: var(--paper);
+  border: 1px solid var(--grid);
+  border-radius: 2px;
+  min-width: 12cqw;
+  z-index: 5;
+}
+
+.mouse-menu[hidden] { display: none; }
+
+.mouse-menu button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  /* Denser than a normal .applet button: three of these stack in a small
+     popover, and at a phone-landscape frame size every px of row height
+     matters for staying inside the frame. */
+  padding-top: 0.6cqw;
+  padding-bottom: 0.6cqw;
+}
+
+.mouse-dropzone {
+  font-family: var(--mono);
+  padding: 1.2cqw 1.6cqw;
+  border: 2px dashed var(--ink-3);
+  border-radius: 2px;
+  color: var(--ink-2);
+  min-width: 11cqw;
+  text-align: center;
+}
+
+.mouse-dropzone[data-over="true"] { border-color: var(--accent); color: var(--accent); }
+
+.mouse-dropzone[data-has="true"] {
+  border-style: solid;
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.mouse-drag { cursor: grab; touch-action: none; }
+
+.mouse-drag[data-dragging="true"] {
+  cursor: grabbing;
+  position: relative;
+  z-index: 10;
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.mouse-scrollbox {
+  /* Capped low enough that headline + prompt + this + the status line all
+     fit inside the frame even at a very short landscape viewport. */
+  max-height: 14cqw;
+  overflow-y: auto;
+  border: 1px solid var(--grid);
+  border-radius: 2px;
+  background: var(--paper);
+  width: 100%;
+  max-width: 42cqw;
+}
+
+.mouse-scrollbox ul { list-style: none; margin: 0; padding: 0; }
+
+.mouse-scrollbox button {
+  width: 100%;
+  text-align: left;
+  border: 0;
+  border-bottom: 1px solid var(--grid);
+  border-radius: 0;
+  background: none;
+}
+
+.mouse-scrollbox li:last-child button { border-bottom: 0; }
+
+.mouse-status { min-height: 1.4em; }
+
 /* --------------------------------------------------------------- notes */
 /* Hidden while teaching. Press N to stack the slides with the notes under
    each one — that is how you read the lesson the night before. */
