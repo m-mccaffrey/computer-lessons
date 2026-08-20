@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 345" role="img"
+     aria-label="The five standard logic gate symbols: NOT, AND, OR, NAND and NOR.
+                 NAND and NOR are the same shapes as AND and OR with a small circle
+                 added on the output.">
+  <g fill="#E2E7EC" stroke="#12171C" stroke-width="3" stroke-linejoin="round">
+    <!-- NOT: triangle -->
+    <path d="M70 55 L140 90 L70 125 Z"/>
+    <!-- AND: flat left, round right -->
+    <path d="M285 55 L340 55 A35 35 0 0 1 340 125 L285 125 Z"/>
+    <!-- OR: curved left, pointed right -->
+    <path d="M510 55 Q540 90 510 125 Q575 125 605 90 Q575 55 510 55 Z"/>
+    <!-- NAND -->
+    <path d="M172 215 L227 215 A35 35 0 0 1 227 285 L172 285 Z"/>
+    <!-- NOR -->
+    <path d="M397 215 Q427 250 397 285 Q462 285 492 250 Q462 215 397 215 Z"/>
+  </g>
+
+  <!-- The inverting bubbles. These are the whole difference between
+       AND/OR and NAND/NOR, so they are drawn in the accent colour. -->
+  <g fill="#EDF0F3" stroke="#C2610C" stroke-width="3">
+    <circle cx="148" cy="90" r="8"/>
+    <circle cx="270" cy="250" r="8"/>
+    <circle cx="500" cy="250" r="8"/>
+  </g>
+
+  <g stroke="#444F59" stroke-width="3" fill="none" stroke-linecap="round">
+    <path d="M40 90 H70"/>          <path d="M156 90 H185"/>
+    <path d="M255 72 H285"/>        <path d="M255 108 H285"/>   <path d="M375 90 H405"/>
+    <path d="M480 72 H515"/>        <path d="M480 108 H515"/>   <path d="M605 90 H635"/>
+    <path d="M142 232 H172"/>       <path d="M142 268 H172"/>   <path d="M278 250 H308"/>
+    <path d="M367 232 H402"/>       <path d="M367 268 H402"/>   <path d="M508 250 H538"/>
+  </g>
+
+  <g font-family="ui-monospace, monospace" font-size="22" font-weight="600"
+     fill="#12171C" text-anchor="middle" letter-spacing="1.5">
+    <text x="112" y="165">NOT</text>
+    <text x="330" y="165">AND</text>
+    <text x="557" y="165">OR</text>
+    <text x="225" y="325">NAND</text>
+    <text x="452" y="325">NOR</text>
+  </g>
+</svg>

@@ -12,7 +12,7 @@ import html
 from pathlib import Path
 
 # Lessons that have an HTML file. Everything else is listed, greyed, unlinked.
-BUILT = {1, 2, 9}
+BUILT = {1, 2, 9, 21}
 
 UNITS = [
     (0, "What Is This Thing?",
@@ -78,7 +78,7 @@ LESSONS = [
     (19, 2, "Slides Support the Talker", "Build a slide deck that helps them talk instead of replacing them."),
     (20, 2, "Present Day", "Give a three-minute talk with slides, and move a chart between three applications."),
 
-    (21, 3, "Base Ten Is a Choice", "Count to 31 on their fingers in binary and explain why."),
+    (21, 3, "Only Two Things", "Explain why a computer uses only 0 and 1, count to 31 in binary on one hand, and predict the output of NOT, AND, OR, NAND and NOR."),
     (22, 3, "Bits, Bytes, Gigabytes", "Estimate how many photos or songs fit on a given drive."),
     (23, 3, "Bitmaps", "Compute the file size of a picture from its dimensions, with a pencil."),
     (24, 3, "Color Is Three Numbers", "Predict a hex color code from an RGB mix, and read one in the wild."),

@@ -376,7 +376,130 @@ a { color: var(--focus); }
 
 .mouse-scrollbox li:last-child button { border-bottom: 0; }
 
-.mouse-status { min-height: 1.4em; }
+.status { min-height: 1.4em; }
+
+/* -------------------------------------------------------- logic widgets */
+/* Lesson 21. A lamp, a row of bit switches, and a generic gate box with a
+   live truth table. Same vocabulary as the mouse widgets - flat, bordered,
+   mono - so a widget always looks like a widget across the whole course. */
+
+.lamp {
+  width: 6cqw;
+  height: 6cqw;
+  border-radius: 50%;
+  border: 2px solid var(--ink-3);
+  background: var(--paper-2);
+  flex: none;
+}
+
+.lamp[data-on="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+/* ---- the voltage slider: where is halfway? ---- */
+
+.signal {
+  display: flex;
+  align-items: center;
+  gap: 3cqw;
+  flex-wrap: wrap;
+}
+
+.signal input[type="range"] {
+  accent-color: var(--accent);
+  width: 34cqw;
+}
+
+.signal__reading {
+  font-family: var(--mono);
+  min-width: 9cqw;
+}
+
+/* ---- bit switches ---- */
+
+.bits {
+  display: flex;
+  gap: 1.4cqw;
+}
+
+.bit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4cqw;
+  font-family: var(--mono);
+  padding: 1.2cqw 1.8cqw;
+  background: var(--paper-2);
+  border: 1px solid var(--ink-3);
+  border-radius: 2px;
+  color: inherit;
+  cursor: pointer;
+  font-size: inherit;
+  line-height: 1.2;
+}
+
+.bit__place { font-size: 0.75em; color: var(--ink-3); }
+.bit__val { font-size: 2em; font-weight: 700; }
+
+.bit[data-on="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--paper);
+}
+
+.bit[data-on="true"] .bit__place { color: var(--paper); }
+
+/* ---- a gate, with its truth table ---- */
+
+.gate {
+  display: flex;
+  align-items: center;
+  gap: 3cqw;
+  flex-wrap: wrap;
+}
+
+.gate__io {
+  display: flex;
+  flex-direction: column;
+  gap: 1cqw;
+}
+
+.gate__name {
+  font-family: var(--mono);
+  font-weight: 700;
+  padding: 1.4cqw 2cqw;
+  border: 2px solid var(--ink);
+  border-radius: 2px;
+  background: var(--paper-2);
+  margin: 0;
+}
+
+.tt {
+  border-collapse: collapse;
+  font-family: var(--mono);
+  font-size: 0.85em;
+}
+
+.tt th,
+.tt td {
+  padding: 0.35cqw 1.3cqw;
+  border: 1px solid var(--grid);
+  text-align: center;
+}
+
+.tt th {
+  color: var(--ink-3);
+  font-weight: 600;
+}
+
+/* The row matching the switches right now. This is the whole point of
+   showing the table live rather than as a picture. */
+.tt tr[data-current="true"] td {
+  background: var(--accent);
+  color: var(--paper);
+  border-color: var(--accent);
+}
 
 /* --------------------------------------------------------------- notes */
 /* Hidden while teaching. Press N to stack the slides with the notes under

@@ -1,0 +1,739 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>21. Only Two Things</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<!--
+  Unplugged until the very last slide, which links out to a logic simulator.
+  Everything before that runs in these slides - the kids follow along on their
+  own screens and click the widgets themselves.
+
+  This lesson runs long: budget 70-90 minutes. Three natural break points,
+  marked in the notes - after "Every wire is on or off" (slide 5), after the
+  finger counting (slide 10), and after the quiz (slide 16). Any one of them
+  is a clean place to stop and pick up another day.
+
+  Ordering note: this is Unit 3, taught well ahead of Units 1 and 2. Nothing
+  in it depends on anything after lesson 2, so teaching it now is fine.
+
+  data-unit sets the colour. 3 = Everything Is Numbers.
+-->
+<body data-unit="3">
+
+<div class="deck">
+
+<!-- ============================ Part 1: Two things · 0:00-0:15 ========== -->
+
+<section class="slide">
+  <div class="frame center">
+    <p class="eyebrow">Unit 3 · Everything Is Numbers</p>
+    <h1>What is the smallest thing a computer can know?</h1>
+  </div>
+</section>
+<div class="notes">
+  <p>Ask it cold and let them guess. Expect "a letter", "a number", "a word". All
+  reasonable, all too big.</p>
+  <p><strong>Before they walk in:</strong> nothing to gather. This one is unplugged
+  except the last slide, which opens a logic simulator in a browser - have that
+  ready on one machine. Paper and pencils are useful for the counting part but not
+  required. Notebooks as always.</p>
+  <p><strong>What today is:</strong> a break from driving the machine, spent looking at
+  the world from the machine's side. It is the first lesson in the course that is about
+  ideas rather than equipment, and it is the foundation for everything in Unit 3.</p>
+  <p><strong>What to hold back:</strong> no binary arithmetic, no bytes, no ASCII, no
+  XOR. Those are lessons 22, 25, and later. Today is: only two things exist, here is
+  how you count with them, here is how you decide with them.</p>
+</div>
+
+<section class="slide">
+  <div class="frame">
+    <h2>One wire, two answers</h2>
+    <p class="prompt">Flip it.</p>
+    <div class="applet">
+      <div class="signal">
+        <button type="button" id="switch-btn" aria-pressed="false">OFF</button>
+        <div class="lamp" id="switch-lamp" data-on="false"></div>
+        <p class="big" id="switch-bit">0</p>
+      </div>
+      <p class="status" id="switch-status">&nbsp;</p>
+    </div>
+  </div>
+</section>
+<div class="notes">
+  <p>Let them click it a dozen times. It is a light switch, and that is the point -
+  there is nothing clever here yet.</p>
+  <p>The thing to name: the wire is either carrying electricity or it is not. We could
+  call those two states anything - on and off, high and low, yes and no. We happen to
+  write them <strong>1</strong> and <strong>0</strong>. Those are just names for the two
+  things a wire can be.</p>
+  <p>Ask: how many different things can this one wire tell you? Two. That is the smallest
+  piece of knowing there is.</p>
+</div>
+
+<section class="slide">
+  <div class="frame">
+    <h2>Where is halfway?</h2>
+    <p class="prompt">Slide it. Watch the light decide.</p>
+    <div class="applet">
+      <div class="signal">
+        <input type="range" id="volts" min="0" max="50" value="8"
+               aria-label="Voltage on the wire">
+        <p class="signal__reading"><span id="volt-val">0.8</span>V</p>
+        <div class="lamp" id="volt-lamp" data-on="false"></div>
+        <p class="big" id="volt-bit">0</p>
+      </div>
+      <button type="button" id="volt-wobble">Wobble the wire</button>
+      <p class="status" id="volt-status">&nbsp;</p>
+    </div>
+  </div>
+</section>
+<div class="notes">
+  <p>Now the real question, and the reason computers work at all. The voltage on a wire
+  is not tidy - it drifts, it wobbles, it picks up interference. So the machine does not
+  ask "how much?" It asks one much easier question: <strong>is it above halfway or
+  below?</strong> Above, call it 1. Below, call it 0.</p>
+  <p>Slide it slowly through the middle and watch the light snap. There is no in-between
+  state. There is a real in-between <em>voltage</em>, and the machine simply refuses to
+  care about it.</p>
+  <p>Then press Wobble the wire, repeatedly. The number jiggles. The answer does not.
+  That is the whole reason for using two things instead of ten: you can be sloppy and
+  still be right.</p>
+  <p>If they ask why not ten levels - that is exactly the right question. With ten
+  levels, a small wobble makes a 6 look like a 7 and the machine reads the wrong thing.
+  With two, the wobble would have to be enormous before it mattered.</p>
+</div>
+
+<section class="slide">
+  <div class="frame">
+    <h2>Every wire is on or off</h2>
+    <p class="prompt">That is everything a computer has to work with.</p>
+  </div>
+</section>
+<div class="notes">
+  <p>Land it plainly, then let it sit for a second, because it should feel like too
+  little. Every photo, every song, every game they have ever played is millions of wires
+  that are each only ever on or off.</p>
+  <p>The two questions that follow are the rest of today, and it is worth saying them out
+  loud now so they know where this is going: if we only have two things, how do we count?
+  And what else could those two things mean?</p>
+  <p><strong>Break point.</strong> Clean place to stop if you are splitting this
+  across two days.</p>
+</div>
+
+<!-- ============================ Part 2: Counting · 0:15-0:32 =========== -->
+
+<section class="slide">
+  <div class="frame center">
+    <h1>So how do you count past one?</h1>
+  </div>
+</section>
+<div class="notes">
+  <p>Ask and wait. This is a genuinely hard question and they will not get it cold - the
+  point is to feel stuck for a moment before the next slide hands them the answer they
+  have known since they were four.</p>
+</div>
+
+<section class="slide">
+  <div class="frame activity">
+    <h2>How do you count past nine?</h2>
+    <p class="prompt">Write it. What happened?</p>
+  </div>
+</section>
+<div class="notes">
+  <p>Paper. Have them write 8, 9, and then the next one. They will write 10 without
+  thinking, because they have done it ten thousand times.</p>
+  <p>Now make them notice what they just did. There is no single symbol for ten. We ran
+  out of digits at 9, so we started a <strong>new column</strong> and put a 1 in it. The
+  new column is worth ten of the old one.</p>
+  <p>Push once more: what is the next column worth? A hundred - ten of the tens. Each
+  column is worth ten times the one to its right, because we have ten symbols.</p>
+  <p>Then the turn: a computer has two symbols. So it runs out immediately - after 1. It
+  does the exact same trick, but each new column is only worth <strong>double</strong>
+  the one to its right.</p>
+</div>
+
+<section class="slide">
+  <div class="frame">
+    <h2>Each column is worth double</h2>
+    <p class="prompt">Click the switches. Watch the number.</p>
+    <div class="applet">
+      <div class="bits" id="count-bits">
+        <button type="button" class="bit" data-value="16" data-on="false">
+          <span class="bit__place">16</span><span class="bit__val">0</span></button>
+        <button type="button" class="bit" data-value="8" data-on="false">
+          <span class="bit__place">8</span><span class="bit__val">0</span></button>
+        <button type="button" class="bit" data-value="4" data-on="false">
+          <span class="bit__place">4</span><span class="bit__val">0</span></button>
+        <button type="button" class="bit" data-value="2" data-on="false">
+          <span class="bit__place">2</span><span class="bit__val">0</span></button>
+        <button type="button" class="bit" data-value="1" data-on="false">
+          <span class="bit__place">1</span><span class="bit__val">0</span></button>
+      </div>
+      <p class="big">= <span id="count-dec">0</span></p>
+    </div>
+  </div>
+</section>
+<div class="notes">
+  <p>Five switches. The small grey number above each is what that column is worth; the
+  big number below is whether it is on. Add up the ones that are on, and that is the
+  number.</p>
+  <p>Let them explore freely for a minute before you ask anything. Then some good
+  prompts: turn on exactly one switch at a time and read the values out - 1, 2, 4, 8, 16,
+  each one double the last. Turn them all on: 31. Ask why 31 and not 32 (because we start
+  at 0, so five switches give thirty-two different patterns, 0 through 31).</p>
+  <p>Then count up together from 0, one at a time, and watch the pattern of flips. The
+  rightmost switch changes every time. The next changes half as often. That rhythm is
+  what counting looks like when you only have two symbols.</p>
+</div>
+
+<section class="slide">
+  <div class="frame">
+    <h2>Can you make thirteen?</h2>
+    <div class="applet">
+      <p class="big">Target: <span id="target-num">13</span></p>
+      <div class="bits" id="target-bits">
+        <button type="button" class="bit" data-value="16" data-on="false">
+          <span class="bit__place">16</span><span class="bit__val">0</span></button>
+        <button type="button" class="bit" data-value="8" data-on="false">
+          <span class="bit__place">8</span><span class="bit__val">0</span></button>
+        <button type="button" class="bit" data-value="4" data-on="false">
+          <span class="bit__place">4</span><span class="bit__val">0</span></button>
+        <button type="button" class="bit" data-value="2" data-on="false">
+          <span class="bit__place">2</span><span class="bit__val">0</span></button>
+        <button type="button" class="bit" data-value="1" data-on="false">
+          <span class="bit__place">1</span><span class="bit__val">0</span></button>
+      </div>
+      <p class="status" id="target-status">&nbsp;</p>
+      <button type="button" id="target-next">Next target</button>
+    </div>
+  </div>
+</section>
+<div class="notes">
+  <p>Take turns. Five targets in the list, then it loops.</p>
+  <p>The strategy worth drawing out of them, rather than telling: start with the biggest
+  column that still fits. For 13 - does 16 fit? No, too big. Does 8 fit? Yes, and 5 is
+  left. Does 4 fit? Yes, 1 left. Then the 1. That is 8 + 4 + 1, and it is the same method
+  as making change with coins.</p>
+  <p>If one of them is racing ahead, ask them to predict the switch pattern out loud
+  before touching anything.</p>
+</div>
+
+<section class="slide">
+  <div class="frame activity">
+    <h2>Count to thirty-one on one hand</h2>
+    <p class="prompt">Thumb is 1. Then 2, 4, 8, 16.</p>
+  </div>
+</section>
+<div class="notes">
+  <p>Hands up. Each finger is a switch: down is 0, up is 1. Thumb is the 1s column, then
+  2, 4, 8, and 16 out to the little finger.</p>
+  <p>Count up together from 0 and go slowly - the carries are the hard part and the fun
+  part. Getting from 3 (thumb and index up) to 4 means both come down and the middle
+  finger goes up, which feels wrong until it clicks.</p>
+  <p>Then the party trick: ask them to show 31. All five up. Ask them to show 21, or
+  their age, or the day of the month. On one hand, they can now count higher than they
+  ever could before, and that is a genuinely delightful thing to be able to do.</p>
+  <p><strong>Break point.</strong> The second clean stopping place.</p>
+</div>
+
+<!-- ============================ Part 3: True and false · 0:32-0:48 ===== -->
+
+<section class="slide">
+  <div class="frame center">
+    <h1>What else could two things mean?</h1>
+  </div>
+</section>
+<div class="notes">
+  <p>Ask and wait again. They have just spent fifteen minutes on 1 and 0 meaning numbers.
+  Now break that: the two states do not have to mean numbers at all.</p>
+  <p>Fish for it if they are stuck - what else in the world comes in exactly two? Yes and
+  no. On and off. Open and shut. Right and wrong.</p>
+</div>
+
+<section class="slide">
+  <div class="frame">
+    <h2>One is true. Zero is false.</h2>
+    <p class="prompt">Same two things. Completely different job.</p>
+  </div>
+</section>
+<div class="notes">
+  <p>Nothing about the wire changes. The exact same on-or-off is now answering a question
+  instead of counting.</p>
+  <p>Make it concrete with something from their life: "is the door shut?" is a question
+  with only two answers, so one wire can hold it. "Is anyone in the room?" Same. A
+  computer full of wires is full of answers to yes-or-no questions.</p>
+  <p>Next three slides introduce the three ways to combine those answers. Do not rush -
+  one gate per slide, and let them find each rule themselves from the table.</p>
+</div>
+
+<section class="slide">
+  <div class="frame">
+    <h2>NOT flips it</h2>
+    <p class="prompt">One in. One out. Opposite.</p>
+    <div class="applet">
+      <div class="gate" data-gate="not">
+        <div class="gate__io">
+          <button type="button" class="toggle" data-name="A" aria-pressed="false">A 0</button>
+        </div>
+        <p class="gate__name">NOT</p>
+        <div class="lamp" data-on="false"></div>
+        <table class="tt">
+          <thead><tr><th>A</th><th>OUT</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="notes">
+  <p>The simplest gate. Whatever goes in, the opposite comes out.</p>
+  <p>The highlighted row in the table is the one matching the switch right now. Flip the
+  switch and watch the highlight move. That is worth pointing out explicitly the first
+  time - the table is not decoration, it is a list of every possible situation, and they
+  are always standing in one of its rows.</p>
+  <p>A NOT gate with two rows is a complete description of everything it can ever do.
+  That is a genuinely nice idea: the whole behaviour of a part, written out in full, in
+  two lines.</p>
+</div>
+
+<section class="slide">
+  <div class="frame">
+    <h2>AND is fussy</h2>
+    <p class="prompt">Try all four. When does it light?</p>
+    <div class="applet">
+      <div class="gate" data-gate="and">
+        <div class="gate__io">
+          <button type="button" class="toggle" data-name="A" aria-pressed="false">A 0</button>
+          <button type="button" class="toggle" data-name="B" aria-pressed="false">B 0</button>
+        </div>
+        <p class="gate__name">AND</p>
+        <div class="lamp" data-on="false"></div>
+        <table class="tt">
+          <thead><tr><th>A</th><th>B</th><th>OUT</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="notes">
+  <p>Two switches now, so four possible situations, so four rows. Have them visit all
+  four deliberately rather than randomly - both off, one on, the other on, both on.</p>
+  <p>Ask them to state the rule before you do. The answer you want, in their words: it
+  only lights when <em>both</em> are on. AND is the fussy one, the one that is hard to
+  please.</p>
+  <p>Real example worth giving: a microwave runs only if the door is shut AND the timer
+  is running. Either one alone is not enough. That is an AND gate, and it is why you
+  cannot cook your hand.</p>
+</div>
+
+<section class="slide">
+  <div class="frame">
+    <h2>OR is easy to please</h2>
+    <p class="prompt">All four again. Spot the difference.</p>
+    <div class="applet">
+      <div class="gate" data-gate="or">
+        <div class="gate__io">
+          <button type="button" class="toggle" data-name="A" aria-pressed="false">A 0</button>
+          <button type="button" class="toggle" data-name="B" aria-pressed="false">B 0</button>
+        </div>
+        <p class="gate__name">OR</p>
+        <div class="lamp" data-on="false"></div>
+        <table class="tt">
+          <thead><tr><th>A</th><th>B</th><th>OUT</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="notes">
+  <p>Same four situations, different rule: it lights if <em>either</em> one is on. Only
+  the all-off row stays dark.</p>
+  <p>Worth heading off the usual confusion: in everyday speech "or" often means one or
+  the other but not both - "you can have cake or ice cream". This OR is happy with both.
+  The picky version has its own gate and they will meet it another day.</p>
+  <p>Real example: a car dings if the driver's belt is undone OR the passenger's belt is
+  undone. Either is enough to make noise.</p>
+</div>
+
+<section class="slide">
+  <div class="frame">
+    <h2>Predict the light</h2>
+    <div class="applet">
+      <p class="big" id="quiz-q">&nbsp;</p>
+      <p>
+        <button type="button" data-answer="1">ON</button>
+        <button type="button" data-answer="0">OFF</button>
+        <button type="button" id="quiz-next" hidden>Next</button>
+      </p>
+      <p class="status" id="quiz-status">&nbsp;</p>
+      <p class="status" id="quiz-score">&nbsp;</p>
+    </div>
+  </div>
+</section>
+<div class="notes">
+  <p>Six questions, mixed gates, answer out loud before clicking. Take turns - the
+  seven-year-old goes first on odd numbers so the nine-year-old does not get every one.</p>
+  <p>It keeps a running count of how many were right, which is there to make it feel like
+  a game and nothing else. Nobody is being graded. If one of them gets a run of wrong
+  answers, go back to the gate slide and flip switches together rather than pushing on.</p>
+  <p><strong>Break point.</strong> The last clean stopping place before the final stretch.</p>
+</div>
+
+<!-- ============================ Part 4: Combining · 0:48-1:00 ========== -->
+
+<section class="slide">
+  <div class="frame">
+    <h2>What if we flip the answer?</h2>
+    <p class="prompt">Watch the OUT column.</p>
+    <div class="applet">
+      <div class="gate" data-gate="and" id="nand-gate">
+        <div class="gate__io">
+          <button type="button" class="toggle" data-name="A" aria-pressed="false">A 0</button>
+          <button type="button" class="toggle" data-name="B" aria-pressed="false">B 0</button>
+        </div>
+        <p class="gate__name">AND</p>
+        <div class="lamp" data-on="false"></div>
+        <table class="tt">
+          <thead><tr><th>A</th><th>B</th><th>OUT</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <button type="button" id="nand-flip" data-target="#nand-gate"
+                data-gates="and,nand">Add a NOT</button>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="notes">
+  <p>Start on AND and make sure they can still state its rule. Then press Add a NOT and
+  watch every answer in the OUT column turn into its opposite.</p>
+  <p>That is all NAND is: an AND gate with a NOT stuck on the end. The name is literally
+  the two names squashed together - Not-AND. Press the button back and forth a few times
+  so they see the column flip and flip back.</p>
+  <p>The new rule, in their words: it lights <em>unless</em> both are on. The fussy gate,
+  turned inside out.</p>
+  <p>Worth mentioning if they are enjoying it: you can build every other gate out of
+  nothing but NANDs, and some real chips are made almost entirely of them. Do not prove
+  it - just plant it, because it is the kind of fact that makes someone want to go and
+  find out.</p>
+</div>
+
+<section class="slide">
+  <div class="frame">
+    <h2>OR, flipped over</h2>
+    <p class="prompt">Same trick. Guess before you press.</p>
+    <div class="applet">
+      <div class="gate" data-gate="or" id="nor-gate">
+        <div class="gate__io">
+          <button type="button" class="toggle" data-name="A" aria-pressed="false">A 0</button>
+          <button type="button" class="toggle" data-name="B" aria-pressed="false">B 0</button>
+        </div>
+        <p class="gate__name">OR</p>
+        <div class="lamp" data-on="false"></div>
+        <table class="tt">
+          <thead><tr><th>A</th><th>B</th><th>OUT</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <button type="button" id="nor-flip" data-target="#nor-gate"
+                data-gates="or,nor">Add a NOT</button>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="notes">
+  <p>Before pressing, ask them to predict the whole flipped column. They have seen the
+  trick once now, so they should be able to.</p>
+  <p>NOR lights only when <em>both</em> are off - the one row where OR was dark. It is the
+  hardest of the five to please.</p>
+</div>
+
+<section class="slide">
+  <div class="frame two-col">
+    <h2>These are the real symbols</h2>
+    <figure>
+      <img src="../media/l21/gate-symbols.svg"
+           alt="The five gate symbols. NOT is a triangle, AND is flat on the left and
+                round on the right, OR is curved on the left and pointed on the right.
+                NAND and NOR are the same shapes with a small circle on the output.">
+    </figure>
+  </div>
+</section>
+<div class="notes">
+  <p>They have been working with boxes labelled with words. Engineers draw them as shapes,
+  and this is the alphabet they are about to meet in the simulator.</p>
+  <p>The one thing to point out, because it makes the whole set learnable: <strong>the
+  little circle means "flip it"</strong>. NAND is the AND shape with a circle. NOR is the
+  OR shape with a circle. NOT is a plain triangle with a circle. Once they see that, there
+  are really only three shapes to remember and one rule.</p>
+  <p>Do not drill these. They will pick them up by using them.</p>
+</div>
+
+<section class="slide">
+  <div class="frame center">
+    <h2>Now go build something</h2>
+    <p><a href="https://m-mccaffrey.github.io/Gateonix/index.html"
+          target="_blank" rel="noopener">Open Gateonix</a></p>
+  </div>
+</section>
+<div class="notes">
+  <p>Opens in a new tab so this deck stays where it is. Needs an internet connection -
+  the only slide in the lesson that does.</p>
+  <p>Hand it over and get out of the way. Suggestions if they want a starting point,
+  easiest first: build an AND and check it matches the table they just filled in; wire two
+  switches to a light so that either one turns it on; build a NAND out of an AND and a NOT
+  and prove it behaves like the NAND they saw.</p>
+  <p>The parent takes it from here.</p>
+</div>
+
+<section class="slide">
+  <div class="frame center dark">
+    <h1>Two things, arranged carefully, is everything</h1>
+  </div>
+</section>
+<div class="notes">
+  <p>The whole lesson in one line. Every number they made today was those two things in
+  columns. Every decision was those two things through a gate. Nothing else was ever
+  available.</p>
+  <p>No homework. If they want more, Gateonix is there and it does not need supervising.</p>
+  <p>Unit 3 picks up from here: lesson 22 turns these bits into bytes and file sizes, and
+  lesson 25 gets to how letters become numbers.</p>
+</div>
+
+</div>
+
+<div class="bar">
+  <a href="../index.html">All lessons</a>
+  <button data-go="prev" aria-label="Previous slide">&larr;</button>
+  <button data-go="next" aria-label="Next slide">&rarr;</button>
+  <span class="count"></span>
+  <button data-go="notes" title="Stack the slides with the notes (N)">N</button>
+</div>
+
+<script src="../nav.js"></script>
+
+<script>
+// Widgets for binary and logic gates. Plain JS, no libraries.
+// Fixes, in order: that "on or off" is a limitation rather than a deliberate
+// choice for reliability; that you need more than two symbols to count; and
+// that a gate is a mysterious component rather than a rule you can read off
+// a four-line table.
+
+// ---- the truth of every gate, in one place -------------------------------
+const GATES = {
+  not:  (a)    => (a ? 0 : 1),
+  and:  (a, b) => (a && b ? 1 : 0),
+  or:   (a, b) => (a || b ? 1 : 0),
+  nand: (a, b) => (a && b ? 0 : 1),
+  nor:  (a, b) => (a || b ? 0 : 1)
+};
+
+// ---- slide 2: a switch is a switch ---------------------------------------
+(function switchDemo() {
+  const btn = document.getElementById('switch-btn');
+  if (!btn) return;
+  const lamp = document.getElementById('switch-lamp');
+  const bit = document.getElementById('switch-bit');
+  const status = document.getElementById('switch-status');
+  let flips = 0;
+  btn.addEventListener('click', () => {
+    const on = btn.getAttribute('aria-pressed') !== 'true';
+    btn.setAttribute('aria-pressed', String(on));
+    btn.textContent = on ? 'ON' : 'OFF';
+    lamp.dataset.on = String(on);
+    bit.textContent = on ? '1' : '0';
+    if (++flips === 6) status.textContent = 'Two answers. That is all it will ever have.';
+  });
+})();
+
+// ---- slide 3: where is halfway? ------------------------------------------
+(function voltageDemo() {
+  const slider = document.getElementById('volts');
+  if (!slider) return;
+  const val = document.getElementById('volt-val');
+  const lamp = document.getElementById('volt-lamp');
+  const bit = document.getElementById('volt-bit');
+  const status = document.getElementById('volt-status');
+
+  function show() {
+    const v = Number(slider.value) / 10;
+    val.textContent = v.toFixed(1);
+    const on = v >= 2.5;                     // halfway up a 5V wire
+    lamp.dataset.on = String(on);
+    bit.textContent = on ? '1' : '0';
+  }
+
+  slider.addEventListener('input', show);
+  document.getElementById('volt-wobble').addEventListener('click', () => {
+    // +/- 0.4V of noise, the kind a real wire picks up all the time
+    const jitter = Math.random() * 8 - 4;
+    slider.value = Math.max(0, Math.min(50, Number(slider.value) + jitter));
+    show();
+    status.textContent = 'The number moved. The answer did not.';
+  });
+  show();
+})();
+
+// ---- slides 7 and 8: bit switches ----------------------------------------
+function wireBits(row, onChange) {
+  function render() {
+    let total = 0;
+    for (const b of row.querySelectorAll('.bit')) {
+      const on = b.dataset.on === 'true';
+      if (on) total += Number(b.dataset.value);
+      b.querySelector('.bit__val').textContent = on ? '1' : '0';
+    }
+    onChange(total);
+  }
+  row.addEventListener('click', (e) => {
+    const b = e.target.closest('.bit');
+    if (!b) return;
+    b.dataset.on = b.dataset.on === 'true' ? 'false' : 'true';
+    render();
+  });
+  render();
+  return render;
+}
+
+(function counter() {
+  const row = document.getElementById('count-bits');
+  if (!row) return;
+  const out = document.getElementById('count-dec');
+  wireBits(row, (total) => { out.textContent = total; });
+})();
+
+(function targetGame() {
+  const row = document.getElementById('target-bits');
+  if (!row) return;
+  const TARGETS = [13, 21, 6, 31, 18];
+  let i = 0;
+  const numEl = document.getElementById('target-num');
+  const status = document.getElementById('target-status');
+
+  const render = wireBits(row, (total) => {
+    status.textContent = total === TARGETS[i]
+      ? 'That is it. Press Next target.'
+      : `You have ${total}.`;
+  });
+
+  document.getElementById('target-next').addEventListener('click', () => {
+    i = (i + 1) % TARGETS.length;
+    numEl.textContent = TARGETS[i];
+    for (const b of row.querySelectorAll('.bit')) b.dataset.on = 'false';
+    render();
+  });
+})();
+
+// ---- slides 12-15, 17, 18: one gate widget, five gates -------------------
+const gateRenders = new WeakMap();
+
+document.querySelectorAll('.gate').forEach((gate) => {
+  const toggles = [...gate.querySelectorAll('.toggle')];
+  const lamp = gate.querySelector('.lamp');
+  const nameEl = gate.querySelector('.gate__name');
+  const tbody = gate.querySelector('tbody');
+  const rows = toggles.length === 1
+    ? [[0], [1]]
+    : [[0, 0], [0, 1], [1, 0], [1, 1]];
+
+  function render() {
+    const type = gate.dataset.gate;
+    const vals = toggles.map(t => t.getAttribute('aria-pressed') === 'true' ? 1 : 0);
+
+    toggles.forEach((t, i) => { t.textContent = `${t.dataset.name} ${vals[i]}`; });
+    if (nameEl) nameEl.textContent = type.toUpperCase();
+    lamp.dataset.on = String(GATES[type](...vals) === 1);
+
+    // The table is rebuilt rather than pre-written, so the same markup works
+    // for a one-input gate and a two-input one, and so the NOT flip below
+    // only has to change one attribute.
+    tbody.innerHTML = rows.map((r) => {
+      const current = r.every((v, i) => v === vals[i]);
+      const cells = r.map(v => `<td>${v}</td>`).join('');
+      return `<tr data-current="${current}">${cells}<td>${GATES[type](...r)}</td></tr>`;
+    }).join('');
+  }
+
+  gate.addEventListener('click', (e) => {
+    const t = e.target.closest('.toggle');
+    if (!t) return;
+    t.setAttribute('aria-pressed', t.getAttribute('aria-pressed') === 'true' ? 'false' : 'true');
+    render();
+  });
+
+  gateRenders.set(gate, render);
+  render();
+});
+
+// ---- slides 17 and 18: the "add a NOT" button ----------------------------
+document.querySelectorAll('[data-gates]').forEach((btn) => {
+  const gate = document.querySelector(btn.dataset.target);
+  const [plain, flipped] = btn.dataset.gates.split(',');
+  btn.addEventListener('click', () => {
+    const nowFlipped = gate.dataset.gate === plain;
+    gate.dataset.gate = nowFlipped ? flipped : plain;
+    btn.textContent = nowFlipped ? 'Take the NOT off' : 'Add a NOT';
+    gateRenders.get(gate)();
+  });
+});
+
+// ---- slide 16: predict the light ----------------------------------------
+(function quiz() {
+  const qEl = document.getElementById('quiz-q');
+  if (!qEl) return;
+  const status = document.getElementById('quiz-status');
+  const scoreEl = document.getElementById('quiz-score');
+  const nextBtn = document.getElementById('quiz-next');
+  const answerBtns = [...document.querySelectorAll('[data-answer]')];
+
+  const QUESTIONS = [
+    ['and', [1, 0]], ['or', [1, 0]], ['not', [1]],
+    ['and', [1, 1]], ['nor', [0, 0]], ['or', [0, 0]]
+  ];
+  let i = 0, right = 0, answered = false;
+
+  function ask() {
+    answered = false;
+    const [type, ins] = QUESTIONS[i];
+    const inputs = ins.length === 1
+      ? `A is ${ins[0]}`
+      : `A is ${ins[0]}, B is ${ins[1]}`;
+    qEl.textContent = `${type.toUpperCase()} — ${inputs}`;
+    status.textContent = ' ';
+    scoreEl.textContent = `Question ${i + 1} of ${QUESTIONS.length} · ${right} right`;
+    nextBtn.hidden = true;
+    answerBtns.forEach(b => { b.hidden = false; });
+  }
+
+  answerBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      if (answered) return;
+      answered = true;
+      const [type, ins] = QUESTIONS[i];
+      const correct = GATES[type](...ins);
+      const chose = Number(btn.dataset.answer);
+      if (chose === correct) {
+        right += 1;
+        status.textContent = 'Yes.';
+      } else {
+        status.textContent = `No - it is ${correct ? 'ON' : 'OFF'}.`;
+      }
+      scoreEl.textContent = `Question ${i + 1} of ${QUESTIONS.length} · ${right} right`;
+      answerBtns.forEach(b => { b.hidden = true; });
+      nextBtn.hidden = i === QUESTIONS.length - 1;
+      if (i === QUESTIONS.length - 1) {
+        status.textContent += ` That is all six - ${right} right.`;
+      }
+    });
+  });
+
+  nextBtn.addEventListener('click', () => { i += 1; ask(); });
+  ask();
+})();
+</script>
+
+</body>
+</html>
