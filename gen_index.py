@@ -184,6 +184,7 @@ def main():
     w('  <p class="foot">')
     w(f'    {len(BUILT)} of {len(LESSONS)} lessons written. No accounts, no analytics,')
     w('    nothing tracked. Open any file in a browser — there is nothing to build.')
+    w('    There is a <a href="space/index.html">space course</a> too.')
     w('  </p>')
     w('</main>')
     w('')

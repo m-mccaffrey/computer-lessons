@@ -1,0 +1,638 @@
+/* Every style on the space course. There is no other stylesheet.
+   Shares its shape with the computers course next door, but dark: these
+   slides are looked at in a room with the lights down, and a white
+   rectangle at night is a flashlight in the face. */
+
+/* ---------------------------------------------------------------- palette */
+/* Nine units, warm to cold, roughly in the order light arrives. data-unit
+   on <body> picks one. */
+
+:root {
+  --paper: #0b1020;
+  --paper-2: #141c33;
+  --grid: #232d4a;
+  --ink: #e9eef7;
+  --ink-2: #aab6cc;
+  --ink-3: #74819a;
+  --focus: #6aa9ff;
+
+  --accent: #7fb2ff;
+
+  --sans: ui-sans-serif, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --serif: ui-serif, Georgia, "Times New Roman", serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+
+[data-unit="0"] { --accent: #7fb2ff; }  /* blue    Looking Up                  */
+[data-unit="1"] { --accent: #b9a2ff; }  /* violet  Gravity and Orbits          */
+[data-unit="2"] { --accent: #ffb454; }  /* amber   Sun, Earth, Moon            */
+[data-unit="3"] { --accent: #ff8a5c; }  /* orange  The Solar System            */
+[data-unit="4"] { --accent: #ffd166; }  /* yellow  Light and Stars             */
+[data-unit="5"] { --accent: #7de2d1; }  /* teal    The Universe                */
+[data-unit="6"] { --accent: #ff6b8a; }  /* rose    Getting There               */
+[data-unit="7"] { --accent: #9fd356; }  /* green   People, Probes, Questions   */
+[data-unit="8"] { --accent: #98a5bd; }  /* grey    Capstone                    */
+
+* { box-sizing: border-box; }
+
+/* .slots and .cards set display:flex, which would otherwise win over the
+   browser's own rule for [hidden]. */
+[hidden] { display: none !important; }
+
+html {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
+
+body { margin: 0; }
+
+a { color: var(--focus); }
+
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+/* ------------------------------------------------------------------ deck */
+/* One slide per viewport, snapped to the top, so two kids on two Pis and a
+   parent on a laptop are all looking at the same thing. */
+
+.slide {
+  height: 100vh;
+  height: 100svh;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  display: grid;
+  place-items: center;
+  padding: 2vmin;
+}
+
+/* The 16:9 box. Everything inside is sized in cqw — percent of this width —
+   so a slide looks the same on a monitor, a laptop, and a phone in landscape. */
+.frame {
+  container-type: inline-size;
+  position: relative;
+  width: min(100%, calc((100vh - 4vmin) * 16 / 9));
+  width: min(100%, calc((100svh - 4vmin) * 16 / 9));
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--paper);
+  padding: 7cqw 7cqw 7cqw 11cqw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3cqw;
+}
+
+/* The unit stripe down the left edge. Colour says which unit, at a glance,
+   from across the room. */
+.frame::before {
+  content: "";
+  position: absolute;
+  left: 4cqw;
+  top: 7cqw;
+  bottom: 7cqw;
+  width: 0.4cqw;
+  background: var(--accent);
+}
+
+/* --------------------------------------------------------------- type */
+
+.frame h1,
+.frame h2 {
+  font-size: 7cqw;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  font-weight: 800;
+  margin: 0;
+  max-width: 20ch;
+  text-wrap: balance;
+}
+
+.frame h1 { font-size: 9cqw; max-width: 16ch; }
+
+.frame p {
+  font-size: 3.2cqw;
+  line-height: 1.35;
+  margin: 0;
+  max-width: 32ch;
+}
+
+/* The one supporting line under a headline. At most one per slide. */
+.frame .prompt {
+  color: var(--ink-2);
+}
+
+.frame .eyebrow {
+  font-family: var(--mono);
+  font-size: 1.7cqw;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  position: absolute;
+  left: 11cqw;
+  top: 4cqw;
+  max-width: none;
+}
+
+.frame ul,
+.frame ol {
+  font-size: 3cqw;
+  line-height: 1.4;
+  margin: 0;
+  padding-left: 4cqw;
+  max-width: 30ch;
+}
+
+.frame li + li { margin-top: 1.2cqw; }
+
+.frame strong { font-weight: 700; }
+
+.frame img {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* ------------------------------------------------------ slide variants */
+
+.frame.center {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding-left: 7cqw;
+}
+
+.frame.center::before { display: none; }
+.frame.center .eyebrow { left: 50%; transform: translateX(-50%); }
+.frame.center p { max-width: 36ch; }
+
+/* Graph paper. Only on slides where they are about to draw or move. */
+.frame.activity {
+  background-image:
+    linear-gradient(to right, var(--grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+  background-size: 3cqw 3cqw;
+}
+
+.frame.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 5cqw;
+}
+
+.frame.two-col > .eyebrow { grid-column: 1 / -1; }
+.frame.two-col h1,
+.frame.two-col h2 { font-size: 6cqw; }
+.frame.two-col figure { margin: 0; min-width: 0; }
+
+/* On a dark deck, .dark means deeper still - the closing slide drops the
+   room a stop rather than flashing white. */
+.frame.dark {
+  background: #04060d;
+  color: var(--ink);
+}
+
+.frame.dark .prompt { color: var(--ink-2); }
+.frame.dark .eyebrow { color: var(--ink-3); }
+
+.frame.full-bleed {
+  padding: 0;
+  justify-content: flex-end;
+}
+
+.frame.full-bleed::before { display: none; }
+
+.frame.full-bleed img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  object-fit: cover;
+}
+
+.frame.full-bleed h1,
+.frame.full-bleed h2,
+.frame.full-bleed p {
+  position: relative;
+  color: #fff;
+  padding: 0 7cqw;
+}
+
+.frame.full-bleed h2 { padding-bottom: 5cqw; }
+
+.frame.full-bleed::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 55%;
+  background: linear-gradient(to top, rgb(0 0 0 / 85%), rgb(0 0 0 / 0%));
+}
+
+.frame.full-bleed > * { z-index: 1; }
+
+/* The thing being asked about, when it is the point of the slide. */
+.frame .big {
+  font-size: 5cqw;
+  line-height: 1.1;
+  color: var(--ink);
+  font-weight: 700;
+}
+
+/* ------------------------------------------------------------- applets */
+
+.applet {
+  font-size: 2.4cqw;
+  line-height: 1.3;
+  display: flex;
+  flex-direction: column;
+  gap: 2cqw;
+  align-items: flex-start;
+}
+
+.applet p { max-width: 40ch; }
+
+/* .frame p sets a headline-sized 3.2cqw; inside a widget everything should
+   be the widget's size instead. */
+.frame .applet p { font-size: inherit; }
+
+.applet button {
+  font: inherit;
+  font-family: var(--mono);
+  padding: 1cqw 1.6cqw;
+  background: var(--paper-2);
+  border: 1px solid var(--ink-3);
+  border-radius: 2px;
+  color: inherit;
+  cursor: pointer;
+}
+
+.applet button:hover { border-color: var(--accent); color: var(--accent); }
+
+.applet button[aria-pressed="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--paper);
+}
+
+/* -------------------------------------------------------- mouse widgets */
+/* Five small drills that teach deliberate mouse use: select, open,
+   right-click, drag, scroll. Built on .applet button above - these rules
+   only add the states a plain button doesn't have. Flat throughout, no
+   blur shadows, to match the rest of the site. */
+
+.applet .status {
+  min-height: 1.4em;
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: 0.9em;
+}
+
+/* ------------------------------------------------------------------ bar */
+/* Two buttons and a slide count. Fades back until you go looking for it. */
+
+.bar {
+  position: fixed;
+  right: 0.75rem;
+  bottom: 0.75rem;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--ink-2);
+  opacity: 0.3;
+  transition: opacity 120ms;
+}
+
+.bar:hover, .bar:focus-within { opacity: 1; }
+
+.bar button, .bar a {
+  font: inherit;
+  padding: 0.4rem 0.6rem;
+  background: var(--paper);
+  border: 1px solid var(--grid);
+  border-radius: 2px;
+  color: var(--ink-2);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.bar button:hover, .bar a:hover { border-color: var(--accent); color: var(--accent); }
+
+.bar .count { padding: 0 0.3rem; }
+
+@media print {
+  .bar { display: none; }
+  .slide { height: auto; break-after: page; }
+  html { scroll-snap-type: none; }
+}
+
+/* ============================================================== index.html */
+
+.page {
+  max-width: 52rem;
+  margin: 0 auto;
+  padding: 3rem 1.25rem 6rem;
+}
+
+.page h1 {
+  font-size: clamp(2.5rem, 1.5rem + 4vw, 4rem);
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  margin: 0 0 1rem;
+}
+
+.thesis {
+  font-family: var(--serif);
+  font-size: clamp(1.05rem, 1rem + 0.5vw, 1.3rem);
+  line-height: 1.5;
+  margin: 0 0 1.5rem;
+  padding-left: 1rem;
+  border-left: 4px solid var(--accent);
+  max-width: 42ch;
+}
+
+.page .sub {
+  font-family: var(--serif);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--ink-2);
+  max-width: 60ch;
+  margin: 0 0 1rem;
+}
+
+.unit {
+  margin-top: 3rem;
+  padding-top: 0.75rem;
+  border-top: 6px solid var(--accent);
+}
+
+.unit h2 {
+  font-size: 1.35rem;
+  margin: 0 0 0.25rem;
+  letter-spacing: -0.01em;
+}
+
+.unit .arc {
+  font-family: var(--serif);
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--ink-2);
+  margin: 0 0 1rem;
+  max-width: 60ch;
+}
+
+.lessons { list-style: none; margin: 0; padding: 0; }
+
+.lessons li {
+  display: grid;
+  grid-template-columns: 2.5rem 1fr;
+  gap: 0.9rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--grid);
+}
+
+.lessons .n {
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  color: var(--ink-3);
+  padding-top: 0.15rem;
+}
+
+.lessons .title {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.lessons a.title:hover { color: var(--focus); text-decoration: underline; }
+
+.lessons .goal {
+  font-family: var(--serif);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--ink-2);
+  margin: 0.15rem 0 0;
+  max-width: 60ch;
+}
+
+/* A lesson that has not been written yet is listed, quietly, but not linked. */
+.lessons li.todo .title { color: var(--ink-3); font-weight: 400; }
+
+.foot {
+  margin-top: 4rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--grid);
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--ink-3);
+}
+
+/* ====================================================== space widgets */
+/* Every lesson carries several. They are the lesson, not decoration, so
+   they get their own slide variant: .frame.demo shrinks the headline and
+   hands the rest of the frame to the thing you can click. */
+
+.frame.demo {
+  padding: 4cqw 5cqw 4cqw 8cqw;
+  gap: 1.6cqw;
+}
+
+.frame.demo::before { top: 4cqw; bottom: 4cqw; left: 3cqw; }
+.frame.demo h2 { font-size: 4.4cqw; max-width: 28ch; }
+.frame.demo .prompt { font-size: 2.4cqw; max-width: 46ch; }
+.frame.demo .applet {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  font-size: 1.9cqw;   /* smaller than a plain applet: the stage wants the room */
+  gap: 1.4cqw;
+}
+
+/* The picture part of a widget: a canvas, or an SVG, or a grid of cards.
+   Always a bordered rectangle so it reads as "a thing", not as slide. */
+.stage {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  background: #05080f;
+  border: 1px solid var(--grid);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.stage canvas, .stage svg { display: block; width: 100%; height: 100%; }
+
+/* Controls sit in one wrapping row under the stage. */
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.2cqw 1.6cqw;
+  width: 100%;
+}
+
+.controls label {
+  display: flex;
+  align-items: center;
+  gap: 0.8cqw;
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+.controls input[type="range"] {
+  width: 22cqw;
+  accent-color: var(--accent);
+}
+
+.readout {
+  font-family: var(--mono);
+  color: var(--accent);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* A row of answer buttons. Correct and wrong are stated, never animated. */
+.choices { display: flex; flex-wrap: wrap; gap: 1cqw; }
+
+.applet button[data-verdict="right"] {
+  border-color: #6fcf7f;
+  color: #6fcf7f;
+}
+
+.applet button[data-verdict="wrong"] {
+  border-color: #e2695f;
+  color: #e2695f;
+}
+
+.applet button[disabled] { opacity: 0.45; cursor: default; }
+
+/* Draggable / clickable cards, for ordering and matching games. */
+.cards { display: flex; flex-wrap: wrap; gap: 1cqw; width: 100%; }
+
+.card {
+  font: inherit;
+  font-family: var(--mono);
+  padding: 0.9cqw 1.4cqw;
+  background: var(--paper-2);
+  border: 1px solid var(--ink-3);
+  border-radius: 2px;
+  color: var(--ink);
+  cursor: pointer;
+  display: flex;
+  align-items: baseline;
+  gap: 0.8cqw;
+}
+
+.card:hover { border-color: var(--accent); }
+.card[data-placed="true"] { opacity: 0.3; pointer-events: none; }
+.card .rank { color: var(--accent); font-weight: 700; }
+.card .sub { color: var(--ink-3); font-size: 0.85em; }
+
+/* A tray the cards get dropped into, in order. Dashed until it has one. */
+.slots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1cqw;
+  width: 100%;
+  min-height: 4.5cqw;
+  padding: 0.8cqw;
+  border: 1px dashed var(--grid);
+  border-radius: 3px;
+}
+
+/* Small legends and keys under a stage. */
+.key {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.6cqw;
+  font-size: 0.85em;
+  color: var(--ink-3);
+  font-family: var(--mono);
+}
+
+.key span { display: flex; align-items: center; gap: 0.5cqw; }
+.key i {
+  width: 1.4cqw; height: 1.4cqw; border-radius: 50%;
+  display: inline-block; background: currentColor;
+}
+
+/* ================================================== notes sidecar page */
+/* Read on a phone or a second window while teaching. Terse on purpose:
+   these are cues, not a script. */
+
+.cues {
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: 2.5rem 1.25rem 6rem;
+  font-size: 1.02rem;
+  line-height: 1.5;
+}
+
+.cues h1 {
+  font-size: 1.9rem;
+  line-height: 1.1;
+  margin: 0 0 0.4rem;
+}
+
+.cues .meta {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-3);
+  margin: 0 0 2rem;
+}
+
+.cues .kit {
+  border: 1px solid var(--grid);
+  border-left: 3px solid var(--accent);
+  border-radius: 3px;
+  padding: 0.9rem 1.1rem;
+  margin: 0 0 2rem;
+}
+
+.cues .kit h2 { font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--ink-3); font-family: var(--mono); margin: 0 0 0.5rem; }
+.cues .kit ul { margin: 0; padding-left: 1.1rem; color: var(--ink-2); }
+
+/* One block per slide. The number matches the slide count in the bar. */
+.beat {
+  display: grid;
+  grid-template-columns: 2.6rem 1fr;
+  gap: 0 0.8rem;
+  padding: 0.9rem 0;
+  border-top: 1px solid var(--grid);
+}
+
+.beat > .n {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  color: var(--ink-3);
+  padding-top: 0.2rem;
+}
+
+.beat h3 {
+  font-size: 1.02rem;
+  font-weight: 700;
+  margin: 0 0 0.35rem;
+}
+
+.beat ul { margin: 0; padding-left: 1.1rem; color: var(--ink-2); }
+.beat li { margin: 0.15rem 0; }
+.beat .say { color: var(--ink); }
+.beat .watch { color: var(--accent); }
+.beat .time { float: right; font-family: var(--mono); font-size: 0.8rem; color: var(--ink-3); }
+
+.cues .back { font-family: var(--mono); font-size: 0.8rem; }

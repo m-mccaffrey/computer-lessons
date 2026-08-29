@@ -1,0 +1,1252 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1. What Is That Light?</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<!--
+  Lesson 1. Everything here works in daylight, indoors, on a screen. The one
+  thing that has to happen outdoors is the ten-minute look at the sky, set as
+  homework on slide 12 and collected at the start of lesson 2.
+
+  Budget 45 minutes. Two break points, marked in the notes: after "Tonight,
+  go and look" (slide 12), and after the light-delay widget (slide 15).
+
+  Eight interactive widgets, six of them distinct; the sky identifier appears
+  three times with a different cast each time. All plain JS at the bottom of
+  this file. No libraries.
+
+  data-unit sets the colour. 0 = Looking Up.
+-->
+<body data-unit="0">
+
+<div class="deck">
+
+<!-- ===================== Part 1: What is that light? · 0:00-0:20 ======= -->
+
+<section class="slide">
+  <div class="frame center">
+    <p class="eyebrow">Unit 0 · Looking Up</p>
+    <h1>You see a light in the sky. What is it?</h1>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="frame demo">
+    <h2>Six lights. Which is which?</h2>
+    <p class="prompt">Click one, then say what you think it is. Guessing is fine.</p>
+    <div class="applet">
+      <div class="stage">
+        <canvas class="sky" data-cast="star:0.14,0.30 planet:0.44,0.22 sat:0.10,0.62 plane:0.72,0.70 meteor:0.62,0.14 moon:0.87,0.36"></canvas>
+      </div>
+      <div class="choices" data-choices>
+        <button type="button" data-answer="star">Star</button>
+        <button type="button" data-answer="planet">Planet</button>
+        <button type="button" data-answer="sat">Satellite</button>
+        <button type="button" data-answer="plane">Plane</button>
+        <button type="button" data-answer="meteor">Meteor</button>
+        <button type="button" data-answer="moon">Moon</button>
+      </div>
+      <p class="status">Click a light to start.</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="frame">
+    <h2>You did not identify anything by looking at it</h2>
+    <p class="prompt">You watched how it moved and how it shone. That is all anyone has ever
+      had to go on.</p>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="frame demo">
+    <h2>Why does one of them twinkle?</h2>
+    <p class="prompt">Turn the air up. Watch both brightness traces.</p>
+    <div class="applet">
+      <div class="stage"><canvas class="twinkle"></canvas></div>
+      <div class="controls">
+        <label>Air turbulence
+          <input type="range" class="twinkle-air" min="0" max="100" value="0">
+        </label>
+        <span class="readout" data-air>none &mdash; like being in space</span>
+      </div>
+      <p class="status">&nbsp;</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="frame">
+    <h2>Twinkling is our air, not the star</h2>
+    <p class="prompt">A star is a point, so one puff of warm air moves all of its light at
+      once. A planet is a tiny disc, and the puffs cancel out.</p>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="frame demo">
+    <h2>The word planet means wanderer</h2>
+    <p class="prompt">Drag through two years. The stars stay put. Mars does not.</p>
+    <div class="applet">
+      <div class="stage"><canvas class="wander"></canvas></div>
+      <div class="controls">
+        <label>Day
+          <input type="range" class="wander-day" min="0" max="600" value="0">
+        </label>
+        <span class="readout" data-day>day 0</span>
+        <button type="button" class="wander-trail" aria-pressed="true">Trail on</button>
+        <button type="button" class="wander-play">Play</button>
+      </div>
+      <p class="status">&nbsp;</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="frame">
+    <h2>It goes backwards for eleven weeks</h2>
+    <p class="prompt">Nothing turned around. We overtook it on the inside, the way you pass a
+      slower car.</p>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="frame demo">
+    <h2>Now find the one that is not a plane</h2>
+    <p class="prompt">Three lights crossing the sky. Click each one.</p>
+    <div class="applet">
+      <div class="stage">
+        <canvas class="sky" data-cast="plane:0.20,0.30 sat:0.15,0.66 plane:0.66,0.20"></canvas>
+      </div>
+      <div class="choices" data-choices>
+        <button type="button" data-answer="sat">Satellite</button>
+        <button type="button" data-answer="plane">Plane</button>
+      </div>
+      <p class="status">Click a light to start.</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="frame demo">
+    <h2>Watch it go out mid-sky</h2>
+    <p class="prompt">A satellite has no light of its own. Move time forward from sunset.</p>
+    <div class="applet">
+      <div class="stage"><canvas class="shadow"></canvas></div>
+      <div class="controls">
+        <label>After sunset
+          <input type="range" class="shadow-time" min="0" max="360" value="0">
+        </label>
+        <span class="readout" data-when>0h 00m</span>
+        <label>Height
+          <input type="range" class="shadow-alt" min="200" max="2000" step="50" value="400">
+        </label>
+        <span class="readout" data-alt>400 km</span>
+      </div>
+      <p class="status">&nbsp;</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="frame">
+    <h2>A satellite is a mirror</h2>
+    <p class="prompt">You are seeing sunlight, bounced. When Earth's shadow catches up with
+      it, it goes out mid-flight.</p>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="frame demo">
+    <h2>Same six lights. Name them again.</h2>
+    <p class="prompt">Different places this time. You should be quicker.</p>
+    <div class="applet">
+      <div class="stage">
+        <canvas class="sky" data-cast="moon:0.16,0.28 meteor:0.40,0.66 plane:0.30,0.16 star:0.62,0.44 sat:0.82,0.22 planet:0.88,0.70"></canvas>
+      </div>
+      <div class="choices" data-choices>
+        <button type="button" data-answer="star">Star</button>
+        <button type="button" data-answer="planet">Planet</button>
+        <button type="button" data-answer="sat">Satellite</button>
+        <button type="button" data-answer="plane">Plane</button>
+        <button type="button" data-answer="meteor">Meteor</button>
+        <button type="button" data-answer="moon">Moon</button>
+      </div>
+      <p class="status">Click a light to start.</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="frame activity">
+    <h2>Tonight: ten minutes outside</h2>
+    <p class="prompt">Write down five lights. For each: does it move, does it twinkle, does it
+      blink, what colour. Then say what it was.</p>
+  </div>
+</section>
+
+<!-- ===================== Part 2: How far is all of it? · 0:20-0:40 ===== -->
+
+<section class="slide">
+  <div class="frame center">
+    <h1>How far away is all of it?</h1>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="frame demo">
+    <h2>Put these in order, nearest first</h2>
+    <p class="prompt">Click them in the order you think. Then check.</p>
+    <div class="applet">
+      <div class="slots" data-slots></div>
+      <div class="cards" data-cards></div>
+      <div class="controls">
+        <button type="button" class="order-check">Check</button>
+        <button type="button" class="order-reveal">Show the real spacing</button>
+        <button type="button" class="order-reset">Start over</button>
+      </div>
+      <div class="stage" data-bars hidden><canvas class="ladder"></canvas></div>
+      <p class="status">&nbsp;</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="frame demo">
+    <h2>Send a flash of light and wait for it</h2>
+    <p class="prompt">Nothing goes faster than this. Pick a destination.</p>
+    <div class="applet">
+      <div class="stage"><canvas class="delay"></canvas></div>
+      <div class="controls" data-dest></div>
+      <div class="controls">
+        <button type="button" class="delay-go">Send the flash</button>
+        <span class="readout" data-clock>0.0 s</span>
+      </div>
+      <p class="status">&nbsp;</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="frame">
+    <h2>You have never seen the sky as it is</h2>
+    <p class="prompt">Only as it was. The further out you look, the older the news.</p>
+  </div>
+</section>
+
+<!-- ===================== Part 3: Patterns lie · 0:40-0:45 ============== -->
+
+<section class="slide">
+  <div class="frame demo">
+    <h2>Step sideways and the Plough falls apart</h2>
+    <p class="prompt">Seven stars, drawn at their real distances. Walk around them.</p>
+    <div class="applet">
+      <div class="stage"><canvas class="depth"></canvas></div>
+      <div class="controls">
+        <label>Step to the side
+          <input type="range" class="depth-angle" min="0" max="90" value="0">
+        </label>
+        <span class="readout" data-angle>the view from Earth</span>
+        <button type="button" class="depth-labels" aria-pressed="false">Show distances</button>
+      </div>
+      <p class="status">&nbsp;</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="frame">
+    <h2>A constellation is a direction, not a place</h2>
+    <p class="prompt">Those seven stars are not neighbours. They are not even close to each
+      other. They only line up from here.</p>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="frame center dark">
+    <h1>Every light up there is old news, arriving late.</h1>
+  </div>
+</section>
+
+</div>
+
+<div class="bar">
+  <a href="../index.html">All lessons</a>
+  <a href="../notes/01.html" target="_blank" rel="noopener">Notes</a>
+  <button data-go="prev" aria-label="Previous slide">&larr;</button>
+  <button data-go="next" aria-label="Next slide">&rarr;</button>
+  <span class="count"></span>
+</div>
+
+<script src="../nav.js"></script>
+
+<script>
+/* Lesson 1 widgets. Plain JS, no libraries. Each one exists to break a
+   specific wrong idea, named in the comment above it. */
+
+/* ------------------------------------------------------------- plumbing */
+
+function surface(cv) {
+  const g = cv.getContext('2d');
+  let w = 0, h = 0;
+  function size() {
+    const r = cv.getBoundingClientRect();
+    if (!r.width || !r.height) return false;
+    if (r.width !== w || r.height !== h) {
+      const d = Math.min(window.devicePixelRatio || 1, 2);
+      cv.width = Math.round(r.width * d);
+      cv.height = Math.round(r.height * d);
+      g.setTransform(d, 0, 0, d, 0, 0);
+      w = r.width; h = r.height;
+    }
+    return true;
+  }
+  return { g, size, get w() { return w; }, get h() { return h; } };
+}
+
+// A picture that only changes when something is clicked.
+function still(cv, draw) {
+  const s = surface(cv);
+  const redraw = () => { if (s.size()) draw(s.g, s.w, s.h); };
+  new ResizeObserver(redraw).observe(cv);
+  requestAnimationFrame(redraw);
+  return redraw;
+}
+
+// A picture that moves. Stops when the slide is off screen, so eight
+// widgets on one page do not fight over the CPU.
+function animate(cv, draw) {
+  const s = surface(cv);
+  const t0 = performance.now();
+  let on = false;
+  function frame(now) {
+    if (!on) return;
+    if (s.size()) draw(s.g, s.w, s.h, (now - t0) / 1000);
+    requestAnimationFrame(frame);
+  }
+  new IntersectionObserver(([e]) => {
+    on = e.isIntersecting;
+    if (on) requestAnimationFrame(frame);
+  }, { threshold: 0.05 }).observe(cv);
+}
+
+// Repeatable "random": the star field must be in the same place every frame.
+function rng(seed) {
+  let s = seed >>> 0;
+  return () => {
+    s = (s * 1664525 + 1013904223) >>> 0;
+    return s / 4294967296;
+  };
+}
+
+// Layered sine waves standing in for turbulence. Smooth, repeatable, cheap.
+function wobble(t, seed) {
+  return Math.sin(t * 2.7 + seed) * 0.5
+       + Math.sin(t * 6.1 + seed * 2.3) * 0.3
+       + Math.sin(t * 13.3 + seed * 5.7) * 0.2;
+}
+
+function backdrop(g, w, h, seed) {
+  g.fillStyle = '#05080f';
+  g.fillRect(0, 0, w, h);
+  const glow = g.createLinearGradient(0, h, 0, h * 0.55);
+  glow.addColorStop(0, 'rgba(40,60,110,0.55)');
+  glow.addColorStop(1, 'rgba(5,8,15,0)');
+  g.fillStyle = glow;
+  g.fillRect(0, h * 0.5, w, h * 0.5);
+  const r = rng(seed);
+  for (let i = 0; i < 260; i++) {
+    const x = r() * w, y = r() * h, a = 0.15 + r() * 0.45;
+    g.fillStyle = `rgba(220,232,255,${a})`;
+    g.fillRect(x, y, 1, 1);
+  }
+}
+
+const dot = (g, x, y, r, colour) => {
+  g.beginPath();
+  g.arc(x, y, r, 0, Math.PI * 2);
+  g.fillStyle = colour;
+  g.fill();
+};
+
+const halo = (g, x, y, r, colour) => {
+  const grad = g.createRadialGradient(x, y, 0, x, y, r);
+  grad.addColorStop(0, colour);
+  grad.addColorStop(1, 'rgba(0,0,0,0)');
+  g.fillStyle = grad;
+  g.fillRect(x - r, y - r, r * 2, r * 2);
+};
+
+/* ---------------------------------------------- 1. what is that light?
+   Breaks: "you can tell what something is by looking at it". You cannot.
+   Everything up there is a dot. What separates them is how the dot behaves
+   over ten seconds - so the widget makes them wait and watch. */
+
+const KINDS = {
+  star:   { name: 'Star',      why: 'Twinkling, and it never moves.' },
+  planet: { name: 'Planet',    why: 'A steady light that does not twinkle.' },
+  sat:    { name: 'Satellite', why: 'Slides straight across, no blinking, no sound.' },
+  plane:  { name: 'Plane',     why: 'A blinking red light. Nothing in space blinks.' },
+  meteor: { name: 'Meteor',    why: 'Gone in half a second. Never comes back the same way.' },
+  moon:   { name: 'Moon',      why: 'Big enough to have a shape, not just a dot.' }
+};
+
+document.querySelectorAll('canvas.sky').forEach((cv) => {
+  const applet = cv.closest('.applet');
+  const choices = applet.querySelector('[data-choices]');
+  const status = applet.querySelector('.status');
+
+  const cast = cv.dataset.cast.trim().split(/\s+/).map((spec, i) => {
+    const [kind, xy] = spec.split(':');
+    const [x, y] = xy.split(',').map(Number);
+    return { kind, x, y, i, seed: i * 7 + 3, solved: false };
+  });
+
+  let picked = null;
+
+  // Where a thing is right now, in fractions of the stage.
+  function at(o, t) {
+    if (o.kind === 'sat')   return { x: (o.x + t * 0.045) % 1.2 - 0.1, y: o.y };
+    if (o.kind === 'plane') return { x: (o.x + t * 0.020) % 1.2 - 0.1, y: o.y };
+    if (o.kind === 'meteor') {
+      const p = (t % 6) / 0.45;               // one streak every six seconds
+      if (p > 1) return null;
+      return { x: o.x - 0.13 + p * 0.26, y: o.y - 0.07 + p * 0.14, p };
+    }
+    return { x: o.x, y: o.y };
+  }
+
+  animate(cv, (g, w, h, t) => {
+    backdrop(g, w, h, 91);
+    const px = (o) => o.x * w, py = (o) => o.y * h;
+    const unit = Math.min(w, h);
+
+    for (const o of cast) {
+      const p = at(o, t);
+      if (!p) continue;
+      const x = px(p), y = py(p);
+
+      if (o.kind === 'star') {
+        const b = 0.45 + 0.55 * (0.5 + 0.5 * wobble(t, o.seed));
+        halo(g, x, y, unit * 0.075 * b, `rgba(190,215,255,${0.40 * b})`);
+        dot(g, x, y, unit * 0.010, `rgba(255,255,255,${0.5 + 0.5 * b})`);
+      } else if (o.kind === 'planet') {
+        halo(g, x, y, unit * 0.065, 'rgba(255,214,150,0.32)');
+        dot(g, x, y, unit * 0.013, '#ffe6b8');
+      } else if (o.kind === 'moon') {
+        const r = unit * 0.075;
+        dot(g, x, y, r, '#d8dfe8');
+        dot(g, x + r * 0.45, y - r * 0.18, r * 0.95, '#05080f');  // the dark limb
+      } else if (o.kind === 'sat') {
+        dot(g, x, y, unit * 0.009, '#ffffff');
+        halo(g, x, y, unit * 0.045, 'rgba(255,255,255,0.22)');
+      } else if (o.kind === 'plane') {
+        dot(g, x, y, unit * 0.007, 'rgba(255,255,255,0.75)');
+        if ((t % 1.4) < 0.16) {
+          dot(g, x - unit * 0.022, y, unit * 0.009, '#ff4d4d');
+          halo(g, x - unit * 0.022, y, unit * 0.03, 'rgba(255,77,77,0.45)');
+        }
+        if ((t % 1.4) > 0.7 && (t % 1.4) < 0.84) dot(g, x + unit * 0.022, y, unit * 0.008, '#63ff8f');
+      } else if (o.kind === 'meteor') {
+        const fade = 1 - p.p;
+        const tail = g.createLinearGradient(x - unit * 0.09, y - unit * 0.05, x, y);
+        tail.addColorStop(0, 'rgba(255,255,255,0)');
+        tail.addColorStop(1, `rgba(255,255,255,${fade})`);
+        g.strokeStyle = tail;
+        g.lineWidth = 3;
+        g.beginPath();
+        g.moveTo(x - unit * 0.09, y - unit * 0.05);
+        g.lineTo(x, y);
+        g.stroke();
+      }
+
+      // Rings and labels are drawn over the object, never instead of it.
+      if (picked === o && !o.solved) {
+        g.strokeStyle = '#7fb2ff';
+        g.lineWidth = 1.5;
+        g.beginPath();
+        g.arc(px(o), py(o), unit * 0.075, 0, Math.PI * 2);
+        g.stroke();
+      }
+      if (o.solved) {
+        g.fillStyle = '#7fb2ff';
+        g.font = `${Math.round(unit * 0.05)}px ui-monospace, Menlo, monospace`;
+        g.textAlign = 'center';
+        g.fillText(KINDS[o.kind].name, px(o), py(o) - unit * 0.09);
+      }
+    }
+  });
+
+  function score() {
+    const done = cast.filter((o) => o.solved).length;
+    return `Named ${done} of ${cast.length}.`;
+  }
+
+  cv.addEventListener('click', (e) => {
+    const r = cv.getBoundingClientRect();
+    const fx = (e.clientX - r.left) / r.width, fy = (e.clientY - r.top) / r.height;
+    let best = null, bestD = Infinity;
+    for (const o of cast) {
+      // Hit the object's home position, not wherever it drifted to this
+      // frame: a meteor is on screen for half a second and nobody can click
+      // a moving streak.
+      const d = Math.hypot(o.x - fx, (o.y - fy) * (r.height / r.width));
+      if (d < bestD) { bestD = d; best = o; }
+    }
+    if (bestD > 0.09 || !best) { status.textContent = 'Nothing there. Click one of the lights.'; return; }
+    if (best.solved) { status.textContent = `${KINDS[best.kind].name}. ${KINDS[best.kind].why}`; return; }
+    picked = best;
+    status.textContent = 'That one. What is it?';
+    for (const b of choices.querySelectorAll('button')) { b.disabled = false; b.dataset.verdict = ''; }
+  });
+
+  choices.addEventListener('click', (e) => {
+    const b = e.target.closest('button');
+    if (!b) return;
+    if (!picked) { status.textContent = 'Click a light first.'; return; }
+    const right = b.dataset.answer === picked.kind;
+    b.dataset.verdict = right ? 'right' : 'wrong';
+    if (right) {
+      picked.solved = true;
+      status.textContent = `${KINDS[picked.kind].name}. ${KINDS[picked.kind].why} ${score()}`;
+      picked = null;
+      for (const x of choices.querySelectorAll('button')) x.dataset.verdict = '';
+    } else {
+      status.textContent = 'No. Watch it for another ten seconds and try again.';
+    }
+  });
+});
+
+/* -------------------------------------------------------- 2. twinkling
+   Breaks: "stars twinkle because they are further away / because they are
+   burning". Neither. A star is a point and a planet is a small disc, and
+   averaging over a disc cancels the wobble. Turn the air off and both go
+   still, which is what a telescope in orbit sees. */
+
+document.querySelectorAll('canvas.twinkle').forEach((cv) => {
+  const applet = cv.closest('.applet');
+  const air = applet.querySelector('.twinkle-air');
+  const readout = applet.querySelector('[data-air]');
+  const status = applet.querySelector('.status');
+  // Pre-filled so the graph spans the box from the first frame.
+  const starTrace = new Array(260).fill(1), planetTrace = new Array(260).fill(1);
+  let touched = false;
+
+  const AIR_WORDS = [[0, 'none — like being in space'], [15, 'still night'],
+                     [45, 'ordinary night'], [75, 'windy'], [90, 'bad seeing']];
+
+  air.addEventListener('input', () => {
+    const v = Number(air.value);
+    let word = AIR_WORDS[0][1];
+    for (const [at, w] of AIR_WORDS) if (v >= at) word = w;
+    readout.textContent = word;
+    if (!touched && v > 40) {
+      touched = true;
+      status.textContent = 'The star jumps around. The planet barely moves.';
+    }
+  });
+
+  animate(cv, (g, w, h, t) => {
+    const a = Number(air.value) / 100;
+    backdrop(g, w, h, 17);
+
+    // One point source, shoved around by the whole column of air at once.
+    const star = Math.max(0.05, 1 + a * 0.85 * wobble(t, 1.1));
+
+    // A disc is many points side by side, each looking through its own
+    // patch of air. Their wobbles disagree, so the total hardly changes.
+    let planet = 0;
+    for (let k = 0; k < 12; k++) planet += 1 + a * 0.85 * wobble(t, 3.3 + k * 4.7);
+    planet /= 12;
+
+    const cy = h * 0.28, unit = Math.min(w, h);
+    halo(g, w * 0.28, cy, unit * 0.16 * star, `rgba(190,215,255,${0.30 * star})`);
+    dot(g, w * 0.28, cy, unit * 0.012, `rgba(255,255,255,${Math.min(1, 0.4 + star * 0.5)})`);
+
+    halo(g, w * 0.72, cy, unit * 0.14 * planet, `rgba(255,214,150,${0.26 * planet})`);
+    dot(g, w * 0.72, cy, unit * 0.035, `rgb(255,${Math.round(210 * Math.min(1.2, planet))},170)`);
+
+    starTrace.push(star); planetTrace.push(planet);
+    starTrace.shift(); planetTrace.shift();
+
+    // How much each one actually moved, in numbers, because "it looks
+    // wobblier" is not evidence.
+    const swing = (arr) => Math.round((Math.max(...arr) - Math.min(...arr)) * 50);
+
+    g.font = `${Math.round(unit * 0.045)}px ui-monospace, Menlo, monospace`;
+    g.textAlign = 'center';
+    g.fillStyle = '#9fc6ff';
+    g.fillText(`star — a point — swings ${swing(starTrace)}%`, w * 0.28, h * 0.50);
+    g.fillStyle = '#ffd6a0';
+    g.fillText(`planet — a small disc — swings ${swing(planetTrace)}%`, w * 0.72, h * 0.50);
+
+    const top = h * 0.60, ht = h * 0.32;
+    const line = (arr, colour) => {
+      g.beginPath();
+      arr.forEach((v, i) => {
+        const x = w * 0.06 + (i / (arr.length - 1)) * w * 0.88;
+        const y = top + ht - (v / 2.1) * ht;
+        i ? g.lineTo(x, y) : g.moveTo(x, y);
+      });
+      g.strokeStyle = colour;
+      g.lineWidth = 1.5;
+      g.stroke();
+    };
+    g.strokeStyle = 'rgba(116,129,154,0.30)';
+    g.strokeRect(w * 0.06, top, w * 0.88, ht);
+    line(planetTrace, '#ffd6a0');
+    line(starTrace, '#9fc6ff');
+    g.textAlign = 'left';
+    g.fillStyle = '#74819a';
+    g.font = `${Math.round(unit * 0.033)}px ui-monospace, Menlo, monospace`;
+    g.fillText('brightness over the last few seconds', w * 0.065, top - unit * 0.02);
+  });
+
+  air.dispatchEvent(new Event('input'));
+});
+
+/* -------------------------------------------------- 3. the wandering one
+   Breaks: "planets look like stars, so they are the same kind of thing".
+   Watched over months a planet crawls against the stars and then, for a few
+   weeks, goes backwards. Real orbits, computed here, not an animation of a
+   loop somebody drew. The right-hand panel shows why: we pass it. */
+
+document.querySelectorAll('canvas.wander').forEach((cv) => {
+  const applet = cv.closest('.applet');
+  const slider = applet.querySelector('.wander-day');
+  const dayOut = applet.querySelector('[data-day]');
+  const trailBtn = applet.querySelector('.wander-trail');
+  const playBtn = applet.querySelector('.wander-play');
+  const status = applet.querySelector('.status');
+
+  const EARTH = { a: 1, P: 365.25 };
+  const MARS  = { a: 1.5237, P: 686.98, inc: 1.85 * Math.PI / 180 };
+  // Line the two planets up at day 150, so opposition - and the backwards
+  // stretch around it - lands in the middle of the slider.
+  const M0 = 2 * Math.PI * 150 * (1 / EARTH.P - 1 / MARS.P);
+
+  const xy = (b, t, ph) => {
+    const th = ph + 2 * Math.PI * t / b.P;
+    return [b.a * Math.cos(th), b.a * Math.sin(th), th];
+  };
+
+  // Where Mars appears against the stars, as seen from Earth, on day t.
+  function seen(t) {
+    const [ex, ey] = xy(EARTH, t, 0);
+    const [mx, my, mth] = xy(MARS, t, M0);
+    const dx = mx - ex, dy = my - ey;
+    const mz = MARS.a * Math.sin(MARS.inc) * Math.sin(mth);
+    const range = Math.hypot(dx, dy);
+    return { lon: Math.atan2(dy, dx), lat: Math.atan2(mz, range), ex, ey, mx, my };
+  }
+
+  // Precompute the whole path so the drawing can auto-fit to it.
+  const PATH = [];
+  let prev = null, turn = 0;
+  for (let t = 0; t <= 300; t += 1) {
+    const s = seen(t);
+    let lon = s.lon;
+    if (prev !== null) { while (lon - prev > Math.PI) lon -= 2 * Math.PI;
+                         while (prev - lon > Math.PI) lon += 2 * Math.PI; }
+    prev = lon;
+    PATH.push({ t, lon, lat: s.lat, ex: s.ex, ey: s.ey, mx: s.mx, my: s.my });
+  }
+  const lons = PATH.map((p) => p.lon), lats = PATH.map((p) => p.lat);
+  const L0 = Math.min(...lons), L1 = Math.max(...lons);
+  const B0 = Math.min(...lats), B1 = Math.max(...lats);
+  // The days when it is moving backwards against the stars.
+  const back = PATH.filter((p, i) => i > 0 && p.lon < PATH[i - 1].lon);
+  const backDays = back.length;
+
+  let trail = true, playing = false, playT = 0;
+  trailBtn.addEventListener('click', () => {
+    trail = !trail;
+    trailBtn.setAttribute('aria-pressed', String(trail));
+    trailBtn.textContent = trail ? 'Trail on' : 'Trail off';
+    redraw();
+  });
+  playBtn.addEventListener('click', () => {
+    playing = !playing;
+    playBtn.textContent = playing ? 'Pause' : 'Play';
+    playT = Number(slider.value);
+  });
+  slider.addEventListener('input', () => { playing = false; playBtn.textContent = 'Play'; redraw(); });
+
+  const stars = (() => {
+    const r = rng(404), out = [];
+    for (let i = 0; i < 90; i++) out.push([r(), r(), 0.2 + r() * 0.5]);
+    return out;
+  })();
+
+  function redraw() {
+    const day = Number(slider.value);
+    dayOut.textContent = `day ${day}`;
+    const p = PATH[Math.min(300, Math.max(0, Math.round(day)))];
+    const isBack = day > 0 && PATH[Math.round(day)].lon < PATH[Math.round(day) - 1].lon;
+    status.textContent = isBack
+      ? 'Right now it is moving backwards against the stars.'
+      : `Creeping forwards. Backwards for ${backDays} days in the middle.`;
+    draw(p, day);
+  }
+
+  let drawFn = () => {};
+  const draw = (p, day) => drawFn(p, day);
+
+  still(cv, (g, w, h) => {
+    drawFn = (p, day) => {
+      const skyW = w * 0.66;
+      backdrop(g, w, h, 55);
+      const unit = Math.min(w, h);
+
+      // ---- left: the view against the stars
+      for (const [sx, sy, b] of stars) {
+        g.fillStyle = `rgba(220,232,255,${b})`;
+        g.fillRect(sx * skyW * 0.96 + skyW * 0.02, sy * h, 1.4, 1.4);
+      }
+      const X = (lon) => skyW * 0.08 + ((lon - L0) / (L1 - L0)) * skyW * 0.84;
+      const Y = (lat) => h * 0.72 - ((lat - B0) / (B1 - B0)) * h * 0.44;
+
+      if (trail) {
+        g.beginPath();
+        PATH.forEach((q, i) => (i ? g.lineTo(X(q.lon), Y(q.lat)) : g.moveTo(X(q.lon), Y(q.lat))));
+        g.strokeStyle = 'rgba(255,138,92,0.35)';
+        g.lineWidth = 1.5;
+        g.stroke();
+      }
+      g.beginPath();
+      PATH.slice(0, Math.round(day) + 1).forEach((q, i) =>
+        (i ? g.lineTo(X(q.lon), Y(q.lat)) : g.moveTo(X(q.lon), Y(q.lat))));
+      g.strokeStyle = '#ff8a5c';
+      g.lineWidth = 2.5;
+      g.stroke();
+      halo(g, X(p.lon), Y(p.lat), unit * 0.05, 'rgba(255,138,92,0.5)');
+      dot(g, X(p.lon), Y(p.lat), unit * 0.014, '#ffb08a');
+
+      g.fillStyle = '#74819a';
+      g.font = `${Math.round(unit * 0.032)}px ui-monospace, Menlo, monospace`;
+      g.textAlign = 'left';
+      g.fillText('Mars against the stars  ·  up-and-down stretched', w * 0.02, h * 0.07);
+
+      // ---- right: why. Looking down on the two orbits.
+      const cx = w * 0.83, cy = h * 0.5, R = Math.min(w * 0.15, h * 0.40);
+      g.strokeStyle = 'rgba(116,129,154,0.4)';
+      g.lineWidth = 1;
+      for (const b of [EARTH, MARS]) {
+        g.beginPath();
+        g.arc(cx, cy, R * b.a / MARS.a, 0, Math.PI * 2);
+        g.stroke();
+      }
+      dot(g, cx, cy, R * 0.06, '#ffd166');
+      const ex = cx + p.ex * R / MARS.a, ey = cy - p.ey * R / MARS.a;
+      const mx = cx + p.mx * R / MARS.a, my = cy - p.my * R / MARS.a;
+      g.strokeStyle = 'rgba(255,138,92,0.7)';
+      g.setLineDash([3, 3]);
+      g.beginPath();
+      g.moveTo(ex, ey);
+      g.lineTo(mx + (mx - ex) * 0.7, my + (my - ey) * 0.7);
+      g.stroke();
+      g.setLineDash([]);
+      dot(g, ex, ey, R * 0.055, '#7fb2ff');
+      dot(g, mx, my, R * 0.045, '#ff8a5c');
+      g.fillStyle = '#74819a';
+      g.textAlign = 'center';
+      g.fillText('looking down', cx, h * 0.93);
+    };
+    redraw();
+  });
+
+  // The play button walks the slider, so the loop draws itself.
+  setInterval(() => {
+    if (!playing) return;
+    playT = (playT + 2) % 301;
+    slider.value = String(playT);
+    redraw();
+  }, 60);
+});
+
+/* ------------------------------------------- 4. satellites go out mid-sky
+   Breaks: "a satellite has lights on it". It is a mirror. This is also the
+   first time in the course that a bit of geometry predicts a number they
+   can go outside and check: how long after sunset the sky goes quiet. */
+
+document.querySelectorAll('canvas.shadow').forEach((cv) => {
+  const applet = cv.closest('.applet');
+  const timeIn = applet.querySelector('.shadow-time');
+  const altIn = applet.querySelector('.shadow-alt');
+  const whenOut = applet.querySelector('[data-when]');
+  const altOut = applet.querySelector('[data-alt]');
+  const status = applet.querySelector('.status');
+  const R = 6371;
+
+  const hhmm = (mins) => `${Math.floor(mins / 60)}h ${String(Math.round(mins % 60)).padStart(2, '0')}m`;
+
+  const redraw = still(cv, (g, w, h) => {
+    const mins = Number(timeIn.value), alt = Number(altIn.value);
+    // Sunset is the terminator: the observer starts 90 degrees round from
+    // the anti-Sun point and rotates towards it at 15 degrees an hour.
+    const a = (90 - mins / 4) * Math.PI / 180;
+    const lit = (R + alt) * Math.sin(a) > R;
+    const goesDark = (90 - Math.asin(R / (R + alt)) * 180 / Math.PI) * 4;
+
+    whenOut.textContent = hhmm(mins);
+    altOut.textContent = `${alt} km`;
+    status.textContent = lit
+      ? `Still in sunlight. At this height it goes dark ${hhmm(goesDark)} after sunset.`
+      : 'In Earth’s shadow. From the ground it just went out.';
+
+    backdrop(g, w, h, 7);
+    const unit = Math.min(w, h);
+    // Drawn to scale, no exaggeration - so the moment the dot crosses the
+    // dashed line is exactly the moment the arithmetic says it goes dark.
+    // That costs a big Earth and a thin gap, which is the honest picture.
+    const cx = w * 0.32, cy = h * 0.54, r = Math.min(w * 0.17, h * 0.36);
+    const orbit = r * (R + alt) / R;
+
+    // Sunlight from the left, and the tube of shadow it leaves behind Earth.
+    g.strokeStyle = 'rgba(255,209,102,0.5)';
+    g.lineWidth = 1;
+    for (let k = -2; k <= 2; k++) {
+      const y = cy + k * r * 0.5;
+      g.beginPath();
+      g.moveTo(w * 0.015, y);
+      g.lineTo(cx - r * 0.99, y);
+      g.stroke();
+      g.beginPath();
+      g.moveTo(cx - r * 0.99, y);
+      g.lineTo(cx - r * 1.14, y - r * 0.07);
+      g.lineTo(cx - r * 1.14, y + r * 0.07);
+      g.closePath();
+      g.fillStyle = 'rgba(255,209,102,0.5)';
+      g.fill();
+    }
+
+    g.fillStyle = 'rgba(3,5,10,0.92)';
+    g.fillRect(cx, cy - r, w * 0.66 - cx, r * 2);
+    g.strokeStyle = 'rgba(116,129,154,0.45)';
+    g.setLineDash([4, 4]);
+    for (const sgn of [-1, 1]) {
+      g.beginPath();
+      g.moveTo(cx, cy + sgn * r);
+      g.lineTo(w * 0.66, cy + sgn * r);
+      g.stroke();
+    }
+    g.setLineDash([]);
+
+    g.font = `${Math.round(unit * 0.042)}px ui-monospace, Menlo, monospace`;
+    g.textAlign = 'left';
+    g.fillStyle = '#ffd166';
+    g.fillText('sunlight', w * 0.015, h * 0.10);
+    g.fillStyle = '#74819a';
+    g.fillText('Earth’s shadow', cx + r * 1.05, h * 0.10);
+
+    dot(g, cx, cy, r, '#1b3a63');
+    g.strokeStyle = 'rgba(127,178,255,0.35)';
+    g.lineWidth = 1;
+    g.beginPath();
+    g.arc(cx, cy, orbit, 0, Math.PI * 2);
+    g.stroke();
+
+    const ox = cx + r * Math.cos(a), oy = cy - r * Math.sin(a);
+    const sx = cx + orbit * Math.cos(a), sy = cy - orbit * Math.sin(a);
+    g.strokeStyle = 'rgba(233,238,247,0.30)';
+    g.beginPath();
+    g.moveTo(ox, oy);
+    g.lineTo(sx, sy);
+    g.stroke();
+    dot(g, ox, oy, unit * 0.011, '#e9eef7');
+    if (lit) {
+      halo(g, sx, sy, unit * 0.06, 'rgba(255,255,255,0.5)');
+      dot(g, sx, sy, unit * 0.011, '#ffffff');
+    } else {
+      g.strokeStyle = '#5b6a86';
+      g.lineWidth = 1.5;
+      g.beginPath();
+      g.arc(sx, sy, unit * 0.011, 0, Math.PI * 2);
+      g.stroke();
+    }
+    g.fillStyle = '#aab6cc';
+    g.textAlign = 'center';
+    g.fillText('you', ox - r * 0.25, oy - unit * 0.03);
+
+    // The same moment, seen by the person standing at the dot.
+    const bx = w * 0.72, bw = w * 0.26, by = h * 0.14, bh = h * 0.72;
+    g.strokeStyle = 'rgba(116,129,154,0.35)';
+    g.strokeRect(bx, by, bw, bh);
+    g.fillStyle = '#74819a';
+    g.textAlign = 'center';
+    g.fillText('what you see from the ground', bx + bw / 2, by + bh - unit * 0.04);
+    const hx = bx + bw / 2, hy = by + bh * 0.72, hr = bw * 0.34;
+    g.strokeStyle = 'rgba(116,129,154,0.45)';
+    g.beginPath();
+    g.moveTo(hx - hr * 1.25, hy);
+    g.lineTo(hx + hr * 1.25, hy);
+    g.stroke();
+    if (lit) {
+      halo(g, hx, hy - hr * 0.85, hr * 0.55, 'rgba(255,255,255,0.5)');
+      dot(g, hx, hy - hr * 0.85, unit * 0.012, '#ffffff');
+      g.fillStyle = '#e9eef7';
+      g.fillText('there it is', hx, by + bh * 0.16);
+    } else {
+      g.strokeStyle = 'rgba(116,129,154,0.45)';
+      g.setLineDash([2, 3]);
+      g.beginPath();
+      g.arc(hx, hy - hr * 0.85, unit * 0.014, 0, Math.PI * 2);
+      g.stroke();
+      g.setLineDash([]);
+      g.fillStyle = '#74819a';
+      g.fillText('gone', hx, by + bh * 0.16);
+    }
+  });
+
+  timeIn.addEventListener('input', redraw);
+  altIn.addEventListener('input', redraw);
+});
+
+/* ------------------------------------------------------ 5. how far is far
+   Breaks: "space starts a long way up, and the planets are out past the
+   stars". Both wrong, and both survive being told. So they order the list
+   themselves, get it wrong, and then see the spacing on a scale where every
+   step is ten times the last. */
+
+const FAR = [
+  { name: 'An airliner overhead',     km: 11,        say: '11 km' },
+  { name: 'The space station',        km: 4.1e2,     say: '400 km' },
+  { name: 'The Moon',                 km: 3.844e5,   say: '384,400 km' },
+  { name: 'Mars, at its closest',     km: 7.8e7,     say: '78 million km' },
+  { name: 'The Sun',                  km: 1.5e8,     say: '150 million km' },
+  { name: 'Pluto',                    km: 5.9e9,     say: '5.9 billion km' },
+  { name: 'Proxima Centauri',         km: 4.0e13,    say: '40 trillion km' },
+  { name: 'The Andromeda galaxy',     km: 2.4e19,    say: '24 million trillion km' }
+];
+
+document.querySelectorAll('[data-cards]').forEach((tray) => {
+  const applet = tray.closest('.applet');
+  const slots = applet.querySelector('[data-slots]');
+  const status = applet.querySelector('.status');
+  const bars = applet.querySelector('[data-bars]');
+  const cv = bars.querySelector('canvas');
+  let order = [];
+
+  const shuffled = FAR.map((o, i) => ({ ...o, i })).sort(() => Math.random() - 0.5);
+
+  function paintCards() {
+    tray.innerHTML = '';
+    for (const o of shuffled) {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'card';
+      b.textContent = o.name;
+      b.dataset.placed = String(order.includes(o.i));
+      b.addEventListener('click', () => { order.push(o.i); render(); });
+      tray.appendChild(b);
+    }
+  }
+
+  function render(verdicts) {
+    slots.innerHTML = '';
+    order.forEach((idx, n) => {
+      const o = FAR[idx];
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'card';
+      b.innerHTML = `<span class="rank">${n + 1}</span>${o.name}` +
+        (verdicts ? `<span class="sub">${o.say}</span>` : '');
+      if (verdicts) b.dataset.verdict = verdicts[n] ? 'right' : 'wrong';
+      b.addEventListener('click', () => { order = order.filter((x) => x !== idx); render(); });
+      slots.appendChild(b);
+    });
+    paintCards();
+  }
+
+  applet.querySelector('.order-check').addEventListener('click', () => {
+    if (order.length < FAR.length) {
+      status.textContent = `Place all ${FAR.length} first. ${order.length} down.`;
+      return;
+    }
+    const right = [...order].sort((a, b) => FAR[a].km - FAR[b].km);
+    const verdicts = order.map((v, n) => v === right[n]);
+    render(verdicts);
+    const n = verdicts.filter(Boolean).length;
+    status.textContent = n === FAR.length
+      ? 'All eight in the right order.'
+      : `${n} of ${FAR.length} in the right place. Two catch people out: Mars is nearer than the Sun, and the space station is barely off the ground.`;
+  });
+
+  applet.querySelector('.order-reset').addEventListener('click', () => {
+    order = [];
+    bars.hidden = true;
+    slots.hidden = tray.hidden = false;
+    status.textContent = ' ';
+    render();
+  });
+
+  // The chart needs the whole frame, so it takes the game's place rather
+  // than being squeezed in underneath it.
+  applet.querySelector('.order-reveal').addEventListener('click', () => {
+    slots.hidden = tray.hidden = true;
+    bars.hidden = false;
+    requestAnimationFrame(reveal);
+    status.textContent = 'Every step to the right is ten times further. Eighteen steps from a plane to Andromeda.';
+  });
+
+  const reveal = still(cv, (g, w, h) => {
+    backdrop(g, w, h, 3);
+    const unit = Math.min(w, h);
+    const lo = 1, hi = 20;                    // powers of ten, in km
+    const X = (km) => w * 0.06 + ((Math.log10(km) - lo) / (hi - lo)) * w * 0.88;
+
+    g.strokeStyle = 'rgba(116,129,154,0.35)';
+    g.lineWidth = 1;
+    g.beginPath();
+    g.moveTo(w * 0.06, h * 0.86);
+    g.lineTo(w * 0.94, h * 0.86);
+    g.stroke();
+    g.font = `${Math.round(unit * 0.045)}px ui-monospace, Menlo, monospace`;
+    g.textAlign = 'center';
+    for (let p = 2; p <= 19; p += 3) {
+      const x = X(Math.pow(10, p));
+      g.strokeStyle = 'rgba(116,129,154,0.25)';
+      g.beginPath();
+      g.moveTo(x, h * 0.10);
+      g.lineTo(x, h * 0.86);
+      g.stroke();
+      g.fillStyle = '#74819a';
+      g.fillText(`10^${p} km`, x, h * 0.95);
+    }
+    const sorted = [...FAR].sort((a, b) => a.km - b.km);
+    sorted.forEach((o, i) => {
+      const x = X(o.km), y = h * (0.14 + i * 0.088);
+      g.strokeStyle = 'rgba(127,178,255,0.3)';
+      g.beginPath();
+      g.moveTo(x, y);
+      g.lineTo(x, h * 0.86);
+      g.stroke();
+      dot(g, x, y, unit * 0.014, '#7fb2ff');
+      g.fillStyle = '#e9eef7';
+      g.textAlign = x > w * 0.6 ? 'right' : 'left';
+      const off = (x > w * 0.6 ? -1 : 1) * unit * 0.035;
+      g.fillText(`${o.name} — ${o.say}`, x + off, y + unit * 0.017);
+    });
+  });
+
+  render();
+});
+
+/* ------------------------------------------------------ 6. old light
+   Breaks: "we are seeing it happen". We are not, ever. Kept honest by
+   running the clock at real light-speed for the Moon - a second and a bit,
+   long enough to feel - and then telling them the factor everything else is
+   sped up by. */
+
+const DESTS = [
+  { name: 'The Moon',            secs: 1.28 },
+  { name: 'Mars, at its closest', secs: 182 },
+  { name: 'The Sun',             secs: 499 },
+  { name: 'Jupiter',             secs: 2100 },
+  { name: 'Pluto',               secs: 16000 },
+  { name: 'Proxima Centauri',    secs: 1.337e8 },
+  { name: 'The Andromeda galaxy', secs: 7.9e13 }
+];
+
+function humanTime(s) {
+  if (s < 90) return `${s.toFixed(1)} seconds`;
+  if (s < 5400) return `${Math.floor(s / 60)} min ${String(Math.round(s % 60)).padStart(2, '0')} s`;
+  if (s < 86400 * 2) return `${Math.floor(s / 3600)} h ${String(Math.round(s % 3600 / 60)).padStart(2, '0')} m`;
+  const y = s / 3.156e7;
+  if (y < 1) return `${(s / 86400).toFixed(1)} days`;
+  if (y < 1e4) return `${y.toFixed(1)} years`;
+  if (y < 1e7) return `${(y / 1e6).toFixed(1)} million years`;
+  return `${(y / 1e9).toFixed(1)} billion years`;
+}
+
+document.querySelectorAll('canvas.delay').forEach((cv) => {
+  const applet = cv.closest('.applet');
+  const picker = applet.querySelector('[data-dest]');
+  const clock = applet.querySelector('[data-clock]');
+  const status = applet.querySelector('.status');
+  let dest = 0, launched = null;
+
+  DESTS.forEach((d, i) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = d.name;
+    b.setAttribute('aria-pressed', String(i === 0));
+    b.addEventListener('click', () => {
+      dest = i;
+      launched = null;
+      for (const x of picker.querySelectorAll('button')) x.setAttribute('aria-pressed', 'false');
+      b.setAttribute('aria-pressed', 'true');
+      const d2 = DESTS[i];
+      // The Moon runs in real time. Everything else has to be sped up, and
+      // the number it is sped up by is the actual lesson.
+      const factor = d2.secs / 4;
+      status.textContent = factor <= 1
+        ? 'This one runs at real speed. Watch how long a second and a bit is.'
+        : `Shown ${factor > 1e6 ? factor.toExponential(1) : Math.round(factor).toLocaleString()} times faster than real.`;
+      clock.textContent = '0.0 s';
+    });
+    picker.appendChild(b);
+  });
+
+  applet.querySelector('.delay-go').addEventListener('click', () => {
+    launched = performance.now();
+  });
+
+  animate(cv, (g, w, h) => {
+    const d = DESTS[dest];
+    const span = Math.max(4, Math.min(4, d.secs));          // always four seconds
+    const p = launched === null ? 0
+      : Math.min(1, (performance.now() - launched) / (span * 1000));
+    backdrop(g, w, h, 61);
+    const unit = Math.min(w, h);
+    const y = h * 0.5, x0 = w * 0.10, x1 = w * 0.90;
+
+    g.strokeStyle = 'rgba(116,129,154,0.3)';
+    g.setLineDash([3, 5]);
+    g.beginPath();
+    g.moveTo(x0, y);
+    g.lineTo(x1, y);
+    g.stroke();
+    g.setLineDash([]);
+
+    dot(g, x0, y, unit * 0.035, '#3d6fb5');
+    g.fillStyle = '#aab6cc';
+    g.font = `${Math.round(unit * 0.042)}px ui-monospace, Menlo, monospace`;
+    g.textAlign = 'center';
+    g.fillText('here', x0, y + unit * 0.10);
+    dot(g, x1, y, unit * 0.030, p >= 1 ? '#ffd166' : '#5b6a86');
+    g.fillText(d.name, x1, y + unit * 0.10);
+
+    if (launched !== null) {
+      const x = x0 + (x1 - x0) * p;
+      halo(g, x, y, unit * 0.06, 'rgba(255,255,255,0.55)');
+      dot(g, x, y, unit * 0.012, '#ffffff');
+      clock.textContent = humanTime(d.secs * p);
+      if (p >= 1) {
+        g.fillStyle = '#7fb2ff';
+        g.fillText(`arrived after ${humanTime(d.secs)}`, w * 0.5, h * 0.22);
+        g.fillText(`what you see there left ${humanTime(d.secs)} ago`, w * 0.5, h * 0.82);
+      }
+    }
+  });
+
+  picker.querySelector('button').click();
+});
+
+/* ------------------------------------------------- 7. constellation depth
+   Breaks: the deepest one in the lesson - that a constellation is a group
+   of stars near each other. It is seven unrelated stars at seven distances
+   that happen to line up from this one address. Real distances, real
+   positions, real 3D. Step sideways and it is gone. */
+
+const PLOUGH = [
+  // name, right ascension (h), declination (deg), distance (light years)
+  ['Dubhe',  11.062, 61.751, 123],
+  ['Merak',  11.031, 56.383,  79],
+  ['Phecda', 11.897, 53.695,  84],
+  ['Megrez', 12.257, 57.033,  58],
+  ['Alioth', 12.900, 55.960,  81],
+  ['Mizar',  13.399, 54.925,  83],
+  ['Alkaid', 13.792, 49.313, 104]
+];
+const LINKS = [[0, 1], [1, 2], [2, 3], [3, 0], [3, 4], [4, 5], [5, 6]];
+
+document.querySelectorAll('canvas.depth').forEach((cv) => {
+  const applet = cv.closest('.applet');
+  const angleIn = applet.querySelector('.depth-angle');
+  const angleOut = applet.querySelector('[data-angle]');
+  const labelBtn = applet.querySelector('.depth-labels');
+  const status = applet.querySelector('.status');
+  let labels = false;
+
+  // Sky position plus distance gives a real place in three dimensions.
+  const STARS = PLOUGH.map(([name, ra, dec, ly]) => {
+    const a = ra / 24 * 2 * Math.PI, d = dec * Math.PI / 180;
+    return { name, ly, p: [ly * Math.cos(d) * Math.cos(a),
+                           ly * Math.cos(d) * Math.sin(a),
+                           ly * Math.sin(d)] };
+  });
+
+  const add = (a, b, k = 1) => a.map((v, i) => v + b[i] * k);
+  const sub = (a, b) => a.map((v, i) => v - b[i]);
+  const dot3 = (a, b) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+  const cross = (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
+  const norm = (a) => { const m = Math.hypot(...a); return a.map((v) => v / m); };
+
+  const centre = STARS.reduce((acc, s) => add(acc, s.p, 1 / STARS.length), [0, 0, 0]);
+  const D = Math.hypot(...centre);
+  const f0 = norm(centre);                       // Earth towards the group
+  const s0 = norm(cross(f0, [0, 0, 1]));         // a sideways direction
+  const u0 = cross(f0, s0);
+
+  const redraw = still(cv, (g, w, h) => {
+    const th = Number(angleIn.value) * Math.PI / 180;
+    angleOut.textContent = th === 0 ? 'the view from Earth'
+      : `${Math.round(th * 180 / Math.PI)}° to the side, ${Math.round(D * Math.sin(th))} light years away`;
+    status.textContent = th < 0.05
+      ? 'From here it is a saucepan. Now step to the side.'
+      : 'Same seven stars. Nothing moved but you.';
+
+    // A camera that swings around the group, starting at Earth.
+    const cam = sub(centre, add(f0.map((v) => v * D * Math.cos(th)), s0, D * Math.sin(th)));
+    const fwd = norm(sub(centre, cam));
+    const right = norm(cross(fwd, u0));
+    const up = cross(right, fwd);
+
+    const pts = STARS.map((s) => {
+      const v = sub(s.p, cam);
+      const z = dot3(v, fwd);
+      return { s, x: dot3(v, right) / z, y: -dot3(v, up) / z };
+    });
+
+    // Keep whatever it has turned into inside the frame.
+    const xs = pts.map((p) => p.x), ys = pts.map((p) => p.y);
+    const spanX = Math.max(...xs) - Math.min(...xs) || 1;
+    const spanY = Math.max(...ys) - Math.min(...ys) || 1;
+    const k = Math.min(w * 0.80 / spanX, h * 0.62 / spanY);
+    const mx = (Math.max(...xs) + Math.min(...xs)) / 2;
+    const my = (Math.max(...ys) + Math.min(...ys)) / 2;
+    const X = (p) => w / 2 + (p.x - mx) * k;
+    const Y = (p) => h / 2 + (p.y - my) * k;
+
+    backdrop(g, w, h, 23);
+    const unit = Math.min(w, h);
+    g.strokeStyle = 'rgba(127,178,255,0.45)';
+    g.lineWidth = 1.5;
+    for (const [a, b] of LINKS) {
+      g.beginPath();
+      g.moveTo(X(pts[a]), Y(pts[a]));
+      g.lineTo(X(pts[b]), Y(pts[b]));
+      g.stroke();
+    }
+    g.font = `${Math.round(unit * 0.035)}px ui-monospace, Menlo, monospace`;
+    g.textAlign = 'center';
+    for (const p of pts) {
+      const r = unit * 0.011;
+      halo(g, X(p), Y(p), unit * 0.045, 'rgba(210,228,255,0.35)');
+      dot(g, X(p), Y(p), r, '#ffffff');
+      if (labels) {
+        // Alternating above and below, or Mizar and Alioth sit on top of
+        // each other - which they very nearly do in the real sky too.
+        const up = pts.indexOf(p) % 2 === 0;
+        g.fillStyle = '#aab6cc';
+        g.fillText(`${p.s.name} · ${p.s.ly} ly`, X(p), Y(p) + (up ? -unit * 0.035 : unit * 0.062));
+      }
+    }
+  });
+
+  angleIn.addEventListener('input', redraw);
+  labelBtn.addEventListener('click', () => {
+    labels = !labels;
+    labelBtn.setAttribute('aria-pressed', String(labels));
+    redraw();
+  });
+});
+</script>
+
+</body>
+</html>
